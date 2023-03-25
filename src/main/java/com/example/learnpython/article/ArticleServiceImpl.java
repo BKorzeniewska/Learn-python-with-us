@@ -26,16 +26,27 @@ public class ArticleServiceImpl implements ArticleService {
 
         log.info("article: {}", article);
 
-        return null;
+        articleRepository.save(article);
+
+        return articleMapper.toCreateArticleResponse(article);
     }
 
     @Override
     public List<CreateArticleResponse> getArticlesByChapter(Long chapterId) {
-        return null;
+        var articles = articleRepository
+                .findByChapterId(chapterId)
+                .orElseThrow(() -> new ArticleNotFoundException("Articles with provided ChapterID not found"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
     }
 
     @Override
     public CreateArticleResponse getArticleById(Long articleId) {
-        return null;
+        var article = articleRepository
+                .findById(articleId)
+                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found"));
+        return articleMapper.toCreateArticleResponse(article);
     }
 }
