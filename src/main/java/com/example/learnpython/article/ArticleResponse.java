@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateArticleResponse {
+public class ArticleResponse {
     private Long id;
     private String title;
     private String content;

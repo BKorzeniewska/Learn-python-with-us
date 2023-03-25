@@ -1,5 +1,6 @@
 package com.example.learnpython.article;
 
+import com.example.learnpython.article.exception.ArticleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public CreateArticleResponse createArticle(CreateArticleRequest request) {
+    public ArticleResponse createArticle(CreateArticleRequest request) {
 
         //validate user
 
@@ -32,7 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<CreateArticleResponse> getArticlesByChapter(Long chapterId) {
+    public List<ArticleResponse> getArticlesByChapter(Long chapterId) {
         var articles = articleRepository
                 .findByChapterId(chapterId)
                 .orElseThrow(() -> new ArticleNotFoundException("Articles with provided ChapterID not found"));
@@ -43,7 +44,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public CreateArticleResponse getArticleById(Long articleId) {
+    public ArticleResponse getArticleById(Long articleId) {
         var article = articleRepository
                 .findById(articleId)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found"));

@@ -1,4 +1,4 @@
-package com.example.learnpython.article;
+package com.example.learnpython.article.exception;
 
 
 import org.springframework.http.HttpStatus;
