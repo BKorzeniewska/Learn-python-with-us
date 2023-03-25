@@ -1,17 +1,19 @@
 package com.example.learnpython.article;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
 
-    public ArticleServiceImpl(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
 
     @Override
     public CreateArticleResponse createArticle(CreateArticleRequest request) {
@@ -20,7 +22,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         //validate chapter
 
+        var article = articleMapper.toArticle(request);
 
+        log.info("article: {}", article);
 
         return null;
     }
