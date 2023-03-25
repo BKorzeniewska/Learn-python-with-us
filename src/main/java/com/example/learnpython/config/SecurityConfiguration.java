@@ -30,11 +30,12 @@ public class SecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-      http
+        http.headers().frameOptions().disable();
+        http
           .csrf()
           .disable()
           .authorizeHttpRequests()
-          .requestMatchers("/api/v1/**")
+          .requestMatchers("/**")
             .permitAll()
           .anyRequest()
             .authenticated()
