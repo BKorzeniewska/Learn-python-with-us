@@ -1,5 +1,7 @@
 package com.example.learnpython.user;
 
+import com.example.learnpython.article.Article;
+import com.example.learnpython.comment.Comment;
 import com.example.learnpython.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,6 +38,12 @@ public class User implements UserDetails {
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user")
+    private List<Article> articles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

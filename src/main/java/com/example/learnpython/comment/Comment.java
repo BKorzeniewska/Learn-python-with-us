@@ -1,5 +1,7 @@
 package com.example.learnpython.comment;
 
+import com.example.learnpython.article.Article;
+import com.example.learnpython.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,10 +27,12 @@ public class Comment {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name="ARTICLE_ID")
+    private Article article;
 
-    //TODO add mappings to other tables
-    private Long articleId;
-
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
 
 }

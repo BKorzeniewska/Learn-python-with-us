@@ -1,11 +1,15 @@
 package com.example.learnpython.challenge;
 
 
+import com.example.learnpython.article.Article;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,4 +30,8 @@ public class Challenge {
 
     @Column(name = "CONTENT")
     private String content;
+
+    @ManyToMany(mappedBy = "challenges")
+    @JsonIgnore
+    private Set<Article> articles;
 }

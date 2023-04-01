@@ -1,10 +1,16 @@
 package com.example.learnpython.article;
 
+import com.example.learnpython.challenge.Challenge;
+import com.example.learnpython.chapter.Chapter;
+import com.example.learnpython.comment.Comment;
+import com.example.learnpython.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,9 +29,21 @@ public class Article {
     @Column(name = "CONTENT")
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name="CHAPTER_ID")
+    private Chapter chapter;
 
-    //TODO add mappings to other tables
-    private Long chapterId;
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
 
-    private Long userId;
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ARTICLE_CHALLENGE",
+            joinColumns =  @JoinColumn(name = "ARTICLE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CHALLENGE_ID"))
+    private List<Challenge> challenges;
 }

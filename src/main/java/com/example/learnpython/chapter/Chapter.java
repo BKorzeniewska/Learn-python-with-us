@@ -1,11 +1,14 @@
 package com.example.learnpython.chapter;
 
 
+import com.example.learnpython.article.Article;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -20,4 +23,7 @@ public class Chapter {
 
     @Column(name = "NAME")
     private String name;
+
+    @OneToMany(mappedBy = "chapter")
+    private List<Article> articles;
 }

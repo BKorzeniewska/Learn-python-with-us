@@ -1,10 +1,13 @@
 package com.example.learnpython.auth;
 
 
-
 import com.example.learnpython.config.JwtService;
-import com.example.learnpython.token.*;
-import com.example.learnpython.user.*;
+import com.example.learnpython.token.Token;
+import com.example.learnpython.token.TokenRepository;
+import com.example.learnpython.token.TokenType;
+import com.example.learnpython.user.Role;
+import com.example.learnpython.user.User;
+import com.example.learnpython.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
