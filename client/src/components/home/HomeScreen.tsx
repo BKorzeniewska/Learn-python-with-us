@@ -20,14 +20,7 @@ const HomeScreen = (props : Props) =>{
           </Navbar>
     
           <Container className="mt-3">
-            <h1>Welcome to React Bootstrap TypeScript</h1>
-            <p>
-              This is a sample homepage using React, Bootstrap, and TypeScript.
-            </p>
-            <p>
-              To get started, edit <code>src/App.tsx</code> and save to reload.
-            </p>
-            <Button variant='primary'>Hello react</Button>
+              
           </Container>
         </>
       );
