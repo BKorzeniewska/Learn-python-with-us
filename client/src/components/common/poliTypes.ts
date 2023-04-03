@@ -1,26 +1,3 @@
-
-/**
- * A type that represents a value that can fail, but always has a value (default one)
- * 
- * ### Wrapping
- * ```ts
- * {isOk: true, value: myInt} // happy path
- * {isOk: false, value: 0}    // unhappy path with default value
- * ```
- * ### Unwrapping
- * ```ts
- * function fails(x: Fails<number>) {
- *     let value = x.value;
- *     if (x.isOk) {
- *         console.log("value is " + value);
- *     } else {
- *         console.log("default value is " + value)
- *     } 
- * }
- * ```
- */
-export type Fails<T> = ({isOk: true, value: T }) | ({isOk: false, message?: string, value: T});
-
 /**
  * A type that has either a value or an error.
  * 

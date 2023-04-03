@@ -1,36 +1,13 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { Result } from "./poliTypes";
 
-
-export async function Get<T>(url: string): Promise<T> {
-    const data = await axios.get<T>(url,
-        {
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            validateStatus: (status) => {
-                return status < 300 && status >= 200;
-            }
-        });
-    return data.data;
+export type ErrorType = {
+    message: string;
+    status: number;
 }
 
-export async function Post<T>(url: string, payload: string): Promise<T> {
-    const data = await axios.post(url, payload,
-        {
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            validateStatus: (status) => {
-                return status < 300 && status >= 200;
-            }
-        });
-    return data.data;
-}
-
-export async function Delete<T>(url: string): Promise<T> {
-    const data = await axios.delete(url,
+export async function Get<T, E = ErrorType>(url: string): Promise<Result<T, E>> {
+    const response = axios.get<T>(url,
         {
             withCredentials: true,
             headers: {
@@ -41,12 +18,15 @@ export async function Delete<T>(url: string): Promise<T> {
             }
         });
 
-    return data.data;
+    return response.then((data) => {
+        return { isOk: true, value: data.data } as Result<T, E>;
+    }).catch((error: E) => {
+        return { isOk: false, error: error } as Result<T, E>;
+    });
 }
 
-
-export async function Put<T>(url: string, payload: string): Promise<T> {
-    const data = await axios.put(url, payload,
+export async function Post<T, E = ErrorType>(url: string, data: any): Promise<Result<T, E>> {
+    const response = axios.post<T>(url, data,
         {
             withCredentials: true,
             headers: {
@@ -57,7 +37,9 @@ export async function Put<T>(url: string, payload: string): Promise<T> {
             }
         });
 
-    return data.data;
+    return response.then((data) => {
+        return { isOk: true, value: data.data } as Result<T, E>;
+    }).catch((error: E|AxiosError) => {
+        return { isOk: false, error: error } as Result<T, E>;
+    });
 }
-
-

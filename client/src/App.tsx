@@ -11,9 +11,8 @@ function App() {
   return (
     <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to={home_path} />}></Route>
-            <Route path="/home" element={<HomeScreen />}></Route>
-            {/* <Route path="/seances/:date" element={<SeancesScreen />}></Route> */}
+            <Route path="/" element={<HomeScreen/>}></Route>
+            
           </Routes>
         </BrowserRouter>
   );
