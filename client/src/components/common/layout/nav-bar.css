@@ -1,0 +1,10 @@
+#dark-nav-bar {
+    font-weight: bold;
+    background-color: #2E2C2C;
+}
+
+#dark-nav-bar .navbar-brand {
+    color: #fff;
+}
+
+

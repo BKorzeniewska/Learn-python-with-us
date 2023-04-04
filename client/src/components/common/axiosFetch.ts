@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { Result } from "./poliTypes";
 
-
 export async function Get<T, E>(url: string): Promise<Result<T, AxiosError<E>>> {
     const response = axios.get<T>(url,
         {
