@@ -13,9 +13,11 @@ export const MainNavbar = () => {
       <Container>
         <Navbar.Brand href="#home">
           <img width="50" height="50" className="d-inline-block align-center mx-2" src={require("../../../assets/logo512.png")} />
+          <span className="d-none d-sm-inline-block">
           Learn Python with us
+          </span>
         </Navbar.Brand>
-        <Nav className="me-auto">
+        <Nav className="ml-auto">
           <Nav.Link href="#features"><span className="material-symbols-outlined">person</span></Nav.Link>
         </Nav>
       </Container>
