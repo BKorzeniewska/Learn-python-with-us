@@ -26,14 +26,14 @@
 
 [data-theme="light"]{
     --bs-emphasis-color: rgba(0, 0, 0, 1) !important;
-    --bs-emphasis-bg: rgba(255, 255, 255, 1) !important;
+    --bs-emphasis-bg: #e2e2e2 !important;
     --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
     --bs-emphasis-hover-bg: rgba(255, 255, 255, 1) !important;
 }
 
 [data-theme="dark"] {
     --bs-emphasis-color: rgba(255, 255, 255, 1) !important;
-    --bs-emphasis-bg: rgba(0, 0, 0, 1) !important;
+    --bs-emphasis-bg: #333 !important;
     --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
     --bs-emphasis-hover-bg: rgba(0, 0, 0, 1) !important;
 }
