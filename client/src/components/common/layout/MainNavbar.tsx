@@ -1,5 +1,5 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import './nav-bar.css';
+import './nav-bar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeProvider";

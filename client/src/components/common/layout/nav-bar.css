@@ -12,11 +12,12 @@
     background-color: #e2e2e2;
 }
 
-
 [data-theme="dark"].navbar {
     background-color: #333;
 }
+
 [data-theme="dark"].navbar .navbar-brand,
 [data-theme="dark"].navbar .nav-link {
-    color: #fff;
+    --bs-navbar-active-color: gradient(#fff, #fff);
+    --bs-nav-link-color: #fff;
 }
