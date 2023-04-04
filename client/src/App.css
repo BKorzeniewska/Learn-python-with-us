@@ -23,3 +23,17 @@
     --bs-btn-hover-bg: rgb(169, 126, 211) !important;
     --bs-btn-hover-border-color: rgba(144, 68, 220, 0) !important;
 }
+
+[data-theme="light"]{
+    --bs-emphasis-color: rgba(0, 0, 0, 1) !important;
+    --bs-emphasis-bg: rgba(255, 255, 255, 1) !important;
+    --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
+    --bs-emphasis-hover-bg: rgba(255, 255, 255, 1) !important;
+}
+
+[data-theme="dark"] {
+    --bs-emphasis-color: rgba(255, 255, 255, 1) !important;
+    --bs-emphasis-bg: rgba(0, 0, 0, 1) !important;
+    --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
+    --bs-emphasis-hover-bg: rgba(0, 0, 0, 1) !important;
+}

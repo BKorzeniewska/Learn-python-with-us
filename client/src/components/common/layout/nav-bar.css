@@ -1,3 +1,4 @@
+
 .navbar .navbar-brand {
     font-weight: bold;
 }
@@ -13,6 +14,13 @@
 
 [data-theme="dark"].navbar .navbar-brand,
 [data-theme="dark"].navbar .nav-link {
-    --bs-navbar-active-color: gradient(#fff, #fff);
+    --bs-navbar-active-color: #fff;
     --bs-nav-link-color: #fff;
+    --bs-navbar-brand-color: #fff;
+}
+[data-theme="light"].navbar .navbar-brand,
+[data-theme="light"].navbar .nav-link {
+    --bs-navbar-active-color: #000;
+    --bs-nav-link-color: #000;
+    --bs-navbar-brand-color: #000;
 }
