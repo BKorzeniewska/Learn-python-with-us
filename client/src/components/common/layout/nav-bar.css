@@ -1,23 +1,22 @@
 
 .navbar {
-    font-weight: bold;
     /* apply slight animation on theme change */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
+.navbar .navbar-brand {
+    font-weight: bold;
+}
 
 
 [data-theme="light"].navbar {
-    background-color: #fff;
-}
-[data-theme="light"].navbar .navbar-brand {
-    color: #000;
+    background-color: #e2e2e2;
 }
 
 
 [data-theme="dark"].navbar {
     background-color: #333;
 }
-[data-theme="dark"].navbar .navbar-brand {
+[data-theme="dark"].navbar .navbar-brand,
+[data-theme="dark"].navbar .nav-link {
     color: #fff;
 }
