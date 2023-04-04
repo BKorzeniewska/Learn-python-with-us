@@ -1,10 +1,23 @@
-#dark-nav-bar {
+
+.navbar {
     font-weight: bold;
-    background-color: #2E2C2C;
+    /* apply slight animation on theme change */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#dark-nav-bar .navbar-brand {
+
+
+[data-theme="light"].navbar {
+    background-color: #fff;
+}
+[data-theme="light"].navbar .navbar-brand {
+    color: #000;
+}
+
+
+[data-theme="dark"].navbar {
+    background-color: #333;
+}
+[data-theme="dark"].navbar .navbar-brand {
     color: #fff;
 }
-
-
