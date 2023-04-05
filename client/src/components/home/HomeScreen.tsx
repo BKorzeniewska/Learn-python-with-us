@@ -170,7 +170,7 @@ const HomeScreen = (props: Props) => {
                   },
                 }}
               />
-              ,
+              
             </div>
           </Row>
         </Container>
