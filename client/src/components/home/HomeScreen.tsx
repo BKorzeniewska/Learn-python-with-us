@@ -13,8 +13,15 @@ import {
 import { MainNavbar } from "../common/layout/MainNavbar";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import {  Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { CodeProps } from "react-markdown/lib/ast-to-react";
+import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { markdownTest } from "./markdownTest";
 
 type Props = {};
+
 
 const HomeScreen = (props: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -136,6 +143,34 @@ const HomeScreen = (props: Props) => {
                   <Form.Control as="textarea" aria-label="With textarea" />
                 </InputGroup>
               </>
+            </div>
+          </Row>
+
+          <Row>
+            <div className="w25 my-3">
+              <ReactMarkdown
+                children={markdownTest}
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code({ node, inline, className, children, style, ...props }: CodeProps) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        children={String(children).replace(/\n$/, "")}
+                        language={match[1]}
+                        style={oneDark}
+                        PreTag="div"
+                        {...props}
+                      />
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              />
+              ,
             </div>
           </Row>
         </Container>
