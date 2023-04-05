@@ -9,10 +9,12 @@ import {
   Card,
   Form,
   InputGroup,
+  Col,
 } from "react-bootstrap";
 import { MainNavbar } from "../common/layout/MainNavbar";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
+import { Sidebar } from "../common/layout/Sidebar";
 
 type Props = {};
 
@@ -22,6 +24,12 @@ const HomeScreen = (props: Props) => {
   return (
     <>
       <MainNavbar />
+      <Container fluid>
+      <Row noGutters>
+        <Col className="col-2 p-0">
+      <Sidebar/>
+      </Col>
+      <Col className="col-10 p-0">
       <div id="App" data-theme={theme}>
         <Container className="pt-3">
           <Row>
@@ -140,6 +148,9 @@ const HomeScreen = (props: Props) => {
           </Row>
         </Container>
       </div>
+      </Col>
+      </Row>
+      </Container>
     </>
   );
 };
