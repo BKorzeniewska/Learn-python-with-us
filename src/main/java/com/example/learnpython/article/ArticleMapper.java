@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ArticleMapper {
+
     Article toArticle(CreateArticleRequest createArticleRequest);
 
     @Mapping(target="chapterId", source="article.chapter.id")

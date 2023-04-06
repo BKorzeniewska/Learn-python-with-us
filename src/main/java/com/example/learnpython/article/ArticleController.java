@@ -1,5 +1,6 @@
 package com.example.learnpython.article;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ import java.util.List;
 @RequestMapping("api/v1/article")
 @RequiredArgsConstructor
 public class ArticleController {
+
     private final ArticleService articleService;
 
     //TODO zmieniń na POST mapping i dodać @RequestBody to argumentu
     @GetMapping("/create")
+    @Operation(summary = "Test endpoint")
     public ResponseEntity<ArticleResponse> createArticle() {
         return ResponseEntity.ok(articleService.createArticle(
                 CreateArticleRequest.builder()
