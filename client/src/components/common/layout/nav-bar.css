@@ -1,0 +1,21 @@
+
+.navbar .navbar-brand {
+    font-weight: bold;
+}
+
+
+[data-theme="light"].navbar {
+    background-color: #e2e2e2;
+    --bs-navbar-color: #000 !important;
+    --bs-navbar-brand-color: #000 !important;
+    --bs-navbar-hover-color: #565656 !important;
+    --bs-navbar-brand-hover-color: #000 !important;
+}
+
+[data-theme="dark"].navbar {
+    background-color: #333;
+    --bs-navbar-color: #fff !important;
+    --bs-navbar-brand-color: #fff !important;
+    --bs-navbar-hover-color: #c0c0c0 !important;
+    --bs-navbar-brand-hover-color: #fff !important;
+}

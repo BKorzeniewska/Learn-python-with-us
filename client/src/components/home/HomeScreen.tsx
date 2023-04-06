@@ -1,46 +1,157 @@
-import React, { useState } from 'react';
-import { Container, Nav, Button, Row, Col } from 'react-bootstrap';
-import Navbar from '../common/Navbar';
-import Sidebar from '../common/Sidebar';
+import React, { useContext } from "react";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Row,
+  ButtonGroup,
+  Card,
+  Form,
+  InputGroup,
+  Col,
+} from "react-bootstrap";
+import { MainNavbar } from "../common/layout/MainNavbar";
+import { ThemeContext } from "../themes/ThemeProvider";
+import "../../App.css";
+import { Sidebar } from "../common/layout/Sidebar";
 
-
-type Props = {
-
-}
+type Props = {};
 
 const HomeScreen = (props: Props) => {
-
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-  const handleSidebarToggle = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
-  };
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
-    <div>
-      <Navbar />
-      <Container fluid className="d-flex vh-100">
-      <Row>
-        <Col md={4} className="p-0">
-          <Sidebar />
-        </Col>
-        <Col md={8}>
-        <Container className="mt-3">
-            <h1>Welcome to React Bootstrap TypeScript</h1>
-            <p>
-              This is a sample homepage using React, Bootstrap, and TypeScript.
-            </p>
-            <p>
-              To get started, edit <code>src/App.tsx</code> and save to reload.
-            </p>
-            <Button variant='primary'>Hello react</Button>
-          </Container>
-        </Col>
+    <>
+      <MainNavbar />
+      <Container fluid>
+      <Row noGutters>
+        <Col className="col-2 p-0">
+      <Sidebar/>
+      </Col>
+      <Col className="col-10 p-0">
+      <div id="App" data-theme={theme}>
+        <Container className="pt-3">
+          <Row>
+            <div className="w25 my-3">
+              <Button
+                onClick={() => {
+                  toggleTheme();
+                }}
+              >
+                {theme === "light" ? "Dark" : "Light"} Theme
+              </Button>
+
+              <Button
+                onClick={() => {
+                  toggleTheme();
+                }}
+                variant="secondary"
+              >
+                Secondary button
+              </Button>
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <ButtonGroup aria-label="Button group">
+                <Button variant="secondary">Left</Button>
+                <Button variant="secondary">Middle</Button>
+                <Button variant="secondary">Right</Button>
+              </ButtonGroup>
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <Card style={{ width: "18rem" }}>
+                <Card.Body>
+                  <Card.Title>Card Title</Card.Title>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Card Subtitle
+                  </Card.Subtitle>
+                  <Card.Text>
+                    Some quick example text to build on the card title and make
+                    up the bulk of the card's content.
+                  </Card.Text>
+                  <Card.Link href="#">Card Link</Card.Link>
+                  <Card.Link href="#">Another Link</Card.Link>
+                </Card.Body>
+              </Card>
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <Form>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput1"
+                >
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control type="email" placeholder="name@example.com" />
+                </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlTextarea1"
+                >
+                  <Form.Label>Example textarea</Form.Label>
+                  <Form.Control as="textarea" rows={3} />
+                </Form.Group>
+              </Form>
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
+                  <Form.Control
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                  />
+                </InputGroup>
+
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    placeholder="Recipient's username"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                  />
+                  <InputGroup.Text id="basic-addon2">
+                    @example.com
+                  </InputGroup.Text>
+                </InputGroup>
+
+                <Form.Label htmlFor="basic-url">Your vanity URL</Form.Label>
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon3">
+                    https://example.com/users/
+                  </InputGroup.Text>
+                  <Form.Control
+                    id="basic-url"
+                    aria-describedby="basic-addon3"
+                  />
+                </InputGroup>
+
+                <InputGroup className="mb-3">
+                  <InputGroup.Text>$</InputGroup.Text>
+                  <Form.Control aria-label="Amount (to the nearest dollar)" />
+                  <InputGroup.Text>.00</InputGroup.Text>
+                </InputGroup>
+
+                <InputGroup>
+                  <InputGroup.Text>With textarea</InputGroup.Text>
+                  <Form.Control as="textarea" aria-label="With textarea" />
+                </InputGroup>
+              </>
+            </div>
+          </Row>
+        </Container>
+      </div>
+      </Col>
       </Row>
-    </Container>
-
-
-    </div>
+      </Container>
+    </>
   );
-}
-export default HomeScreen
+};
+export default HomeScreen;
