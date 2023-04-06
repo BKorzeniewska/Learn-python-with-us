@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("api/v1/article")
 @RequiredArgsConstructor
 public class ArticleController {
+
     private final ArticleService articleService;
 
     //TODO zmieniń na POST mapping i dodać @RequestBody to argumentu

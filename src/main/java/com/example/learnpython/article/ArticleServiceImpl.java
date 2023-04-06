@@ -3,6 +3,7 @@ package com.example.learnpython.article;
 import com.example.learnpython.article.exception.ArticleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,8 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleResponse> getArticlesByChapter(Long chapterId) {
         var articles = articleRepository
                 .findByChapterId(chapterId)
-                .orElseThrow(() -> new ArticleNotFoundException("Articles with provided ChapterID not found"));
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
 
         return articles.stream()
                 .map(articleMapper::toCreateArticleResponse)
@@ -47,7 +49,8 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleResponse getArticleById(Long articleId) {
         var article = articleRepository
                 .findById(articleId)
-                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found"));
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
         return articleMapper.toCreateArticleResponse(article);
     }
 }

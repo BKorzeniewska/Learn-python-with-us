@@ -3,7 +3,7 @@ services:
   learn-db:
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - "5433:5432"
     container_name: learn-db
     volumes:
       - "./postgres/data:/var/lib/postgresql/data"

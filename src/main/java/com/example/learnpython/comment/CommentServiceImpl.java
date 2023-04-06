@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
         //validate userId
 
         if(commentRequest.getContent().isBlank()){
-            throw new CommentIllegalStateException("Comment content cannot be blank");
+            throw new CommentIllegalStateException("Comment content cannot be blank", "COMMENT_CONTENT_BLANK");
         }
 
         var comment = commentMapper.toComment(commentRequest);
@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getCommentsByArticleId(Long articleId) {
         var comments = commentRepository
                 .findByArticleId(articleId)
-                .orElseThrow(() -> new CommentNotFoundException("Comments not found"));
+                .orElseThrow(() -> new CommentNotFoundException("Comments not found", "COMMENTS_NOT_FOUND"));
         return comments.stream().map(commentMapper::toCommentResponse).toList();
     }
 }
