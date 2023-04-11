@@ -21,6 +21,7 @@ import {  Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { markdownTest } from "./markdownTest";
+import Sidebar from "../common/Sidebar";
 
 type Props = {};
 
