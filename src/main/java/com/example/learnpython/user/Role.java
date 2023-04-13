@@ -2,5 +2,7 @@ package com.example.learnpython.user;
 
 public enum Role {
     USER,
-    ADMIN
+    ADMIN,
+    MODERATOR,
+    PRIVILEGED_USER
 }

@@ -32,10 +32,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
         http
-          .csrf()
-          .disable()
+          .cors().and().csrf().disable()
           .authorizeHttpRequests()
-          .requestMatchers("/**")
+          .requestMatchers("api/v1/**")
             .permitAll()
           .anyRequest()
             .authenticated()
