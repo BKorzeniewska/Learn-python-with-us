@@ -7,7 +7,7 @@ type LoginFormData = {
     password: string;
 }
 
-export const LoginScreen = () => {
+export const RegisterScreen = () => {
 
     const handleSubmit = (e: LoginFormData) => {
    
@@ -19,7 +19,7 @@ export const LoginScreen = () => {
                 <Container>
                     <Row>
                         <div className="m-auto w-25 my-3 text-center">
-                            <h1>Login</h1>
+                            <h1>Zaloguj się</h1>
                         </div>
                     </Row>
                     <Row>
@@ -37,24 +37,35 @@ export const LoginScreen = () => {
                                 }}
                             >
                                 <Form.Group
-                                    className="mb-3"
+                                    className="mb-4"
                                     controlId="email"
                                 >
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control type="email" placeholder="name@example.com" />
                                 </Form.Group>
                                 <Form.Group
-                                    className="mb-3"
+                                    className="mb-4"
                                     controlId="pass"
                                 >
                                     <Form.Label>Hasło</Form.Label>
                                     <Form.Control type="password" />
                                 </Form.Group>
+                                <Form.Group
+                                    className="mb-4"
+                                    controlId="pass"
+                                >
+                                    <Form.Label>Powtórz Hasło</Form.Label>
+                                    <Form.Control type="password" />
+                                </Form.Group>
+                                <Form.Group
+                                    className="mb-4"
+                                    controlId="nick"
+                                >
+                                    <Form.Label>Nickname</Form.Label>
+                                    <Form.Control type="text" placeholder="Pedro" />
+                                </Form.Group>
                                 <Form.Group>
                                     <Button variant="primary" type="submit" className="w-100 mb-1">
-                                        Zaloguj
-                                    </Button>
-                                    <Button variant="secondary" type="submit" className="w-100  my-3">
                                         Zarejestruj
                                     </Button>
                                 </Form.Group>
