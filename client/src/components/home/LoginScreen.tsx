@@ -2,7 +2,8 @@ import { Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
 import { authenticate } from "../common/apis/login";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 type LoginFormData = {
     email: string;
@@ -10,6 +11,8 @@ type LoginFormData = {
 }
 
 export const LoginScreen = () => {
+    const navigate = useNavigate();
+
 
     const handleSubmit = (e: LoginFormData) => {
         const response = authenticate(e.email, e.password);
@@ -62,7 +65,7 @@ export const LoginScreen = () => {
                                     <Button variant="primary" type="submit" className="w-100 mb-1">
                                         Zaloguj
                                     </Button>
-                                    <Button variant="secondary" type="button" className="w-100 my-3">
+                                    <Button variant="secondary" type="button" className="w-100 my-3" onClick={() => navigate("/register")}>
                                         Zarejestruj
                                     </Button>
                                 </Form.Group>
