@@ -11,7 +11,6 @@ import {
   InputGroup,
   Col,
 } from "react-bootstrap";
-import { MainNavbar } from "../common/layout/MainNavbar";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
 import ReactMarkdown from "react-markdown";
@@ -21,7 +20,7 @@ import {  Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { markdownTest } from "./markdownTest";
-import Sidebar from "../common/Sidebar";
+import { AppWrapper } from "./AppWrapper";
 
 type Props = {};
 
@@ -31,14 +30,7 @@ const HomeScreen = (props: Props) => {
 
   return (
     <>
-      <MainNavbar />
-      <Container fluid>
-      <Row noGutters>
-        <Col className="col-2 p-0">
-      <Sidebar/>
-      </Col>
-      <Col className="col-10 p-0">
-      <div id="App" data-theme={theme}>
+      <AppWrapper>
         <Container className="pt-3">
           <Row>
             <div className="w25 my-3">
@@ -182,10 +174,7 @@ const HomeScreen = (props: Props) => {
             </div>
           </Row>
         </Container>
-      </div>
-      </Col>
-      </Row>
-      </Container>
+      </AppWrapper>
     </>
   );
 };
