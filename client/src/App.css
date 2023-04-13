@@ -13,10 +13,25 @@
     --bs-btn-hover-bg: rgb(192, 132, 251) !important;
 }
 
+.btn:not(.btn-group>.btn) {
+    border-radius: 50vw !important;
+}
+
+/* add rounded corners for last button in a button group */
+.btn-group>.btn:last-child:not(:first-child) {
+    border-top-right-radius: 50vw !important;
+    border-bottom-right-radius: 50vw !important;
+}
+
+/* add rounded corners for first button in a button group */
+.btn-group>.btn:first-child:not(:last-child) {
+    border-top-left-radius: 50vw !important;
+    border-bottom-left-radius: 50vw !important;
+}
+
 .btn-secondary {
     background-image: linear-gradient(120deg, rgba(0, 0, 0, 0) 0%, rgba(153, 153, 153, 1) 100%);
-    border-radius: 50vw !important;
-    box-shadow: 8px 8px 16px 0px rgba(0, 0, 0, 0.3);
+        box-shadow: 8px 8px 16px 0px rgba(0, 0, 0, 0.3);
     --bs-btn-color: rgba(0, 0, 0, 1) !important;
     --bs-btn-bg: rgba(204, 204, 204, 1) !important;
     --bs-btn-border-color: rgba(144, 68, 220, 0) !important;
@@ -24,11 +39,22 @@
     --bs-btn-hover-border-color: rgba(144, 68, 220, 0) !important;
 }
 
+
 [data-theme="light"]{
     --bs-emphasis-color: rgba(0, 0, 0, 1) !important;
-    --bs-emphasis-bg: #e2e2e2 !important;
+    --bs-emphasis-bg: #f0f0f0 !important;
     --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
     --bs-emphasis-hover-bg: rgba(255, 255, 255, 1) !important;
+
+    --bs-body-bg: #f1f1f1 !important;
+    --bs-body-color: rgba(0, 0, 0, 1) !important;
+    --bs-secondary-color: rgb(48, 48, 48) !important;
+
+    --bs-link-color: #704f91 !important;
+    --bs-link-color-rgb: 112, 79, 145 !important;
+
+    --bs-link-hover-color: #a081c0 !important;
+    --bs-link-hover-color-rgb: 160, 129, 192 !important;
 }
 
 [data-theme="dark"] {
@@ -36,4 +62,16 @@
     --bs-emphasis-bg: #333 !important;
     --bs-emphasis-border-color: rgba(0, 0, 0, 0) !important;
     --bs-emphasis-hover-bg: rgba(0, 0, 0, 1) !important;
+
+    --bs-body-bg: #313131 !important;
+    --bs-body-color: rgba(255, 255, 255, 1) !important;
+    --bs-secondary-color: rgb(169, 126, 211) !important;
+    --bs-link-color: #a97ed3 !important;
+    --bs-link-color-rgb: 169, 126, 211 !important;
+
+    --bs-link-hover-color: #d1b2ef !important;
+    --bs-link-hover-color-rgb: 209, 178, 239 !important;
+
+    --bs-border-color: rgba(255, 255, 255, 0.1) !important;
+    --bs-tertiary-bg: rgba(255, 255, 255, 0.15) !important;
 }
