@@ -1,15 +1,12 @@
 import React, { useContext } from "react";
 import {
   Container,
-  Navbar,
-  Nav,
   Button,
   Row,
   ButtonGroup,
   Card,
   Form,
   InputGroup,
-  Col,
 } from "react-bootstrap";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
@@ -23,7 +20,6 @@ import { markdownTest } from "./markdownTest";
 import { AppWrapper } from "./AppWrapper";
 
 type Props = {};
-
 
 const HomeScreen = (props: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
