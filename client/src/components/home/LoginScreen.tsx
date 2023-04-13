@@ -1,6 +1,7 @@
 import { Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
+import { authenticate } from "../common/apis/login";
 
 type LoginFormData = {
     email: string;
@@ -10,12 +11,15 @@ type LoginFormData = {
 export const LoginScreen = () => {
 
     const handleSubmit = (e: LoginFormData) => {
-   
+        const response = authenticate(e.email, e.password);
+
+        // print response
+        console.log(response);
     }
 
     return (
         <>
-            <AppWrapper>
+            <AppWrapper hideSidebar>
                 <Container>
                     <Row>
                         <div className="m-auto w-25 my-3 text-center">

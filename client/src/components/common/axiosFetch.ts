@@ -1,7 +1,14 @@
 import axios, { AxiosError } from "axios";
 import { Result } from "./poliTypes";
 
-export async function Get<T, E>(url: string): Promise<Result<T, AxiosError<E>>> {
+type APIError<T=string> = {
+    timestamp: string;
+    errorCode: T;
+    errorMessage: string;
+}
+
+
+export async function Get<T, E=APIError>(url: string): Promise<Result<T, AxiosError<E>>> {
     const response = axios.get<T>(url,
         {
             withCredentials: true,
@@ -20,7 +27,7 @@ export async function Get<T, E>(url: string): Promise<Result<T, AxiosError<E>>> 
     });
 }
 
-export async function Post<T, E>(url: string, data: any): Promise<Result<T, AxiosError<E>>> {
+export async function Post<T, E=APIError>(url: string, data: any): Promise<Result<T, AxiosError<E>>> {
     const response = axios.post<T>(url, data,
         {
             withCredentials: true,

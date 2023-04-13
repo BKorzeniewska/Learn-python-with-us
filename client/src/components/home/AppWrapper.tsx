@@ -18,10 +18,8 @@ export const AppWrapper = (props: AppProps) => {
       <MainNavbar />
       <Container fluid>
         <Row noGutters>
-          <Col className="col-2 p-0">
-            {!props.hideSidebar && <Sidebar />}
-          </Col>
-          <Col className="col-10 p-0">
+          {!props.hideSidebar && <Col className="col-2 p-0"><Sidebar /></Col>}
+          <Col className="p-0">
             <div id="App" data-theme={theme}>
               {props.children}
             </div>
