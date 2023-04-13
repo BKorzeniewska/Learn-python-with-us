@@ -13,7 +13,6 @@ export const Sidebar = () => {
 
   const { theme } = useContext(ThemeContext);
 
-  
   return (
     <Nav className="flex-column" data-theme={theme}>
       <Nav.Item>
