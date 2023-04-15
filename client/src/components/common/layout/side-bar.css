@@ -3,6 +3,7 @@
     font-weight: bold;
     width:100%;
     height:100%;
+    transition: all 1s;
 }
 .sidebar-item {
     border-radius: 10px;
