@@ -1,9 +1,9 @@
-import { Col, Container, Row } from "react-bootstrap";
-import { MainNavbar } from "../common/layout/MainNavbar";
-import { ReactNode, useContext, useState } from "react";
-import { ThemeContext } from "../themes/ThemeProvider";
-import { Sidebar } from "../common/layout/Sidebar";
-
+import React, { useContext, useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { ReactNode } from 'react';
+import { ThemeContext } from '../themes/ThemeProvider';
+import { MainNavbar } from '../common/layout/MainNavbar';
+import { Sidebar } from '../common/layout/Sidebar';
 
 export type AppProps = {
   children: ReactNode;
@@ -11,23 +11,40 @@ export type AppProps = {
 }
 
 export const AppWrapper = (props: AppProps) => {
+
+  const SIDEBAR_WIDTH: number = 300;
+
   const { theme } = useContext(ThemeContext);
   const [hideSidebar, setHideSidebar] = useState(props.hideSidebar == true ? true : false);
+  const [sidebarWidth, setSidebarWidth] = useState(hideSidebar ? 0 : SIDEBAR_WIDTH); // Set the initial width of the sidebar
 
-  const toggleSidebar = () => {setHideSidebar(!hideSidebar)};
+  const toggleSidebar = () => {
+    setHideSidebar(!hideSidebar);
+    setSidebarWidth(hideSidebar ? SIDEBAR_WIDTH : 0); // Set the width of the sidebar based on the hideSidebar state
+  };
 
   return (
     <>
-      <MainNavbar toggleSidebar={toggleSidebar}/>
+      <MainNavbar toggleSidebar={toggleSidebar} />
       <Container fluid>
         <Row noGutters>
-          {hideSidebar && <Col className="col-2 p-0 "><Sidebar /></Col>}
-          <Col className="p-0">
-            <div id="App" data-theme={theme}>
-              {props.children}
+          <Col xs={12} md="auto" className="p-0">
+            <div
+              className="sidebar"
+              style={{ width: `${sidebarWidth}px` }} // Add the transition property to animate the width change
+            >
+              <Sidebar />
+            </div>
+          </Col>
+          <Col xs={12} md className="p-0 d-flex">
+            <div id="App" data-theme={theme} className="flex-grow-1">
+              <div className="content">
+                {props.children}
+              </div>
             </div>
           </Col>
         </Row>
       </Container>
-    </>);
-}
+    </>
+  );
+};
