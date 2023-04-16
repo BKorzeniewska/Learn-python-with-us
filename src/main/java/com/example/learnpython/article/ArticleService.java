@@ -2,6 +2,7 @@ package com.example.learnpython.article;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleService {
     ArticleResponse createArticle(CreateArticleRequest request);
