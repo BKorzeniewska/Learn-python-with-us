@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +54,41 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
         return articleMapper.toCreateArticleResponse(article);
+    }
+
+    @Override
+    public List<ArticleResponse> getByTitleContaining(String titleFragment) {
+        var articles = articleRepository
+                .findByTitleContaining(titleFragment)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided title's fragment not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ArticleResponse> getByTimestampBetween(LocalDate startDate, LocalDate endDate) {
+        var articles = articleRepository
+                .findByTimestampBetween(startDate,endDate)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided timestamp beetweb"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ArticleResponse> getByTimestamp(LocalDate date) {
+        var articles = articleRepository
+                .findByTimestamp(date)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided date not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
     }
 }

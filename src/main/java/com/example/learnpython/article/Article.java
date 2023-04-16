@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,9 @@ public class Article {
 
     @Column(name = "CONTENT")
     private String content;
+
+    @Column(name = "TIMESTAMP")
+    private LocalDate timestamp;
 
     @ManyToOne
     @JoinColumn(name="CHAPTER_ID")
