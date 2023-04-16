@@ -3,6 +3,7 @@ import './nav-bar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeProvider";
+import { useNavigate } from "react-router-dom";
 
 
 type Props ={
@@ -11,6 +12,7 @@ type Props ={
 
 export const MainNavbar = (props : Props) => {
   const { theme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   return (
     <Navbar data-theme={theme}>
@@ -19,7 +21,7 @@ export const MainNavbar = (props : Props) => {
       <Nav className="ml-auto">
           <Nav.Link onClick={() => {props.toggleSidebar()}}><span className="material-symbols-outlined">menu</span></Nav.Link>
         </Nav>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand onClick={() => {navigate("/")}}>
           <img width="50" height="50" className="d-inline-block align-center mx-2" src={require("../../../assets/logo512.png")} />
           <span className="d-none d-sm-inline-block">
           Learn Python with us

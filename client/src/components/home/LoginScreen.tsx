@@ -3,6 +3,9 @@ import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
 import { authenticate } from "../common/apis/login";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../auth/AuthContext";
+import { useContext } from "react";
+import axios from "axios";
 
 
 type LoginFormData = {
@@ -12,10 +15,19 @@ type LoginFormData = {
 
 export const LoginScreen = () => {
     const navigate = useNavigate();
+    const { token, setToken } = useContext(AuthContext);
 
 
     const handleSubmit = (e: LoginFormData) => {
+
         const response = authenticate(e.email, e.password);
+        response.then((data) => {
+            if(data.isOk) {
+                setToken(data.value.token)
+            } else {          
+            }
+        });
+        axios.defaults.headers.common['Authorization'] = token;
 
         // print response
         console.log(response);
