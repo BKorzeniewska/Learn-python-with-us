@@ -1,10 +1,44 @@
 package com.example.learnpython.challenge;
-
+import com.example.learnpython.challenge.exception.ChalangeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import lombok.extern.log4j.Log4j2;
+import java.util.List;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
+    private final ChallengeMapper challengeMapper;
+
+    @Override
+    public ChallengeResponse createChallenge(CreateChallengeRequest request) {
+        var challenge = challengeMapper.toChallenge(request);
+        log.info("challenge: {}", challenge);
+        challengeRepository.save(challenge);
+        return challengeMapper.toCreateChallengeResponse(challenge);
+    }
+
+    @Override
+    public List<ChallengeResponse> getChallengeByName(String name) {
+        var challenges = challengeRepository
+                .findChallengeByNameContaining(name)
+                .orElseThrow(() -> new ChalangeNotFoundException(
+                        "Challenges with provided name not found", "CHALLENGES_NOT_FOUND"));
+
+        return challenges.stream()
+                .map(challengeMapper::toCreateChallengeResponse)
+                .toList();
+    }
+
+    @Override
+    public ChallengeResponse getChallengeById(Long challengeId) {
+        var challenge = challengeRepository
+                .findById(challengeId)
+                .orElseThrow(() -> new ChalangeNotFoundException(
+                        "Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
+        return challengeMapper.toCreateChallengeResponse(challenge);
+    }
 }
+
