@@ -27,7 +27,6 @@ export const LoginScreen = () => {
             } else {          
             }
         });
-
         // print response
         console.log(response);
     }

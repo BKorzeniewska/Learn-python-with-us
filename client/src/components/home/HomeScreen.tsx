@@ -23,6 +23,7 @@ type Props = {};
 
 const HomeScreen = (props: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <>
       <AppWrapper>

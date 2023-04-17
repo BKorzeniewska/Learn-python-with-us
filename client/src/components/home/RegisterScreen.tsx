@@ -12,14 +12,15 @@ export const RegisterScreen = () => {
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
-
         response.then((data) => {
             if(data.isOk) {
                 setToken(data.value.token)
-            } else {    
-                setToken(null);      
+            } else {          
             }
         });
+
+        // print response
+        console.log(response);
     }
 
     return (
