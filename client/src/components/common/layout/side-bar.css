@@ -1,75 +1,73 @@
-
 .nav {
-    font-weight: bold;
-    width:100%;
-    height:100%;
-    transition: all 1s;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  transition: all 1s;
 }
+
 .sidebar-item {
-    border-radius: 10px;
-    border-style: solid;
-    border-width: 1px;
-    margin: 7px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+  margin: 7px;
 }
-[data-theme="light"].sidebar-item:hover{
 
-    background-color: #333;
+[data-theme="light"].sidebar-item:hover {
+
+  background-color: #333;
 }
-[data-theme="dark"].sidebar-item:hover{
 
-    background-color: #afafaf;
+[data-theme="dark"].sidebar-item:hover {
+
+  background-color: #afafaf;
 }
 
 [data-theme="light"].nav {
-    background-color: #e2e2e2;
-    --bs-nav-link-color:  #000 !important;
-    --bs-nav-brand-color: #000 !important;
-    --bs-nav-link-hover-color: #363636 !important;
-    --bs-nav-brand-hover-color: #000 !important;
+  background-color: #e2e2e2;
+  --bs-nav-link-color: #000 !important;
+  --bs-nav-brand-color: #000 !important;
+  --bs-nav-link-hover-color: #363636 !important;
+  --bs-nav-brand-hover-color: #000 !important;
 }
 
 [data-theme="dark"].nav {
-    background-color: #333;
-    --bs-nav-link-color:  #fff !important;
-    --bs-nav-brand-color: #fff !important;
-    --bs-nav-link-hover-color: #d6d6d6 !important;
-    --bs-nav-brand-hover-color: #fff !important;
+  background-color: #333;
+  --bs-nav-link-color: #fff !important;
+  --bs-nav-brand-color: #fff !important;
+  --bs-nav-link-hover-color: #d6d6d6 !important;
+  --bs-nav-brand-hover-color: #fff !important;
 }
 
 .sidebar {
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: #fff;
+  display: flexbox;
+  transition: width 0.3s ease-in-out;
+}
+
+/* display on top of site on small devices */
+@media (max-width: 1250px) {
+  .sidebar {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
     height: 100%;
-    overflow: hidden;
+    top: 68px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     background-color: #fff;
     display: flexbox;
-    transition: width 0.3s ease-in-out;
   }
+}
 
- /* display on top of site on small devices */
-  @media (max-width: 768px) {
-    .sidebar {
-      position: fixed;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      top: 100px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      background-color: #fff;
-      display: flexbox;
-      transition: width 0.3s ease-in-out;
-    }
-  }
-  .sidebar > div {
-    height: 100%;
-    overflow-y: auto;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .sidebar.hidden > div {
-    opacity: 0;
-    pointer-events: none;
-    display: none;
-  }
+
+.sidebar.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}

@@ -14,7 +14,7 @@ export const Sidebar = (props: {width: number}) => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <Nav className="flex-column" data-theme={theme} style={{width: props.width}} >
+    <Nav className="flex-column sidebar" data-theme={theme} style={{width: props.width}} >
       <Nav.Item>
         <Nav.Link className="sidebar-item" href="#">Link 1</Nav.Link>
       </Nav.Item>
