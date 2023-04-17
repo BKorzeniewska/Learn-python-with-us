@@ -18,6 +18,7 @@ import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { markdownTest } from "./markdownTest";
 import { AppWrapper } from "./AppWrapper";
+import { AuthContext } from "../auth/AuthContext";
 
 type Props = {};
 
@@ -29,6 +30,8 @@ const HomeScreen = (props: Props) => {
       <AppWrapper>
         <Container className="pt-3">
           <Row>
+            Token is:
+            {token}
             <div className="w25 my-3">
               <Button
                 onClick={() => {

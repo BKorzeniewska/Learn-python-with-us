@@ -15,7 +15,7 @@ type LoginFormData = {
 
 export const LoginScreen = () => {
     const navigate = useNavigate();
-    const { setToken } = useContext(AuthContext);
+    const { token, setToken } = useContext(AuthContext);
 
 
     const handleSubmit = (e: LoginFormData) => {
