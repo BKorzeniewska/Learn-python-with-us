@@ -15,7 +15,7 @@ type LoginFormData = {
 
 export const LoginScreen = () => {
     const navigate = useNavigate();
-    const { token, setToken } = useContext(AuthContext);
+    const { setToken } = useContext(AuthContext);
 
 
     const handleSubmit = (e: LoginFormData) => {
@@ -27,7 +27,6 @@ export const LoginScreen = () => {
             } else {          
             }
         });
-        axios.defaults.headers.common['Authorization'] = token;
 
         // print response
         console.log(response);

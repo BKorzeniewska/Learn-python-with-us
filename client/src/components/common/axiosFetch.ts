@@ -1,6 +1,4 @@
 import axios, { AxiosError } from "axios";
-import { useContext } from "react";
-import { AuthContext } from "../auth/AuthContext";
 import { Result } from "./poliTypes";
 
 type APIError<T=string> = {

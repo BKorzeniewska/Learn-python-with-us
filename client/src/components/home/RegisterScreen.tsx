@@ -8,20 +8,18 @@ import { AppWrapper } from "./AppWrapper";
 
 export const RegisterScreen = () => {
 
-    const { token, setToken } = useContext(AuthContext);
+    const { setToken } = useContext(AuthContext);
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
+
         response.then((data) => {
             if(data.isOk) {
                 setToken(data.value.token)
-            } else {          
+            } else {    
+                setToken(null);      
             }
         });
-        axios.defaults.headers.common['Authorization'] = token;
-
-        // print response
-        console.log(response);
     }
 
     return (

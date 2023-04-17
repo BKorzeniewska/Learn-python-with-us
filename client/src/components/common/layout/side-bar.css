@@ -44,13 +44,24 @@
     transition: width 0.3s ease-in-out;
   }
 
-  @media only screen and (max-width: 768px) {
+ /* display on top of site on small devices */
+  @media (max-width: 768px) {
     .sidebar {
-        
+      position: fixed;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background-color: #fff;
+      display: flexbox;
+      transition: width 0.3s ease-in-out;
     }
   }
-
-  
   .sidebar > div {
     height: 100%;
     overflow-y: auto;
