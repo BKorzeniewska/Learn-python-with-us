@@ -30,8 +30,6 @@ const HomeScreen = (props: Props) => {
       <AppWrapper>
         <Container className="pt-3">
           <Row>
-            Token is:
-            {token}
             <div className="w25 my-3">
               <Button
                 onClick={() => {

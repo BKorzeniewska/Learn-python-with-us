@@ -8,7 +8,7 @@ import { AppWrapper } from "./AppWrapper";
 
 export const RegisterScreen = () => {
 
-    const { token, setToken } = useContext(AuthContext);
+    const { setToken } = useContext(AuthContext);
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
