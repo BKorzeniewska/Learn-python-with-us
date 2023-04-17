@@ -29,12 +29,7 @@ export const AppWrapper = (props: AppProps) => {
       <Container fluid>
         <Row noGutters>
           <Col xs={12} md="auto" className="p-0">
-            <div
-              className="sidebar"
-              style={{ width: `${sidebarWidth}px` }} // Add the transition property to animate the width change
-            >
-              <Sidebar />
-            </div>
+              <Sidebar width={sidebarWidth} />
           </Col>
           <Col xs={12} md className="p-0 d-flex">
             <div id="App" data-theme={theme} className="flex-grow-1">
