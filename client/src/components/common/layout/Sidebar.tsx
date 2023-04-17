@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './side-bar.css'
 import { ThemeContext } from '../../themes/ThemeProvider';
 
-export const Sidebar = (props: {width: number}) => {
+export const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {
@@ -14,7 +14,7 @@ export const Sidebar = (props: {width: number}) => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <Nav className="flex-column" data-theme={theme} style={{width: props.width}} >
+    <Nav className="flex-column" data-theme={theme}>
       <Nav.Item>
         <Nav.Link className="sidebar-item" href="#">Link 1</Nav.Link>
       </Nav.Item>
