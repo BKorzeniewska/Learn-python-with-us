@@ -73,7 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         var articles = articleRepository
                 .findByDateBetween(startDate,endDate)
                 .orElseThrow(() -> new ArticleNotFoundException(
-                        "Articles with provided timestamp beetweb"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
+                        "Articles with provided timestamp between"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
 
         return articles.stream()
                 .map(articleMapper::toCreateArticleResponse)
