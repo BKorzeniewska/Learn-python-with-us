@@ -30,8 +30,8 @@ public class Article {
     @Column(name = "CONTENT")
     private String content;
 
-    @Column(name = "TIMESTAMP")
-    private LocalDate timestamp;
+    @Column(name = "DATE")
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name="CHAPTER_ID")

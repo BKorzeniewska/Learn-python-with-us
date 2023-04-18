@@ -10,7 +10,7 @@ public interface ArticleService {
     ArticleResponse getArticleById(Long articleId);
 
     List<ArticleResponse> getByTitleContaining(String titleFragment);
-    List<ArticleResponse> getByTimestampBetween(LocalDate startDate, LocalDate endDate);
-    List<ArticleResponse> getByTimestamp(LocalDate date);
+    List<ArticleResponse> getByDateBetween(LocalDate startDate, LocalDate endDate);
+    List<ArticleResponse> getByDate(LocalDate date);
 
 }

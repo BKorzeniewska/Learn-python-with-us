@@ -69,9 +69,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponse> getByTimestampBetween(LocalDate startDate, LocalDate endDate) {
+    public List<ArticleResponse> getByDateBetween(LocalDate startDate, LocalDate endDate) {
         var articles = articleRepository
-                .findByTimestampBetween(startDate,endDate)
+                .findByDateBetween(startDate,endDate)
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided timestamp beetweb"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
 
@@ -81,9 +81,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponse> getByTimestamp(LocalDate date) {
+    public List<ArticleResponse> getByDate(LocalDate date) {
         var articles = articleRepository
-                .findByTimestamp(date)
+                .findByDate(date)
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided date not found", "ARTICLES_NOT_FOUND"));
 

@@ -30,16 +30,18 @@ public class ArticleController {
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
+    @GetMapping("/timestamp/{date}")
+    public ResponseEntity<List<ArticleResponse>> getArticleByDate(@PathVariable("date") LocalDate date) {
+        var articles = articleService.getByDate(date);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
     @GetMapping("/title/{titleFragment}")
     public ResponseEntity<List<ArticleResponse>> getArticleByTitleContaining(@PathVariable("titleFragment") String titleFragment) {
         var articles = articleService.getByTitleContaining(titleFragment);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-    @GetMapping("/timestamp/{date}")
-    public ResponseEntity<List<ArticleResponse>> getArticleByTimestamp(@PathVariable("date") LocalDate date) {
-        var articles = articleService.getByTimestamp(date);
-        return new ResponseEntity<>(articles, HttpStatus.OK);
-    }
-    //TODO add getArticleByTimestampBetween
+
+    //TODO add getArticleByDateBetween
 }
