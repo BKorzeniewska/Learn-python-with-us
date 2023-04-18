@@ -7,7 +7,6 @@ import { register, registerRequest } from "../common/apis/login";
 import { AppWrapper } from "./AppWrapper";
 
 export const RegisterScreen = () => {
-
     const { setToken } = useContext(AuthContext);
 
     const handleSubmit = (e: registerRequest) => {
@@ -18,7 +17,6 @@ export const RegisterScreen = () => {
             } else {          
             }
         });
-
         // print response
         console.log(response);
     }

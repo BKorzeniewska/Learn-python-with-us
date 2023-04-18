@@ -29,7 +29,9 @@ export const AppWrapper = (props: AppProps) => {
       <Container fluid>
         <Row noGutters>
           <Col xs={12} md="auto" className="p-0">
+            <div id="side">
               <Sidebar width={sidebarWidth} />
+            </div>
           </Col>
           <Col xs={12} md className="p-0 d-flex">
             <div id="App" data-theme={theme} className="flex-grow-1">
