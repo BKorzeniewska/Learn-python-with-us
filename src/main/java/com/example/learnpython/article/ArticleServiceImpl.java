@@ -1,16 +1,14 @@
 package com.example.learnpython.article;
 
 import com.example.learnpython.article.exception.ArticleNotFoundException;
-import com.example.learnpython.article.exception.InvalidDataException;
+import com.example.learnpython.article.exception.InvalidDateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Log4j2
@@ -72,11 +70,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleResponse> getByDateBetween(LocalDate startDate, LocalDate endDate) {
-        ChronoLocalDate start = startDate;
-        ChronoLocalDate end = endDate;
-        if(start.isAfter(end)) throw new InvalidDataException("INVALID_DATA");
+        if(startDate.isAfter(endDate)) throw new InvalidDateException("End data is earlier than start date","INVALID_DATE");
         var articles = articleRepository
-                .findByDateBetween(startDate,endDate)
+                .findByCreationDateBetween(startDate,endDate)
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided timestamp between"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
 
@@ -88,7 +84,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleResponse> getByDate(LocalDate date) {
         var articles = articleRepository
-                .findByDate(date)
+                .findByCreationDate(date)
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided date not found", "ARTICLES_NOT_FOUND"));
 
