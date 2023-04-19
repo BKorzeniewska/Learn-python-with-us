@@ -12,7 +12,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Optional<List<Article>> findByChapterId(Long chapterId);
     Optional<List<Article>> findByTitleContaining(String titleFragment);
-    Optional<List<Article>> findByDateBetween(LocalDate startDate, LocalDate endDate);
-    Optional<List<Article>> findByDate(LocalDate date);
+    Optional<List<Article>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
+    Optional<List<Article>> findByCreationDate(LocalDate date);
 
 }
