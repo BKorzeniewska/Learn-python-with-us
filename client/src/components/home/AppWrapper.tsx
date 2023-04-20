@@ -15,7 +15,7 @@ export const AppWrapper = (props: AppProps) => {
   const SIDEBAR_WIDTH: number = 300;
 
   const { theme } = useContext(ThemeContext);
-  const [hideSidebar, setHideSidebar] = useState(props.hideSidebar == true ? true : false);
+  const [hideSidebar, setHideSidebar] = useState(props.hideSidebar === undefined || props.hideSidebar == true ? true : false);
   const [sidebarWidth, setSidebarWidth] = useState(hideSidebar ? 0 : SIDEBAR_WIDTH); // Set the initial width of the sidebar
 
   const toggleSidebar = () => {

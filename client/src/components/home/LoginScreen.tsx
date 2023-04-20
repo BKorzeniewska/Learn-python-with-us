@@ -37,14 +37,15 @@ export const LoginScreen = () => {
     return (
         <>
             <AppWrapper hideSidebar>
-                <Container>
+                <Container fluid>
+                <div className="form-container">
                     <Row>
-                        <div className="m-auto w-25 my-3 text-center">
-                            <h1>Login</h1>
+                        <div className="m-auto my-3 text-center">
+                            <h1>Zaloguj się</h1>
                         </div>
                     </Row>
                     <Row>
-                        <div className="m-auto w-50 my-3">
+                        <div className="m-auto w-75 my-3">
                             <Form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -72,10 +73,11 @@ export const LoginScreen = () => {
                                     <Form.Control type="password" />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Button variant="primary" type="submit" className="w-100 mb-1">
+                                    <Button variant="primary" type="submit" className="w-100 mb-3">
                                         Zaloguj
                                     </Button>
-                                    <Button variant="secondary" type="button" className="w-100 my-3" onClick={() => navigate("/register")}>
+                                    Nie masz jeszcze konta?
+                                    <Button variant="secondary" type="button" className="w-100" onClick={() => navigate("/register")}>
                                         Zarejestruj
                                     </Button>
                                 </Form.Group>
@@ -83,6 +85,7 @@ export const LoginScreen = () => {
                             </Form>
                         </div>
                     </Row>
+                    </div>
                 </Container>
             </AppWrapper>
         </>

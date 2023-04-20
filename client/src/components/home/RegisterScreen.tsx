@@ -5,6 +5,7 @@ import "../../App.css";
 import { AuthContext } from "../auth/AuthContext";
 import { register, registerRequest } from "../common/apis/login";
 import { AppWrapper } from "./AppWrapper";
+import "./lr-forms.css";
 
 export const RegisterScreen = () => {
     const { setToken } = useContext(AuthContext);
@@ -24,14 +25,15 @@ export const RegisterScreen = () => {
     return (
         <>
             <AppWrapper>
-                <Container>
+                <Container fluid>
+                    <div className="form-container">
                     <Row>
-                        <div className="m-auto w-25 my-3 text-center">
-                            <h1>Zaloguj się</h1>
+                        <div className="m-auto my-3 text-center">
+                            <h1>Zarejestruj się</h1>
                         </div>
                     </Row>
                     <Row>
-                        <div className="m-auto w-50 my-3">
+                        <div className="m-auto w-75 my-3">
                             <Form
                                 onSubmit={(e) => {
                                     e.preventDefault();
@@ -98,6 +100,7 @@ export const RegisterScreen = () => {
                             </Form>
                         </div>
                     </Row>
+                    </div>
                 </Container>
             </AppWrapper>
         </>
