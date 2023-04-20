@@ -1,10 +1,10 @@
-import { Button, Container, Form, Row } from "react-bootstrap";
+import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
 import { authenticate } from "../common/apis/login";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 
 
@@ -16,6 +16,7 @@ type LoginFormData = {
 export const LoginScreen = () => {
     const navigate = useNavigate();
     const { setToken } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 
     const handleSubmit = (e: LoginFormData) => {
@@ -23,9 +24,15 @@ export const LoginScreen = () => {
         const response = authenticate(e.email, e.password);
         response.then((data) => {
             if(data.isOk) {
-                setToken(data.value.token)
-            } else {          
+                setToken(data.value.token);
+                navigate("/");
+            } else {    
+                setErrorMessage("Nie udało się zalogować. Spróbuj ponownie.");
+                setTimeout(() => {
+                    setErrorMessage(null);
+                  }, 2000);
             }
+
         });
         // print response
         console.log(response);
@@ -37,6 +44,9 @@ export const LoginScreen = () => {
     return (
         <>
             <AppWrapper hideSidebar>
+            {errorMessage && (
+                                    <Alert variant="danger">{errorMessage}</Alert>
+                                )}
                 <Container fluid>
                 <div className="form-container">
                     <Row>

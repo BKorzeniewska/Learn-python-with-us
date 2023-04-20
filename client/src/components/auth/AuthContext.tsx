@@ -7,17 +7,23 @@ const setTokenCallback = (token: string | null) => {
 
   axios.defaults.headers.common['Authorization'] = token;
   
-  if (token) {
+  if (token !== null) {
     sessionStorage.setItem('token', token);
   } else {
     sessionStorage.removeItem('token');
   }
 }
+const isLoggedInCallback = (): boolean => {
+  return sessionStorage.getItem('token') !== null;
+};
 
 export const AuthContext = React.createContext<{
+  isLoggedIn: () => boolean
   setToken: (token: string | null) => void
+  
 }>({
   setToken: setTokenCallback,
+  isLoggedIn: isLoggedInCallback,
 });
 
 
@@ -30,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ setToken: setTokenCallback }}>
+    <AuthContext.Provider value={{ setToken: setTokenCallback, isLoggedIn: isLoggedInCallback }}>
       {children}
     </AuthContext.Provider>
   );
