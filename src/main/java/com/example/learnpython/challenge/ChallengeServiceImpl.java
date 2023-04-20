@@ -43,4 +43,10 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
         return challengeMapper.toCreateChallengeResponse(challenge);
     }
+
+    @Override
+    public List<ChallengeResponse> getChallenges() {
+        var challenges = challengeRepository.findAll();
+        return challenges.stream().map(challengeMapper::toChallengeResponse).toList();
+    }
 }
