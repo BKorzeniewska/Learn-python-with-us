@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './side-bar.css'
 import { ThemeContext } from '../../themes/ThemeProvider';
 
-export const Sidebar = (props: {width: number}) => {
+export const Sidebar = (props: {width: number, children: React.ReactNode}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdownToggle = () => {

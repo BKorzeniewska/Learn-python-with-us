@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,4 +29,19 @@ public class ArticleController {
         var articles = articleService.getArticlesByChapter(chapterId);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
+
+    @GetMapping("/timestamp/{date}")
+    public ResponseEntity<List<ArticleResponse>> getArticleByDate(@PathVariable("date") LocalDate date) {
+        var articles = articleService.getByDate(date);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+    @GetMapping("/title/{titleFragment}")
+    public ResponseEntity<List<ArticleResponse>> getArticleByTitleContaining(@PathVariable("titleFragment") String titleFragment) {
+        var articles = articleService.getByTitleContaining(titleFragment);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+
+    //TODO add getArticleByDateBetween
 }
