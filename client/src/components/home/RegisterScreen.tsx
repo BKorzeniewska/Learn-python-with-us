@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import { AuthContext } from "../auth/AuthContext";
 import { register, registerRequest } from "../common/apis/login";
@@ -9,6 +10,7 @@ import "./lr-forms.css";
 
 export const RegisterScreen = () => {
     const { setToken } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
@@ -92,8 +94,12 @@ export const RegisterScreen = () => {
                                     <Form.Control type="password" />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Button variant="primary" type="submit" className="w-100 mb-1">
+                                    <Button variant="primary" type="submit" className="w-100 mb-3">
                                         Zarejestruj
+                                    </Button>
+                                    Masz już konto?
+                                    <Button variant="secondary" type="submit" className="w-100 mb-1" onClick={()=>navigate("/login")}>
+                                        Zaloguj się
                                     </Button>
                                 </Form.Group>
 
