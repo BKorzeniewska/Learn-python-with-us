@@ -34,7 +34,7 @@ export const MainNavbar = (props : Props) => {
   }
 
   return (
-    <Navbar data-theme={theme}>
+    <Navbar data-theme={theme} sticky="top" expand="lg">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
       <Container>
       <Nav className="ml-auto">
