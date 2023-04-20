@@ -9,7 +9,6 @@ type APIError<T=string> = {
     errorMessage: string;
 }
 
-
 export async function Get<T, E=APIError>(url: string): Promise<Result<T, AxiosError<E>>> {
     const response = axios.get<T>(url,
         {

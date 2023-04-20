@@ -1,8 +1,7 @@
 
 import { Post } from "../axiosFetch";
 import { Result } from "../poliTypes";
-
-const baseUrl = "http://localhost:8080";
+import { baseUrl } from "./common";
 
 export type authenticateRequest = {
     email: string;
