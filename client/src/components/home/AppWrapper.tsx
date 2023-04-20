@@ -30,7 +30,9 @@ export const AppWrapper = (props: AppProps) => {
         <Row noGutters>
           <Col xs={12} md="auto" className="p-0">
             <div id="side">
-              <Sidebar width={sidebarWidth} />
+              <Sidebar width={sidebarWidth} >
+                
+              </Sidebar>
             </div>
           </Col>
           <Col xs={12} md className="p-0 d-flex">
