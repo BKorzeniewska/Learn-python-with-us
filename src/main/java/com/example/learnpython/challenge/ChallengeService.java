@@ -1,7 +1,5 @@
 package com.example.learnpython.challenge;
 
-import com.example.learnpython.chapter.ChapterResponse;
-
 import java.util.List;
 
 public interface ChallengeService {
@@ -9,5 +7,6 @@ public interface ChallengeService {
     List<ChallengeResponse> getChallengeByName(String name);
     ChallengeResponse getChallengeById(Long challengeId);
     List<ChallengeResponse> getChallenges();
+    List<ChallengeResponse> getChallengesByArticleId(Long articleId);
 
 }

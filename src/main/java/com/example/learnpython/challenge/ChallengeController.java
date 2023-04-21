@@ -1,7 +1,5 @@
 package com.example.learnpython.challenge;
 
-import com.example.learnpython.article.ArticleResponse;
-import com.example.learnpython.chapter.ChapterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +26,13 @@ public class ChallengeController {
     }
     @GetMapping("/name/{nameFragment}")
     public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment) {
-        var challenge = challengeService.getChallengeByName(nameFragment);
-        return new ResponseEntity<>(challenge, HttpStatus.OK);
+        var challenges = challengeService.getChallengeByName(nameFragment);
+        return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
 
+    @GetMapping("/article/{articleId}")
+    public ResponseEntity<List<ChallengeResponse>> getChallengeByArticleId(@PathVariable("articleId") Long articleId) {
+        var challenges = challengeService.getChallengesByArticleId(articleId);
+        return new ResponseEntity<>(challenges, HttpStatus.OK);
+    }
 }

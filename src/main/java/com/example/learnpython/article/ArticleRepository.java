@@ -13,11 +13,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Optional<List<Article>> findByChapterId(Long chapterId);
 
-    @Query("SELECT a FROM Article a WHERE a.title LIKE %:titleFragment%")
+    @Query("select a from Article a where a.title like %:titleFragment%")
     Optional<List<Article>> findByTitleContaining(String titleFragment);
-    @Query("SELECT a FROM Article a WHERE a.creationDate BETWEEN :startDate AND :endDate")
+    @Query("select a from Article a where a.creationDate between :startDate and :endDate")
     Optional<List<Article>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
-    @Query("SELECT a FROM Article a WHERE a.creationDate=:date")
+    @Query("select a from Article a where a.creationDate=:date")
     Optional<List<Article>> findByCreationDate(LocalDate date);
 
 }

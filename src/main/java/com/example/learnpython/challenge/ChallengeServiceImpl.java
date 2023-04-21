@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
-import java.util.List;
+
 
 @Log4j2
 @Service
@@ -26,7 +26,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public List<ChallengeResponse> getChallengeByName(String name) {
         var challenges = challengeRepository
-                .findChallengeByNameContaining(name)
+                .findByNameContaining(name)
                 .orElseThrow(() -> new ChallengeNotFoundException(
                         "Challenges with provided name not found", "CHALLENGES_NOT_FOUND"));
 
@@ -48,5 +48,17 @@ public class ChallengeServiceImpl implements ChallengeService {
     public List<ChallengeResponse> getChallenges() {
         var challenges = challengeRepository.findAll();
         return challenges.stream().map(challengeMapper::toChallengeResponse).toList();
+    }
+
+    @Override
+    public List<ChallengeResponse> getChallengesByArticleId(Long articleId) {
+        var challenges = challengeRepository
+                .findByArticleId(articleId)
+                .orElseThrow(() -> new ChallengeNotFoundException(
+                        "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
+
+        return challenges.stream()
+                .map(challengeMapper::toCreateChallengeResponse)
+                .toList();
     }
 }

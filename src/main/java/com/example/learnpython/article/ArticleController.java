@@ -1,6 +1,5 @@
 package com.example.learnpython.article;
 
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +31,13 @@ public class ArticleController {
 
     @GetMapping("/timestamp/{date}")
     public ResponseEntity<List<ArticleResponse>> getArticleByDate(@PathVariable("date") LocalDate date) {
-        var articles = articleService.getByDate(date);
+        var articles = articleService.getArticlesByDate(date);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
     @GetMapping("/title/{titleFragment}")
     public ResponseEntity<List<ArticleResponse>> getArticleByTitleContaining(@PathVariable("titleFragment") String titleFragment) {
-        var articles = articleService.getByTitleContaining(titleFragment);
+        var articles = articleService.getArticlesByTitleContaining(titleFragment);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
