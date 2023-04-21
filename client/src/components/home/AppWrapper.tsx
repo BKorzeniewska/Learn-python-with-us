@@ -15,7 +15,7 @@ export const AppWrapper = (props: AppProps) => {
   const SIDEBAR_WIDTH: number = 300;
 
   const { theme } = useContext(ThemeContext);
-  const [hideSidebar, setHideSidebar] = useState(props.hideSidebar == true ? true : false);
+  const [hideSidebar, setHideSidebar] = useState(props.hideSidebar === undefined || props.hideSidebar == true ? true : false);
   const [sidebarWidth, setSidebarWidth] = useState(hideSidebar ? 0 : SIDEBAR_WIDTH); // Set the initial width of the sidebar
 
   const toggleSidebar = () => {
@@ -29,11 +29,10 @@ export const AppWrapper = (props: AppProps) => {
       <Container fluid>
         <Row noGutters>
           <Col xs={12} md="auto" className="p-0">
-            <div
-              className="sidebar"
-              style={{ width: `${sidebarWidth}px` }} // Add the transition property to animate the width change
-            >
-              <Sidebar />
+            <div id="side">
+              <Sidebar width={sidebarWidth} >
+                
+              </Sidebar>
             </div>
           </Col>
           <Col xs={12} md className="p-0 d-flex">

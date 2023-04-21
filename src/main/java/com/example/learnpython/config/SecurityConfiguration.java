@@ -38,7 +38,7 @@ public class SecurityConfiguration {
         http
           .cors().and().csrf().disable()
           .authorizeHttpRequests()
-          .requestMatchers("api/v1/**")
+          .requestMatchers("/**")
             .permitAll()
           .anyRequest()
             .authenticated()
@@ -60,7 +60,7 @@ public class SecurityConfiguration {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(Collections.singletonList("https://localhost:3000"));
+        config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
