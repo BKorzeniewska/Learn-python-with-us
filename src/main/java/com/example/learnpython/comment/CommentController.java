@@ -24,4 +24,10 @@ public class CommentController {
         var comments = commentService.getCommentsByArticleId(articleId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CommentResponse>> getCommentsByUserId(@PathVariable("userId") Long userId) {
+        var comments = commentService.getCommentsByUserId(userId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
 }

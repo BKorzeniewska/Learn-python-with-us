@@ -4,7 +4,6 @@ import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.article.exception.InvalidDateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -57,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponse> getByTitleContaining(String titleFragment) {
+    public List<ArticleResponse> getArticlesByTitleContaining(String titleFragment) {
         var articles = articleRepository
                 .findByTitleContaining(titleFragment)
                 .orElseThrow(() -> new ArticleNotFoundException(
@@ -69,12 +68,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponse> getByDateBetween(LocalDate startDate, LocalDate endDate) {
+    public List<ArticleResponse> getArticlesByDateBetween(LocalDate startDate, LocalDate endDate) {
         if(startDate.isAfter(endDate)) throw new InvalidDateException("End data is earlier than start date","INVALID_DATE");
         var articles = articleRepository
                 .findByCreationDateBetween(startDate,endDate)
                 .orElseThrow(() -> new ArticleNotFoundException(
-                        "Articles with provided timestamp between"+startDate.toString()+" and "+ endDate.toString()+"  not found", "ARTICLES_NOT_FOUND"));
+                        "Articles with provided timestamp between"+startDate +" and "+ endDate +"  not found", "ARTICLES_NOT_FOUND"));
 
         return articles.stream()
                 .map(articleMapper::toCreateArticleResponse)
@@ -82,7 +81,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleResponse> getByDate(LocalDate date) {
+    public List<ArticleResponse> getArticlesByDate(LocalDate date) {
         var articles = articleRepository
                 .findByCreationDate(date)
                 .orElseThrow(() -> new ArticleNotFoundException(
