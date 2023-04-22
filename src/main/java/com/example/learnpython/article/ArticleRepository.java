@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
+    @Query("SELECT a FROM Article a JOIN Chapter c ON (a.chapter.id = c.id) WHERE c.id = ?1")
     Optional<List<Article>> findByChapterId(Long chapterId);
 
     @Query("select a from Article a where a.title like %:titleFragment%")

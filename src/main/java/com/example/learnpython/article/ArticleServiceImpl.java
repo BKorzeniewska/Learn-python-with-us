@@ -1,9 +1,12 @@
 package com.example.learnpython.article;
 
 import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.chapter.ChapterRepository;
+import com.example.learnpython.user.User;
 import com.example.learnpython.article.exception.InvalidDateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +18,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ChapterRepository chapterRepository;
     private final ArticleMapper articleMapper;
 
 
@@ -24,14 +28,31 @@ public class ArticleServiceImpl implements ArticleService {
         //validate user
 
         //validate chapter
+        var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
+                () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
 
-        var article = articleMapper.toArticle(request);
+        //var article = articleMapper.toArticle(request);
 
-        log.info("article: {}", article);
+        var article = Article.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .chapter(chapter)
+                .user(User.builder().id(request.getUserId()).build())
+                .build();
 
         articleRepository.save(article);
 
-        return articleMapper.toCreateArticleResponse(article);
+        log.info("article: {}", article);
+
+        var articleResponse = ArticleResponse.builder()
+                .id(article.getId())
+                .chapterId(chapter.getId())
+                .userId(request.getUserId())
+                .title(request.getTitle())
+                .content(request.getContent())
+                .build();
+
+        return articleResponse;
     }
 
     @Override

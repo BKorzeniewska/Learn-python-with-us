@@ -34,7 +34,7 @@ public class Article {
     private LocalDate creationDate ;
 
     @ManyToOne
-    @JoinColumn(name="CHAPTER_ID")
+    @JoinColumn(name="CHAPTER_ID", nullable = false)
     private Chapter chapter;
 
     @ManyToOne
