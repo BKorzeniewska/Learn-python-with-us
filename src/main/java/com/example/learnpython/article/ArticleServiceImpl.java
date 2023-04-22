@@ -18,6 +18,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ChapterRepository chapterRepository;
     private final ArticleMapper articleMapper;
 
 
@@ -30,7 +31,7 @@ public class ArticleServiceImpl implements ArticleService {
         var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
                 () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
 
-        var article = articleMapper.toArticle(request);
+        //var article = articleMapper.toArticle(request);
 
         var article = Article.builder()
                 .title(request.getTitle())
