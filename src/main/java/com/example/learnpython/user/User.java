@@ -36,6 +36,11 @@ public class User implements UserDetails {
     private String nickname;
     @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "LEVEL")
+    private Integer level;
+    @Column(name = "EXP")
+    private Integer exp;
+
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user")

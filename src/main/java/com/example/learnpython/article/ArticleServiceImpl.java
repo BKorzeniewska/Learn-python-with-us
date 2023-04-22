@@ -3,11 +3,13 @@ package com.example.learnpython.article;
 import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.chapter.ChapterRepository;
 import com.example.learnpython.user.User;
+import com.example.learnpython.article.exception.InvalidDateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,7 +18,6 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ChapterRepository chapterRepository;
     private final ArticleMapper articleMapper;
 
 
@@ -29,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
         var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
                 () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
 
+        var article = articleMapper.toArticle(request);
 
         var article = Article.builder()
                 .title(request.getTitle())
@@ -59,10 +61,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
 
-        //var articles = articleRepository.findAll().stream().filter(article -> article.getChapter().getId().equals(chapterId)).toList();
-
-        log.info("articles: {}", articles);
-
         return articles.stream()
                 .map(articleMapper::toCreateArticleResponse)
                 .toList();
@@ -75,5 +73,42 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
         return articleMapper.toCreateArticleResponse(article);
+    }
+
+    @Override
+    public List<ArticleResponse> getArticlesByTitleContaining(String titleFragment) {
+        var articles = articleRepository
+                .findByTitleContaining(titleFragment)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided title's fragment not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ArticleResponse> getArticlesByDateBetween(LocalDate startDate, LocalDate endDate) {
+        if(startDate.isAfter(endDate)) throw new InvalidDateException("End data is earlier than start date","INVALID_DATE");
+        var articles = articleRepository
+                .findByCreationDateBetween(startDate,endDate)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided timestamp between"+startDate +" and "+ endDate +"  not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ArticleResponse> getArticlesByDate(LocalDate date) {
+        var articles = articleRepository
+                .findByCreationDate(date)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided date not found", "ARTICLES_NOT_FOUND"));
+
+        return articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
     }
 }

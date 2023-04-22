@@ -1,37 +1,47 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 type ThemeType = 'light' | 'dark';
 
 interface ThemeContextProps {
-    theme: ThemeType;
-    toggleTheme: () => void;
+  theme: ThemeType;
+  toggleTheme: () => void;
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
-    theme: 'light',
-    toggleTheme: () => { },
+  theme: 'light',
+  toggleTheme: () => {},
 });
 
 interface ThemeProviderProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState<ThemeType>('light');
+  const [theme, setTheme] = useState<ThemeType>(() => {
+    const savedTheme = window.sessionStorage.getItem('theme');
+    return (savedTheme as ThemeType) || 'light';
+  });
 
-    const toggleTheme = () => {
-        setTheme(theme === 'light' ? 'dark' : 'light');
-    };
+  useEffect(() => {
+    window.sessionStorage.setItem('theme', theme);
+  }, [theme]);
 
-    const contextValue: ThemeContextProps = {
-        theme,
-        toggleTheme,
-    };
+  const toggleTheme = () => {
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+      window.sessionStorage.setItem('theme', newTheme);
+      return newTheme;
+    });
+  };
 
-    return (
-        <ThemeContext.Provider value={contextValue}>
-            {children}
-        </ThemeContext.Provider>
-    );
+  const contextValue: ThemeContextProps = {
+    theme,
+    toggleTheme,
+  };
+
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };

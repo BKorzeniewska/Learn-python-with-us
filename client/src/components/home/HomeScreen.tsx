@@ -1,20 +1,20 @@
 import React, { useContext } from "react";
 import {
   Container,
-  Navbar,
-  Nav,
   Button,
   Row,
   ButtonGroup,
   Card,
   Form,
   InputGroup,
-  Col,
 } from "react-bootstrap";
-import { MainNavbar } from "../common/layout/MainNavbar";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
-import { Sidebar } from "../common/layout/Sidebar";
+
+import { markdownTest } from "./markdownTest";
+import { AppWrapper } from "./AppWrapper";
+import { AuthContext } from "../auth/AuthContext";
+import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";
 
 type Props = {};
 
@@ -23,14 +23,7 @@ const HomeScreen = (props: Props) => {
 
   return (
     <>
-      <MainNavbar />
-      <Container fluid>
-      <Row noGutters>
-        <Col className="col-2 p-0">
-      <Sidebar/>
-      </Col>
-      <Col className="col-10 p-0">
-      <div id="App" data-theme={theme}>
+      <AppWrapper>
         <Container className="pt-3">
           <Row>
             <div className="w25 my-3">
@@ -146,11 +139,14 @@ const HomeScreen = (props: Props) => {
               </>
             </div>
           </Row>
+
+          <Row>
+            <div className="w25 my-3">
+              <MarkDownRenderer content={markdownTest}/>
+            </div>
+          </Row>
         </Container>
-      </div>
-      </Col>
-      </Row>
-      </Container>
+      </AppWrapper>
     </>
   );
 };

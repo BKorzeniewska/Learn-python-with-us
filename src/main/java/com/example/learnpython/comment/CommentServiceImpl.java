@@ -37,4 +37,12 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new CommentNotFoundException("Comments not found", "COMMENTS_NOT_FOUND"));
         return comments.stream().map(commentMapper::toCommentResponse).toList();
     }
+    @Override
+    public List<CommentResponse> getCommentsByUserId(Long userId) {
+        var comments = commentRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new CommentNotFoundException("Comments not found", "COMMENTS_NOT_FOUND"));
+        return comments.stream().map(commentMapper::toCommentResponse).toList();
+
+    }
 }
