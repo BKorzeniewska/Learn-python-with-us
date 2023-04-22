@@ -5,18 +5,22 @@ import { LoginScreen } from './components/home/LoginScreen';
 import { RegisterScreen } from './components/home/RegisterScreen';
 import { AuthProvider } from './components/auth/AuthContext';
 import { AcrticleScreen } from './components/home/ArticleScreen';
+import { ErrorProvider } from './components/home/ErrorContext';
+
 
 function App() {
   return (
     <AuthProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomeScreen />}></Route>
-        <Route path="/login" element={<LoginScreen />}></Route>
-        <Route path="/register" element={<RegisterScreen />}></Route>
-        <Route path="/article/:articleId" element={<AcrticleScreen/>}></Route>
-      </Routes>
-    </BrowserRouter>
+      <ErrorProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomeScreen />}></Route>
+            <Route path="/login" element={<LoginScreen />}></Route>
+            <Route path="/register" element={<RegisterScreen />}></Route>
+            <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </ErrorProvider>
     </AuthProvider>
   );
 }

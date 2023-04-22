@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useContext, useState, useEffect } from 'react';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { ReactNode } from 'react';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { MainNavbar } from '../common/layout/MainNavbar';
 import { Sidebar } from '../common/layout/Sidebar';
+import { useError } from './ErrorContext';
 
 export type AppProps = {
   children: ReactNode;
@@ -17,11 +18,14 @@ export const AppWrapper = (props: AppProps) => {
   const { theme } = useContext(ThemeContext);
   const [hideSidebar, setHideSidebar] = useState(props.hideSidebar === undefined || props.hideSidebar == true ? true : false);
   const [sidebarWidth, setSidebarWidth] = useState(hideSidebar ? 0 : SIDEBAR_WIDTH); // Set the initial width of the sidebar
+  const { errorMessage, setError } = useError();
 
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
     setSidebarWidth(hideSidebar ? SIDEBAR_WIDTH : 0); // Set the width of the sidebar based on the hideSidebar state
+    setError("sdasdasda")
   };
+
 
   return (
     <>
@@ -37,6 +41,9 @@ export const AppWrapper = (props: AppProps) => {
           </Col>
           <Col xs={12} md className="p-0 d-flex">
             <div id="App" data-theme={theme} className="flex-grow-1">
+              {errorMessage && (
+                <Alert variant="danger" key={errorMessage}>{errorMessage}</Alert>
+              )}
               <div className="content">
                 {props.children}
               </div>

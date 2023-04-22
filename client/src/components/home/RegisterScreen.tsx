@@ -7,17 +7,21 @@ import { AuthContext } from "../auth/AuthContext";
 import { register, registerRequest } from "../common/apis/login";
 import { AppWrapper } from "./AppWrapper";
 import "./lr-forms.css";
+import { useError } from "./ErrorContext";
 
 export const RegisterScreen = () => {
     const { setToken } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { errorMessage, setError } = useError();
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
         response.then((data) => {
             if(data.isOk) {
                 setToken(data.value.token)
-            } else {          
+                navigate("/")
+            } else {   
+                setError("Nie udało się założyć konta!")       
             }
         });
         // print response
