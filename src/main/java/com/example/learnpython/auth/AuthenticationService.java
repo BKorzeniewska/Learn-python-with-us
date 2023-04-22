@@ -8,6 +8,7 @@ import com.example.learnpython.token.TokenType;
 import com.example.learnpython.user.Role;
 import com.example.learnpython.user.User;
 import com.example.learnpython.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,13 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
+
+      if (repository.findByEmail(request.getEmail()).isPresent()) {
+          throw new IllegalArgumentException("Email already exists");
+      }
+
       var user = User.builder()
           .firstname(request.getFirstname())
           .lastname(request.getLastname())
@@ -41,6 +48,7 @@ public class AuthenticationService {
           .build();
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(

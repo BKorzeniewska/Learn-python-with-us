@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Collections;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -24,43 +26,36 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
 
-
-    /**
-     * Aktualnie jest skonfigurowany celowo aby przepuszał każdy request
-     * @param http
-     * @return
-     * @throws Exception
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
         http
-          .cors().and().csrf().disable()
-          .authorizeHttpRequests()
-          .requestMatchers("api/v1/**")
-            .permitAll()
-          .anyRequest()
-            .authenticated()
-          .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-          .and()
-          .authenticationProvider(authenticationProvider)
-          .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-          .logout()
-          .logoutUrl("/api/v1/auth/logout")
-          .addLogoutHandler(logoutHandler)
-          .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
+                .cors().and().csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/api/v1/auth/logout")
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
 
-      return http.build();
+        return http.build();
     }
 
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

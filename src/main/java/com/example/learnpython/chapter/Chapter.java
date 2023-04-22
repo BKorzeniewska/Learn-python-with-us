@@ -24,6 +24,6 @@ public class Chapter {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "chapter")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chapter", cascade = CascadeType.ALL)
     private List<Article> articles;
 }

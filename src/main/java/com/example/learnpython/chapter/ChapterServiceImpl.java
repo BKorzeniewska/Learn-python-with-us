@@ -1,14 +1,18 @@
 package com.example.learnpython.chapter;
 
+import com.example.learnpython.article.MenuArticleResponse;
 import com.example.learnpython.chapter.exception.ChapterIllegalStateException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ChapterServiceImpl implements ChapterService {
     private final ChapterRepository chapterRepository;
     private final ChapterMapper chapterMapper;
@@ -26,6 +30,27 @@ public class ChapterServiceImpl implements ChapterService {
 
         chapterRepository.save(chapter);
         return chapterMapper.toChapterResponse(chapter);
+    }
+
+    @Override
+    public List<MenuChapterResponse> getMenuChapters() {
+        var menuChapters = chapterRepository.findAll();
+        log.info("menuChapters: {}", menuChapters);
+
+        //use mapper
+        var menuChapterResponses = menuChapters.stream()
+                .filter(Objects::nonNull)
+                .map(chapter ->
+                        MenuChapterResponse.builder()
+                                .id(chapter.getId())
+                                .articles(chapter.getArticles().stream().map(article -> MenuArticleResponse.builder()
+                                        .title(article.getTitle())
+                                        .id(article.getId())
+                                        .build()).toList())
+                                .name(chapter.getName())
+                                .build()).toList();
+
+        return menuChapterResponses;
     }
 
     @Override

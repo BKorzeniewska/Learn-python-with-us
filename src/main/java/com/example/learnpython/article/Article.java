@@ -30,7 +30,7 @@ public class Article {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="CHAPTER_ID")
+    @JoinColumn(name="CHAPTER_ID", nullable = false)
     private Chapter chapter;
 
     @ManyToOne

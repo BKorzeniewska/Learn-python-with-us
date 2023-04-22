@@ -3,13 +3,11 @@ package com.example.learnpython.chapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 @RequestMapping("/api/v1/chapters")
 @RequiredArgsConstructor
 public class ChapterController {
@@ -21,9 +19,15 @@ public class ChapterController {
         return new ResponseEntity<>(chapters, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ChapterResponse> createChapter(@RequestParam String chapterName) {
+    @PostMapping("/create/{chapterName}")
+    public ResponseEntity<ChapterResponse> createChapter(@PathVariable("chapterName") String chapterName) {
         var chapter = chapterService.createChapter(chapterName);
         return new ResponseEntity<>(chapter, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/menu")
+    public ResponseEntity<List<MenuChapterResponse>> getMenuChapters() {
+        var chapters = chapterService.getMenuChapters();
+        return new ResponseEntity<>(chapters, HttpStatus.OK);
     }
 }
