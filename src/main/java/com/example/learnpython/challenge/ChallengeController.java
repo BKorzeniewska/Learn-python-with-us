@@ -19,20 +19,20 @@ public class ChallengeController {
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ChallengeResponse> getChallengeById(@PathVariable("id") Long challengeId) {
         var challenge = challengeService.getChallengeById(challengeId);
         return new ResponseEntity<>(challenge, HttpStatus.OK);
-    }
-    @GetMapping("/name/{nameFragment}")
-    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment) {
-        var challenges = challengeService.getChallengeByName(nameFragment);
-        return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
 
     @GetMapping("/article/{articleId}")
     public ResponseEntity<List<ChallengeResponse>> getChallengeByArticleId(@PathVariable("articleId") Long articleId) {
         var challenges = challengeService.getChallengesByArticleId(articleId);
+        return new ResponseEntity<>(challenges, HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{nameFragment}")
+    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment) {
+        var challenges = challengeService.getChallengeByName(nameFragment);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
 }
