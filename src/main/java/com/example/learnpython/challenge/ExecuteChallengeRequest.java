@@ -1,2 +1,7 @@
-package com.example.learnpython.challenge;public record ExecuteChallangeRequest() {
+package com.example.learnpython.challenge;
+
+public record ExecuteChallengeRequest(
+        long challengeId,
+        String answer
+) {
 }

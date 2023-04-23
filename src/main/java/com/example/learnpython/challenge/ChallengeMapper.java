@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ChallengeMapper {
-    Challenge toChallenge(CreateChallengeRequest createChallengeRequest);
+    /*Challenge toChallenge(CreateChallengeRequest createChallengeRequest);
     ChallengeResponse toCreateChallengeResponse(Challenge challenge);
-    ChallengeResponse toChallengeResponse(Challenge challenge);
+    ChallengeResponse toChallengeResponse(Challenge challenge);*/
 }
