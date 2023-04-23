@@ -50,6 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .userId(request.getUserId())
                 .title(request.getTitle())
                 .content(request.getContent())
+                .date(LocalDate.now())
                 .build();
 
         return articleResponse;
