@@ -1,2 +1,12 @@
-package com.example.learnpython.challenge;public class ContentJson {
+package com.example.learnpython.challenge;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ContentJson {
+    protected String correctAnswer;
 }

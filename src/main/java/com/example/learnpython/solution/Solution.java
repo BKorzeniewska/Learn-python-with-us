@@ -1,6 +1,8 @@
 package com.example.learnpython.solution;
 
 
+import com.example.learnpython.challenge.Challenge;
+import com.example.learnpython.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +28,11 @@ public class Solution {
     @Column(name = "ANSWER")
     private String answer;
 
-    private Long userId;
-    private Long challengeId;
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="CHALLENGE_ID")
+    private Challenge challenge;
 }
