@@ -2,6 +2,7 @@ package com.example.learnpython.user;
 
 import com.example.learnpython.article.Article;
 import com.example.learnpython.comment.Comment;
+import com.example.learnpython.solution.Solution;
 import com.example.learnpython.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,9 +38,9 @@ public class User implements UserDetails {
     @Column(name = "PASSWORD")
     private String password;
     @Column(name = "LEVEL")
-    private Integer level;
+    private int level = 0;
     @Column(name = "EXP")
-    private Integer exp;
+    private long exp = 0L;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -48,6 +49,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Article> articles;
+
+    @OneToMany(mappedBy = "user")
+    private List<Solution> solutions;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;

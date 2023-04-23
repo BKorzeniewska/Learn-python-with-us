@@ -7,11 +7,14 @@ import com.example.learnpython.token.TokenRepository;
 import com.example.learnpython.token.TokenType;
 import com.example.learnpython.user.Role;
 import com.example.learnpython.user.User;
+import com.example.learnpython.user.UserEmailExistsException;
 import com.example.learnpython.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +31,10 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
       if (repository.findByEmail(request.getEmail()).isPresent()) {
-          throw new IllegalArgumentException("Email already exists");
+          throw new UserEmailExistsException(
+                  "User with provided email already exists",
+                  "USER_EMAIL_EXISTS",
+                  HttpStatus.BAD_REQUEST);
       }
 
       var user = User.builder()
@@ -36,6 +42,7 @@ public class AuthenticationService {
           .lastname(request.getLastname())
           .email(request.getEmail())
           .password(passwordEncoder.encode(request.getPassword()))
+          .nickname(request.getNickname())
           .level(0)
           .exp(0)
           .role(Role.USER)
@@ -59,7 +66,8 @@ public class AuthenticationService {
           )
       );
       var user = repository.findByEmail(request.getEmail())
-          .orElseThrow();
+          .orElseThrow(() -> new UsernameNotFoundException("User with provided email not found"));
+
       var jwtToken = jwtService.generateToken(user);
       revokeAllUserTokens(user);
       saveUserToken(user, jwtToken);
