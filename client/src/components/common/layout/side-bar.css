@@ -69,3 +69,17 @@
   pointer-events: none;
   display: none;
 }
+
+.inner-sidebar{
+  margin-left: 1rem;
+}
+
+.arrow{
+  transition: transform 0.3s ease;
+  margin-left:auto;
+  /* transform: scaleY(2); */
+  /* display: inline-block; */
+  float:right;
+  transform-origin: center;
+  width: auto;
+}
