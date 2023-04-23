@@ -22,7 +22,7 @@ export const Sidebar = (props: {width: number, children: React.ReactNode}) => {
         <Nav.Link className="sidebar-item" href="#">Link 2</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link onClick={handleDropdownToggle}>Dropdown</Nav.Link>
+        <Nav.Link onClick={handleDropdownToggle} className="sidebar-item">Dropdown</Nav.Link>
         {isDropdownOpen && (
           <>
             <Nav.Link className="sidebar-item" href="#">Action 1</Nav.Link>

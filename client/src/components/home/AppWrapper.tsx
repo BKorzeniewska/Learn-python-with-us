@@ -5,6 +5,7 @@ import { ThemeContext } from '../themes/ThemeProvider';
 import { MainNavbar } from '../common/layout/MainNavbar';
 import { Sidebar } from '../common/layout/Sidebar';
 import { useError } from './ErrorContext';
+import "./error.css";
 
 export type AppProps = {
   children: ReactNode;
@@ -23,7 +24,6 @@ export const AppWrapper = (props: AppProps) => {
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
     setSidebarWidth(hideSidebar ? SIDEBAR_WIDTH : 0); // Set the width of the sidebar based on the hideSidebar state
-    setError("sdasdasda")
   };
 
 
@@ -42,7 +42,7 @@ export const AppWrapper = (props: AppProps) => {
           <Col xs={12} md className="p-0 d-flex">
             <div id="App" data-theme={theme} className="flex-grow-1">
               {errorMessage && (
-                <Alert variant="danger" key={errorMessage}>{errorMessage}</Alert>
+                <Alert className="wrapper-alert" variant="danger" key={errorMessage}>{errorMessage}</Alert>
               )}
               <div className="content">
                 {props.children}

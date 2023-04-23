@@ -29,10 +29,6 @@ export const LoginScreen = () => {
                 setToken(data.value.token);
                 navigate("/");
             } else {    
-                // setErrorMessage("Nie udało się zalogować. Spróbuj ponownie.");
-                // setTimeout(() => {
-                //     setErrorMessage(null);
-                //   }, 2000);
                 setError('Nie udało się zalogować. Spróbuj ponownie.');
             }
 

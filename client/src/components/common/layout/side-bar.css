@@ -7,8 +7,9 @@
 
 .sidebar-item {
   border-radius: 10px;
-  border-style: solid;
+  border-style: none;
   border-width: 1px;
+  background-color: #afafaf;
   margin: 7px;
 }
 
