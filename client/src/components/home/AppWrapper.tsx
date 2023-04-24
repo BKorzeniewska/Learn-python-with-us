@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { MainNavbar } from '../common/layout/MainNavbar';
 import { Sidebar } from '../common/layout/Sidebar';
-import { useError } from './ErrorContext';
 import "./error.css";
 
 export type AppProps = {
@@ -19,7 +18,6 @@ export const AppWrapper = (props: AppProps) => {
   const { theme } = useContext(ThemeContext);
   const [hideSidebar, setHideSidebar] = useState(props.hideSidebar === undefined || props.hideSidebar == true ? true : false);
   const [sidebarWidth, setSidebarWidth] = useState(hideSidebar ? 0 : SIDEBAR_WIDTH); // Set the initial width of the sidebar
-  const { errorMessage, setError } = useError();
 
   const toggleSidebar = () => {
     setHideSidebar(!hideSidebar);
@@ -35,15 +33,12 @@ export const AppWrapper = (props: AppProps) => {
           <Col xs={12} md="auto" className="p-0">
             <div id="side">
               <Sidebar width={sidebarWidth} >
-                
+
               </Sidebar>
             </div>
           </Col>
           <Col xs={12} md className="p-0 d-flex">
             <div id="App" data-theme={theme} className="flex-grow-1">
-              {errorMessage && (
-                <Alert className="wrapper-alert" variant="danger" key={errorMessage}>{errorMessage}</Alert>
-              )}
               <div className="content">
                 {props.children}
               </div>

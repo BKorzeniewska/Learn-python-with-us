@@ -42,7 +42,7 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
   }
 
   const [result, setResult] = useState<ArticleMenu[]>();
-  const { errorMessage, setError } = useError();
+  const { errorMessages, setError } = useError();
 
   const location = useLocation();
   useEffect(() => {

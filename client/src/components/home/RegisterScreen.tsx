@@ -12,7 +12,7 @@ import { useError } from "./ErrorContext";
 export const RegisterScreen = () => {
     const { setToken } = useContext(AuthContext);
     const navigate = useNavigate();
-    const { errorMessage, setError } = useError();
+    const { errorMessages, setError } = useError();
 
     const handleSubmit = (e: registerRequest) => {
         const response = register(e);
