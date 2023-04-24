@@ -13,25 +13,21 @@
 }
 /* dark theme for sidebar item */
 [data-theme="dark"] .sidebar-item {
-  background-color: hwb(0 36% 64%);
+  background-color: hwb(0 32% 68%);
 }
 /* light theme for sidebar item */
 [data-theme="light"] .sidebar-item {
-  background-color: #c7c7c7;
+  background-color: #cccccc;
 }
 
-.sidebar-item:hover {
-  background-color: #afafaf;
+[data-theme="light"] .sidebar-item:hover {
+
+  background-color: #bbbbbb;
 }
 
-[data-theme="light"].sidebar-item:hover {
+[data-theme="dark"] .sidebar-item:hover {
 
-  background-color: #333;
-}
-
-[data-theme="dark"].sidebar-item:hover {
-
-  background-color: #afafaf;
+  background-color: #636363;
 }
 
 [data-theme="light"].nav {

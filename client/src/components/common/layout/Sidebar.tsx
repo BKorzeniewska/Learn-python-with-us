@@ -73,25 +73,6 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
           </div>
         );
       })}
-      <Nav.Item>
-        <Nav.Link className="sidebar-item" href="#">Link 1</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link className="sidebar-item" href="#">Link 2</Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link onClick={handleDropdownToggle} className="sidebar-item">Dropdown</Nav.Link>
-        {isDropdownOpen && (
-          <>
-            <Nav.Link className="sidebar-item" href="#">Action 1</Nav.Link>
-            <Nav.Link className="sidebar-item" href="#">Action 2</Nav.Link>
-            <Nav.Link className="sidebar-item" href="#">Separated link</Nav.Link>
-          </>
-        )}
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link className="sidebar-item" href="#">Link 3</Nav.Link>
-      </Nav.Item>
     </Nav>
   );
 };
