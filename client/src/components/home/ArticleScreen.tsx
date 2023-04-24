@@ -68,6 +68,7 @@ export const AcrticleScreen = () => {
                                     </Col>
                                     <Col className="col-3">
                                         <Button
+                                            style={{ float: "right" }}//TODO: can casue problems
                                             variant="primary"
                                             href="/article/{}"
                                         >Następny artykuł</Button>
