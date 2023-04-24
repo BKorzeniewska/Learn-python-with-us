@@ -1,7 +1,6 @@
 
 .form-container{
     margin-top: 3rem;
-    background-color: rgba(224, 223, 223, 0.74);
     border-style:hidden;
     border-radius: 15px;
     max-width: 55rem;
@@ -9,4 +8,12 @@
     margin-right: auto ;
     padding-bottom: 2rem;
     padding-top: 1rem;
+}
+
+[data-theme="light"] .form-container{
+    background-color: #e2e2e2;
+}
+
+[data-theme="dark"] .form-container{
+    background-color: #333;
 }
