@@ -9,8 +9,19 @@
   border-radius: 10px;
   border-style: none;
   border-width: 1px;
-  background-color: #afafaf;
   margin: 7px;
+}
+/* dark theme for sidebar item */
+[data-theme="dark"] .sidebar-item {
+  background-color: hwb(0 36% 64%);
+}
+/* light theme for sidebar item */
+[data-theme="light"] .sidebar-item {
+  background-color: #c7c7c7;
+}
+
+.sidebar-item:hover {
+  background-color: #afafaf;
 }
 
 [data-theme="light"].sidebar-item:hover {
@@ -71,14 +82,12 @@
 }
 
 .inner-sidebar{
-  margin-left: 1rem;
+  margin-left: 1.5rem;
 }
 
 .arrow{
   transition: transform 0.3s ease;
   margin-left:auto;
-  /* transform: scaleY(2); */
-  /* display: inline-block; */
   float:right;
   transform-origin: center;
   width: auto;
