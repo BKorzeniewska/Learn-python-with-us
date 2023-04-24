@@ -10,6 +10,8 @@ export type Article = {
     chapterId: number;
     userId: number;
     date: string;
+    nextArticle: number,
+    previousArticle: number,
 }
 
 export type ArticleShort = {
