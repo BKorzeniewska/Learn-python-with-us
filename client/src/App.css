@@ -39,6 +39,14 @@
     --bs-btn-hover-border-color: rgba(144, 68, 220, 0) !important;
 }
 
+[data-theme="light"] .btn-secondary {
+    --bs-btn-bg: rgba(214, 213, 213, 0.644) !important;
+}
+
+[data-theme="dark"] .btn-secondary {
+    --bs-btn-bg: rgba(182, 182, 182, 0.644) !important;
+}
+
 
 [data-theme="light"]{
     --bs-emphasis-color: rgba(0, 0, 0, 1) !important;
