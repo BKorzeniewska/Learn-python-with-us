@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useContext, useState, useEffect } from 'react';
+import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { ReactNode } from 'react';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { MainNavbar } from '../common/layout/MainNavbar';
 import { Sidebar } from '../common/layout/Sidebar';
+import "./error.css";
 
 export type AppProps = {
   children: ReactNode;
@@ -23,6 +24,7 @@ export const AppWrapper = (props: AppProps) => {
     setSidebarWidth(hideSidebar ? SIDEBAR_WIDTH : 0); // Set the width of the sidebar based on the hideSidebar state
   };
 
+
   return (
     <>
       <MainNavbar toggleSidebar={toggleSidebar} />
@@ -31,7 +33,7 @@ export const AppWrapper = (props: AppProps) => {
           <Col xs={12} md="auto" className="p-0">
             <div id="side">
               <Sidebar width={sidebarWidth} >
-                
+
               </Sidebar>
             </div>
           </Col>

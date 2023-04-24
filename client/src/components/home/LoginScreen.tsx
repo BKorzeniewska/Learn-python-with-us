@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { useContext, useState } from "react";
 import axios from "axios";
+import { useError } from "./ErrorContext";
 
 
 type LoginFormData = {
@@ -16,7 +17,8 @@ type LoginFormData = {
 export const LoginScreen = () => {
     const navigate = useNavigate();
     const { setToken } = useContext(AuthContext);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const { errorMessages, setError } = useError();
+
 
 
     const handleSubmit = (e: LoginFormData) => {
@@ -27,10 +29,7 @@ export const LoginScreen = () => {
                 setToken(data.value.token);
                 navigate("/");
             } else {    
-                setErrorMessage("Nie udało się zalogować. Spróbuj ponownie.");
-                setTimeout(() => {
-                    setErrorMessage(null);
-                  }, 2000);
+                setError('Nie udało się zalogować. Spróbuj ponownie.');
             }
 
         });
@@ -44,9 +43,6 @@ export const LoginScreen = () => {
     return (
         <>
             <AppWrapper hideSidebar>
-            {errorMessage && (
-                                    <Alert variant="danger">{errorMessage}</Alert>
-                                )}
                 <Container fluid>
                 <div className="form-container">
                     <Row>

@@ -1,0 +1,15 @@
+
+.error-wrapper {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    height:97%;
+  }
+  
+  .error-alert {
+    margin-top: 0.5rem;
+  }

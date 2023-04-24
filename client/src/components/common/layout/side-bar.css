@@ -7,8 +7,9 @@
 
 .sidebar-item {
   border-radius: 10px;
-  border-style: solid;
+  border-style: none;
   border-width: 1px;
+  background-color: #afafaf;
   margin: 7px;
 }
 
@@ -67,4 +68,18 @@
   opacity: 0;
   pointer-events: none;
   display: none;
+}
+
+.inner-sidebar{
+  margin-left: 1rem;
+}
+
+.arrow{
+  transition: transform 0.3s ease;
+  margin-left:auto;
+  /* transform: scaleY(2); */
+  /* display: inline-block; */
+  float:right;
+  transform-origin: center;
+  width: auto;
 }
