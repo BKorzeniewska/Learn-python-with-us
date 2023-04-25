@@ -30,6 +30,18 @@
   background-color: #636363;
 }
 
+/* dark theme for active sidebar item */
+[data-theme="dark"] .sidebar-item.active {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+/* light theme for active sidebar item */
+[data-theme="light"] .sidebar-item.active {
+  background-color: #666666;
+  color: white;
+}
+
 [data-theme="light"].nav {
   background-color: #e2e2e2;
   --bs-nav-link-color: #000 !important;

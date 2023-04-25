@@ -10,10 +10,11 @@ import { useError } from '../../home/ErrorContext';
 type DropdownLinkProps = {
   name: string;
   children: React.ReactNode;
+  dropdown?: boolean;
 }
 
-function DropdownLink({ children, name }: DropdownLinkProps) {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+function DropdownLink({ children, name, dropdown }: DropdownLinkProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(dropdown?true:false);
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -36,6 +37,7 @@ function DropdownLink({ children, name }: DropdownLinkProps) {
 export const Sidebar = (props: { width: number, children: React.ReactNode }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const [currentArticle, setCurrentArticle] = useState<number | null>(null);
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -53,6 +55,11 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
         setError("Nie udało się załadować listy artykułów");
       }
     });
+    console.log(location.pathname.split("/"));
+    if(location.pathname.split("/")[1] === "article")
+    {
+      setCurrentArticle(parseInt(location.pathname.split("/")[2]));
+    }
   }, [location]);
 
   const { theme } = useContext(ThemeContext);
@@ -62,12 +69,9 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
       {result?.map((value) => {
         return (
           <div key={value.id}>
-            <DropdownLink name={value.name}>
+            <DropdownLink name={value.name} dropdown={value.articles.some((article) => article.id === currentArticle)} >
               {value.articles.map((article) => (
-                <Nav.Link onClick={() => navigate(`/article/${article.id}`)} className="sidebar-item inner-sidebar">{article.title}</Nav.Link>
-                // <NavDropdown.Item key={article.id} href={`#${article.id}`}>
-                //   {article.title}
-                // </NavDropdown.Item>
+                <Nav.Link onClick={() => navigate(`/article/${article.id}`)} className={`sidebar-item inner-sidebar ${article.id === currentArticle ? 'active' : ''}`}>{article.title}</Nav.Link>
               ))}
             </DropdownLink>
           </div>
