@@ -1,5 +1,7 @@
 package com.example.learnpython.comment;
 
+import com.example.learnpython.comment.model.CommentResponse;
+import com.example.learnpython.comment.model.CreateCommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

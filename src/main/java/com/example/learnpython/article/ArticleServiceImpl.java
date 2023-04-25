@@ -1,12 +1,19 @@
 package com.example.learnpython.article;
 
 import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.article.model.ArticleDTO;
+import com.example.learnpython.article.model.ArticleResponse;
+import com.example.learnpython.article.model.CreateArticleRequest;
 import com.example.learnpython.chapter.ChapterRepository;
 import com.example.learnpython.user.User;
 import com.example.learnpython.article.exception.InvalidDateException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,12 +38,11 @@ public class ArticleServiceImpl implements ArticleService {
         var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
                 () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
 
-        //var article = articleMapper.toArticle(request);
-
         var article = Article.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .chapter(chapter)
+                .creationDate(LocalDate.now())
                 .user(User.builder().id(request.getUserId()).build())
                 .build();
 
@@ -44,22 +50,42 @@ public class ArticleServiceImpl implements ArticleService {
 
         log.info("article: {}", article);
 
-        var articleResponse = ArticleResponse.builder()
-                .id(article.getId())
-                .chapterId(chapter.getId())
-                .userId(request.getUserId())
-                .title(request.getTitle())
-                .content(request.getContent())
-                .date(LocalDate.now())
-                .build();
-
-        return articleResponse;
+        return articleMapper.toCreateArticleResponse(article);
     }
 
     @Override
-    public List<ArticleResponse> getArticlesByChapter(Long chapterId) {
-        var articles = articleRepository
-                .findByChapterId(chapterId)
+    public ArticleDTO getArticlePageByChapter(final Long chapterId, final Integer pageNumber) {
+
+        final int page = pageNumber < 1 ? 0 : pageNumber -1;
+        final Pageable pageable = PageRequest.of(page, 1);
+
+        log.info("getArticlePageByChapter - start,  chapterId: {}, pageNumber: {}", chapterId, pageNumber);
+
+        final List<Article> articles = articleRepository
+                .findAllByChapterId(chapterId)
+                .orElseThrow(() -> new ArticleNotFoundException(
+                        "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
+
+        final Article pageArticle;
+        try {
+            pageArticle = articles.get(page);
+        }
+        catch (IndexOutOfBoundsException e) {
+            throw new ArticleNotFoundException("Invalid page number", "INVALID_PAGE_NUMBER");
+        }
+
+        final long previousArticleIndex = page > 0 ? articles.get(page - 1).getId() : -1;
+        final long nextArticleIndex = page < articles.size() -1 ? articles.get(page + 1).getId() : -1;
+
+        final List<ArticleResponse> articleResponse = List.of(articleMapper.toCreateArticleResponse(pageArticle));
+
+        return new ArticleDTO(new PageImpl<>(articleResponse, pageable, articles.size()), previousArticleIndex, nextArticleIndex);
+    }
+
+    @Override
+    public List<ArticleResponse> getArticlesByChapter(final Long chapterId) {
+        final List<Article> articles = articleRepository
+                .findAllByChapterId(chapterId)
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
 

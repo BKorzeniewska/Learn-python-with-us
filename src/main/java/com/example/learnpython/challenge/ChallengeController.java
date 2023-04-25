@@ -1,9 +1,9 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.challenge.model.ChallengeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

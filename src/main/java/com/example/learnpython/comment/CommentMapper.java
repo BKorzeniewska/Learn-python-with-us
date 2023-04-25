@@ -1,6 +1,8 @@
 package com.example.learnpython.comment;
 
 
+import com.example.learnpython.comment.model.CommentResponse;
+import com.example.learnpython.comment.model.CreateCommentRequest;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

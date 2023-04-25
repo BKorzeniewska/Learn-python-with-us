@@ -1,12 +1,15 @@
 package com.example.learnpython.chapter;
 
-import com.example.learnpython.article.MenuArticleResponse;
+import com.example.learnpython.article.model.MenuArticleResponse;
 import com.example.learnpython.chapter.exception.ChapterIllegalStateException;
+import com.example.learnpython.chapter.model.ChapterResponse;
+import com.example.learnpython.chapter.model.MenuChapterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,10 +46,13 @@ public class ChapterServiceImpl implements ChapterService {
                 .map(chapter ->
                         MenuChapterResponse.builder()
                                 .id(chapter.getId())
-                                .articles(chapter.getArticles().stream().map(article -> MenuArticleResponse.builder()
-                                        .title(article.getTitle())
-                                        .id(article.getId())
-                                        .build()).toList())
+                                .articles(chapter.getArticles().stream()
+                                        .map(article -> MenuArticleResponse.builder()
+                                            .title(article.getTitle())
+                                            .id(article.getId())
+                                            .build())
+                                        .sorted(Comparator.comparingLong(MenuArticleResponse::getId))
+                                        .toList())
                                 .name(chapter.getName())
                                 .build()).toList();
 

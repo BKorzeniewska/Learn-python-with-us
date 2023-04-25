@@ -1,4 +1,4 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

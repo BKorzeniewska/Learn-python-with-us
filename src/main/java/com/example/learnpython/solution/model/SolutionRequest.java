@@ -1,4 +1,4 @@
-package com.example.learnpython.solution;
+package com.example.learnpython.solution.model;
 
 
 import lombok.Builder;

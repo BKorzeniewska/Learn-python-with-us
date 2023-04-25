@@ -1,6 +1,6 @@
-package com.example.learnpython.chapter;
+package com.example.learnpython.chapter.model;
 
-import com.example.learnpython.article.MenuArticleResponse;
+import com.example.learnpython.article.model.MenuArticleResponse;
 import lombok.Builder;
 import lombok.Data;
 

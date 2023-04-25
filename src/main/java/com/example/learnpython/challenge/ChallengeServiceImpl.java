@@ -1,14 +1,14 @@
 package com.example.learnpython.challenge;
 
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
+import com.example.learnpython.challenge.model.ChallengeResponse;
+import com.example.learnpython.challenge.model.CreateChallengeRequest;
+import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
 
-import java.io.StringWriter;
 import java.util.List;
-import java.util.Objects;
 
 import lombok.extern.log4j.Log4j2;
 
