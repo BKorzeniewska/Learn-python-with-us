@@ -1,5 +1,8 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.challenge.model.ChallengeResponse;
+import com.example.learnpython.challenge.model.CreateChallengeRequest;
+
 import java.util.List;
 
 public interface ChallengeService {

@@ -1,4 +1,4 @@
-package com.example.learnpython.article;
+package com.example.learnpython.article.model;
 
 import lombok.Builder;
 import lombok.Data;

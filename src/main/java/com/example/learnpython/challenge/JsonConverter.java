@@ -1,5 +1,6 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.challenge.model.ContentJson;
 import com.google.gson.Gson;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

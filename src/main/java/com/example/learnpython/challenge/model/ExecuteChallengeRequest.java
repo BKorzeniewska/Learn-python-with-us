@@ -1,4 +1,4 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.model;
 
 public record ExecuteChallengeRequest(
         long challengeId,

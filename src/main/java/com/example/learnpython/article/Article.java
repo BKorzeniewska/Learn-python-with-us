@@ -30,8 +30,8 @@ public class Article {
     @Column(name = "CONTENT")
     private String content;
 
-    @Column(name = "CREATIONDATE")
-    private LocalDate creationDate ;
+    @Column(name = "CREATION_DATE")
+    private LocalDate creationDate;
 
     @ManyToOne
     @JoinColumn(name="CHAPTER_ID", nullable = false)

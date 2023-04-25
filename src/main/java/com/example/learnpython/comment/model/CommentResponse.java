@@ -1,4 +1,4 @@
-package com.example.learnpython.comment;
+package com.example.learnpython.comment.model;
 
 import lombok.Builder;
 import lombok.Data;

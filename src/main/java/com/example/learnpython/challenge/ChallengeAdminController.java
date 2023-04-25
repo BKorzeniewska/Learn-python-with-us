@@ -1,5 +1,7 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.challenge.model.ChallengeResponse;
+import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

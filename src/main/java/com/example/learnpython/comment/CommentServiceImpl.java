@@ -2,6 +2,8 @@ package com.example.learnpython.comment;
 
 import com.example.learnpython.comment.exception.CommentIllegalStateException;
 import com.example.learnpython.comment.exception.CommentNotFoundException;
+import com.example.learnpython.comment.model.CommentResponse;
+import com.example.learnpython.comment.model.CreateCommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,7 @@
 package com.example.learnpython.chapter;
 
+import com.example.learnpython.chapter.model.ChapterResponse;
+import com.example.learnpython.chapter.model.MenuChapterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,7 @@
 package com.example.learnpython.article;
 
+import com.example.learnpython.article.model.ArticleDTO;
+import com.example.learnpython.article.model.ArticleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,17 @@ public class ArticleController {
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
-    @GetMapping("/chapter/{chapterId}")
-    public ResponseEntity<List<ArticleResponse>> getArticlesByChapter(@PathVariable("chapterId") Long chapterId) {
-        var articles = articleService.getArticlesByChapter(chapterId);
+    @GetMapping("/chapter")
+    public ResponseEntity<?> getArticlesByChapter(
+            @RequestParam(name = "chapterId") Long chapterId,
+            @RequestParam(name = "page", required = false) Integer page) {
+
+        //TODO move logic to service
+        if (page == null || page < 1) {
+            var articles = articleService.getArticlesByChapter(chapterId);
+            return new ResponseEntity<>(articles, HttpStatus.OK);
+        }
+        var articles = articleService.getArticlePageByChapter(chapterId, page);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
@@ -41,6 +51,4 @@ public class ArticleController {
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
-
-    //TODO add getArticleByDateBetween
 }
