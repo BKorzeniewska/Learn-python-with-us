@@ -1,18 +1,14 @@
 package com.example.learnpython.auth;
 
-
 import com.example.learnpython.config.JwtService;
 import com.example.learnpython.mail.EmailSenderService;
-import com.example.learnpython.mail.RegisterConfirmationEmail;
 import com.example.learnpython.token.Token;
 import com.example.learnpython.token.TokenRepository;
 import com.example.learnpython.token.TokenType;
 import com.example.learnpython.user.*;
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,15 +32,13 @@ public class AuthenticationService {
         if (!isUserRequestValid(request)) {
             throw new UserRequestException(
                     "User request is not valid, all fields have to be filled",
-                    "USER_REQUEST_NOT_VALID",
-                    HttpStatus.BAD_REQUEST);
+                    "USER_REQUEST_NOT_VALID");
         }
 
         if (repository.findByEmail(request.getEmail()).isPresent()) {
             throw new UserEmailExistsException(
                     "User with provided email already exists",
-                    "USER_EMAIL_EXISTS",
-                    HttpStatus.BAD_REQUEST);
+                    "USER_EMAIL_EXISTS");
         }
 
         var user = User.builder()
