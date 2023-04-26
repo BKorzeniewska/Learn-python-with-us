@@ -18,11 +18,13 @@ class ChallengeServiceImplTest {
     private ChallengeRepository challengeRepository;
     @Mock
     private ChallengeMapper challengeMapper;
+    @Autowired
+    private JsonConverter jsonConverter;
 
     private ChallengeService challengeService;
     @BeforeEach
     void setUp() {
-        challengeService = new ChallengeServiceImpl(challengeRepository, challengeMapper);
+        challengeService = new ChallengeServiceImpl(challengeRepository, challengeMapper, jsonConverter);
     }
 
     @Test
