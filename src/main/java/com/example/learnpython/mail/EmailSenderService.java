@@ -1,9 +1,10 @@
 package com.example.learnpython.mail;
 
+import com.example.learnpython.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,22 +19,54 @@ import java.io.File;
 public class EmailSenderService {
 
     private final JavaMailSender mailSender;
+    private final MailTemplateRepository mailTemplateRepository;
 
-    public void sendSimpleEmail(String toEmail,
+
+    /***
+     * Temporary method to initialize mail templates
+     */
+    @Bean
+    public void init() {
+        if (mailTemplateRepository.findAll().isEmpty()) {
+            mailTemplateRepository.save(
+                MailTemplate
+                    .builder()
+                    .body(RegisterConfirmationEmail.MAIL_BODY)
+                    .subject(RegisterConfirmationEmail.SUBJECT)
+                    .type(MailType.REGISTER)
+                .build());
+        }
+    }
+
+    public void sendRegisterEmail(final RegisterRequest request) {
+        final MailTemplate template = mailTemplateRepository.findByType(MailType.REGISTER);
+        try {
+            log.info("Sending email to {}", request.getEmail());
+            template.setBody(template.getBody().replace("${USERNAME}", request.getNickname()));
+            sendSimpleEmail(request.getEmail(), template.getBody(), template.getSubject());
+        } catch (MessagingException e) {
+            log.error("Error while sending email", e);
+        }
+    }
+
+    private void sendSimpleEmail(String toEmail,
                                 String body,
-                                String subject) {
-        SimpleMailMessage message = new SimpleMailMessage();
+                                String subject) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
 
-        message.setFrom("nasz.teatr.krakow@gmail.com");
-        message.setTo(toEmail);
-        message.setText(body);
-        message.setSubject(subject);
+        MimeMessageHelper mimeMessageHelper
+                = new MimeMessageHelper(mimeMessage, true);
 
-        mailSender.send(message);
+        mimeMessageHelper.setFrom(System.getenv("EMAIL_ADDRESS"));
+        mimeMessageHelper.setTo(toEmail);
+        mimeMessageHelper.setText(body, true);
+        mimeMessageHelper.setSubject(subject);
+
+        mailSender.send(mimeMessage);
         log.info("Mail Send to {}", toEmail);
     }
 
-    public void sendEmailWithAttachment(String toEmail,
+    private void sendEmailWithAttachment(String toEmail,
                                         String body,
                                         String subject,
                                         String attachment) throws MessagingException {
@@ -43,7 +76,7 @@ public class EmailSenderService {
         MimeMessageHelper mimeMessageHelper
                 = new MimeMessageHelper(mimeMessage, true);
 
-        mimeMessageHelper.setFrom("nasz.teatr.krakow@gmail.com");
+        mimeMessageHelper.setFrom(System.getenv("EMAIL_ADDRESS"));
         mimeMessageHelper.setTo(toEmail);
         mimeMessageHelper.setText(body);
         mimeMessageHelper.setSubject(subject);

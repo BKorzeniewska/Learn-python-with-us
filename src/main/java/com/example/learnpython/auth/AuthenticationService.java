@@ -2,15 +2,16 @@ package com.example.learnpython.auth;
 
 
 import com.example.learnpython.config.JwtService;
+import com.example.learnpython.mail.EmailSenderService;
+import com.example.learnpython.mail.RegisterConfirmationEmail;
 import com.example.learnpython.token.Token;
 import com.example.learnpython.token.TokenRepository;
 import com.example.learnpython.token.TokenType;
-import com.example.learnpython.user.Role;
-import com.example.learnpython.user.User;
-import com.example.learnpython.user.UserEmailExistsException;
-import com.example.learnpython.user.UserRepository;
+import com.example.learnpython.user.*;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,41 +21,53 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthenticationService {
     private final UserRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailSenderService emailSenderService;
 
     @Transactional
     public AuthenticationResponse register(RegisterRequest request) {
 
-      if (repository.findByEmail(request.getEmail()).isPresent()) {
-          throw new UserEmailExistsException(
-                  "User with provided email already exists",
-                  "USER_EMAIL_EXISTS",
-                  HttpStatus.BAD_REQUEST);
-      }
+        if (!isUserRequestValid(request)) {
+            throw new UserRequestException(
+                    "User request is not valid, all fields have to be filled",
+                    "USER_REQUEST_NOT_VALID",
+                    HttpStatus.BAD_REQUEST);
+        }
 
-      var user = User.builder()
-          .firstname(request.getFirstname())
-          .lastname(request.getLastname())
-          .email(request.getEmail())
-          .password(passwordEncoder.encode(request.getPassword()))
-          .nickname(request.getNickname())
-          .level(0)
-          .exp(0)
-          .role(Role.USER)
-          .build();
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new UserEmailExistsException(
+                    "User with provided email already exists",
+                    "USER_EMAIL_EXISTS",
+                    HttpStatus.BAD_REQUEST);
+        }
 
-      var savedUser = repository.save(user);
-      var jwtToken = jwtService.generateToken(user);
-      saveUserToken(savedUser, jwtToken);
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .nickname(request.getNickname())
+                .role(Role.USER)
+                .build();
 
-      return AuthenticationResponse.builder()
-          .token(jwtToken)
-          .build();
+        var savedUser = repository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        saveUserToken(savedUser, jwtToken);
+
+        Runnable sendingEmail = () -> {
+            emailSenderService.sendRegisterEmail(request);
+        };
+        new Thread(sendingEmail).start();
+
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     @Transactional
@@ -96,5 +109,13 @@ public class AuthenticationService {
         token.setRevoked(true);
       });
       tokenRepository.saveAll(validUserTokens);
+    }
+
+    private boolean isUserRequestValid(RegisterRequest request) {
+      return (request.getFirstname() != null && !request.getFirstname().trim().isBlank())
+          && (request.getLastname() != null && !request.getLastname().trim().isBlank())
+          && (request.getEmail() != null && !request.getEmail().trim().isBlank())
+          && (request.getPassword() != null && !request.getEmail().trim().isBlank())
+          && (request.getNickname() != null && !request.getNickname().trim().isBlank());
     }
 }
