@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class UserEmailExistsException extends BaseServiceException {
 
-    public UserEmailExistsException(String message, String errorCode, HttpStatus httpStatus) {
-        super(message, errorCode, httpStatus);
+    public UserEmailExistsException(String message, String errorCode) {
+        super(message, errorCode, HttpStatus.BAD_REQUEST);
     }
 }
