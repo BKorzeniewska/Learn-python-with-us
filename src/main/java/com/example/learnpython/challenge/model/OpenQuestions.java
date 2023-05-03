@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContentJson {
-    protected String correctAnswer;
-    protected Type type;
+public class OpenQuestions extends ContentJson{
+
 }

@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.util.Map;
+
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContentJson {
-    protected String correctAnswer;
-    protected Type type;
+public class closedQuestions extends ContentJson{
+    protected Map<Character, String> possibleAnswers;
+
 }
