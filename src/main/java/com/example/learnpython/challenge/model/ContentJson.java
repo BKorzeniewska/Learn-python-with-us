@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ContentJson {
     protected String correctAnswer;
-    protected Type type;
 }
