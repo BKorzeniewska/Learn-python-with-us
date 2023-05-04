@@ -24,10 +24,10 @@ public class Article {
     @Column(name = "ARTICLE_ID")
     private long id;
 
-    @Column(name = "TITLE")
+    @Column(name = "TITLE", unique = true)
     private String title;
 
-    @Column(name = "CONTENT")
+    @Column(name = "CONTENT", length = 65_536)
     private String content;
 
     @Column(name = "CREATION_DATE")
