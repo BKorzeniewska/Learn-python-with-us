@@ -12,7 +12,7 @@ type Props ={
 }
 
 export const MainNavbar = (props : Props) => {
-  const { theme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const token = sessionStorage.getItem('token');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -46,8 +46,14 @@ export const MainNavbar = (props : Props) => {
           Learn Python with us
           </span>
         </Navbar.Brand>
-        <Nav className="ml-auto">
+        <Nav className="ml-auto text-center">
             <NavDropdown title={<span className="material-symbols-outlined">person</span>} id="basic-nav-dropdown" onClick={() => personButtonCallback()} show={isDropdownOpen}>
+              <NavDropdown.Item onClick = {() => {toggleTheme();}}>
+                {
+                  theme === "light" ? <span className="material-symbols-outlined">dark_mode</span> : <span className="material-symbols-outlined">light_mode</span>
+                }
+
+              </NavDropdown.Item>
               <NavDropdown.Item onClick = {() => navigate("/profile")}>Profil</NavDropdown.Item>
               <NavDropdown.Item onClick = {(event) => logout(event)}>Wyloguj</NavDropdown.Item>
             </NavDropdown>
