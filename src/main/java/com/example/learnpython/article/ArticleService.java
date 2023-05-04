@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ArticleService {
     ArticleResponse createArticle(CreateArticleRequest request);
-    ArticleDTO getArticlePageByChapter(final Long chapterId, final Integer pageNumber);
+    public ArticleDTO getArticlePageByChapter(final Long articleId);
     List<ArticleResponse> getArticlesByChapter(final Long chapterId);
     ArticleResponse getArticleById(Long articleId);
 
