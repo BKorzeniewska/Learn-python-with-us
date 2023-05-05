@@ -54,32 +54,29 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDTO getArticlePageByChapter(final Long chapterId, final Integer pageNumber) {
+    public ArticleDTO getArticlePageByChapter(final Long articleId) {
 
-        final int page = pageNumber < 1 ? 0 : pageNumber -1;
-        final Pageable pageable = PageRequest.of(page, 1);
+        log.info("getArticlePageByChapter - start, articleId: {}", articleId);
 
-        log.info("getArticlePageByChapter - start,  chapterId: {}, pageNumber: {}", chapterId, pageNumber);
+        final Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
 
-        final List<Article> articles = articleRepository
-                .findAllByChapterId(chapterId)
-                .orElseThrow(() -> new ArticleNotFoundException(
-                        "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
+        final List<Article> articles = articleRepository.findAllByChapterId(article.getChapter().getId())
+                .orElseThrow(() -> new ArticleNotFoundException("Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
 
-        final Article pageArticle;
-        try {
-            pageArticle = articles.get(page);
-        }
-        catch (IndexOutOfBoundsException e) {
-            throw new ArticleNotFoundException("Invalid page number", "INVALID_PAGE_NUMBER");
-        }
+        final int articleListIndex = articles.stream()
+                .filter(a -> a.getId() == articleId)
+                .findFirst().map(articles::indexOf)
+                .orElse(-1);
 
-        final long previousArticleIndex = page > 0 ? articles.get(page - 1).getId() : -1;
-        final long nextArticleIndex = page < articles.size() -1 ? articles.get(page + 1).getId() : -1;
+        log.info("getArticlePageByChapter - articleListIndex: {}", articleListIndex);
 
-        final List<ArticleResponse> articleResponse = List.of(articleMapper.toCreateArticleResponse(pageArticle));
+        final Long previousArticleIndex = articleListIndex > 0 ? articles.get(articleListIndex - 1).getId() : null;
+        final Long nextArticleIndex = articleListIndex < articles.size() -1 ? articles.get(articleListIndex + 1).getId() : null;
 
-        return new ArticleDTO(new PageImpl<>(articleResponse, pageable, articles.size()), previousArticleIndex, nextArticleIndex);
+        final ArticleResponse articleResponse = articleMapper.toCreateArticleResponse(article);
+
+        return new ArticleDTO(articleResponse, previousArticleIndex, nextArticleIndex);
     }
 
     @Override

@@ -25,17 +25,9 @@ public class ArticleController {
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
-    @GetMapping("/chapter")
-    public ResponseEntity<?> getArticlesByChapter(
-            @RequestParam(name = "chapterId") Long chapterId,
-            @RequestParam(name = "page", required = false) Integer page) {
-
-        //TODO move logic to service
-        if (page == null || page < 1) {
-            var articles = articleService.getArticlesByChapter(chapterId);
-            return new ResponseEntity<>(articles, HttpStatus.OK);
-        }
-        var articles = articleService.getArticlePageByChapter(chapterId, page);
+    @GetMapping("/chapter/{articleId}")
+    public ResponseEntity<?> getArticlesByChapter(@PathVariable(name = "articleId") Long articleId) {
+        var articles = articleService.getArticlePageByChapter(articleId);
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
