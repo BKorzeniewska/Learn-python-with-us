@@ -3,6 +3,7 @@ package com.example.learnpython.challenge;
 
 import com.example.learnpython.article.Article;
 import com.example.learnpython.challenge.model.ContentJson;
+import com.example.learnpython.challenge.model.Type;
 import com.example.learnpython.solution.Solution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -28,6 +29,8 @@ public class Challenge {
 
     @Column(name = "QUESTION")
     private String question;
+    @Column(name = "TYPE")
+    private Type type;
 
     @Column(name = "NAME")
     private String name;

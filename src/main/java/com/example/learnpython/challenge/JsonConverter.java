@@ -22,4 +22,6 @@ public class JsonConverter implements AttributeConverter<ContentJson, String> {
     public ContentJson convertToEntityAttribute(String dbData) {
         return GSON.fromJson(dbData, ContentJson.class);
     }
+
+
 }

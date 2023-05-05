@@ -4,6 +4,7 @@ import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
+import com.example.learnpython.challenge.model.Type;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
+
 
 
     //TODO
@@ -59,6 +61,25 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
 
+    @Transactional
+    public void executeClosedChallenge(ExecuteChallengeRequest request) {
+        Challenge challenge = challengeRepository
+                .findById(request.challengeId())
+                .orElseThrow(
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+
+        log.info("Executing challenge: {}", challenge);
+
+        if(request.answer().equals(challenge.getContent().getCorrectAnswer()))
+        {
+            log.info("Result: GOOD SOUP");
+        }
+        else {
+            log.info("Result: WRONG");
+        }
+    }
+
+
     @Override
     public ChallengeResponse createChallenge(CreateChallengeRequest request) {
         //var challenge = challengeMapper.toChallenge(request);
@@ -67,11 +88,8 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .content(jsonConverter.convertToEntityAttribute(request.getContent()))
                 .question(request.getQuestion())
                 .build();
-
         log.info("challenge: {}", challenge);
         challengeRepository.save(challenge);
-        //return challengeMapper.toCreateChallengeResponse(challenge);
-
         return ChallengeResponse.builder()
                 .question(challenge.getQuestion())
                 .question(challenge.getQuestion())
