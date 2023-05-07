@@ -49,6 +49,7 @@ class ArticleServiceImplTest {
                         .content(article.getContent())
                         .chapterId(article.getChapter().getId())
                         .build())
+                .currentArticle(1L)
                 .nextArticleIndex(null)
                 .previousArticleIndex(null)
                 .totalArticles(1L)
