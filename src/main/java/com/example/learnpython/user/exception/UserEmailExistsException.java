@@ -1,4 +1,4 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.exception;
 
 import com.example.learnpython.exception.BaseServiceException;
 import org.springframework.http.HttpStatus;
