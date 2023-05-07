@@ -6,6 +6,9 @@ import com.example.learnpython.token.Token;
 import com.example.learnpython.token.TokenRepository;
 import com.example.learnpython.token.TokenType;
 import com.example.learnpython.user.*;
+import com.example.learnpython.user.exception.UserEmailExistsException;
+import com.example.learnpython.user.exception.UserNotFoundException;
+import com.example.learnpython.user.exception.UserRequestException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -66,50 +69,52 @@ public class AuthenticationService {
 
     @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-      authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(
-              request.getEmail(),
-              request.getPassword()
-          )
-      );
-      var user = repository.findByEmail(request.getEmail())
-          .orElseThrow(() -> new UsernameNotFoundException("User with provided email not found"));
 
-      var jwtToken = jwtService.generateToken(user);
-      revokeAllUserTokens(user);
-      saveUserToken(user, jwtToken);
-      return AuthenticationResponse.builder()
-          .token(jwtToken)
-          .build();
+        final User user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User with provided email does not exists", "USER_DOES_NOT_EXISTS"));
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        final String jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     private void saveUserToken(User user, String jwtToken) {
-      var token = Token.builder()
-          .user(user)
-          .token(jwtToken)
-          .tokenType(TokenType.BEARER)
-          .expired(false)
-          .revoked(false)
-          .build();
-      tokenRepository.save(token);
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
     }
 
     private void revokeAllUserTokens(User user) {
-      var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-      if (validUserTokens.isEmpty())
-        return;
-      validUserTokens.forEach(token -> {
-        token.setExpired(true);
-        token.setRevoked(true);
-      });
-      tokenRepository.saveAll(validUserTokens);
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
     }
 
     private boolean isUserRequestValid(RegisterRequest request) {
-      return (request.getFirstname() != null && !request.getFirstname().trim().isBlank())
-          && (request.getLastname() != null && !request.getLastname().trim().isBlank())
-          && (request.getEmail() != null && !request.getEmail().trim().isBlank())
-          && (request.getPassword() != null && !request.getEmail().trim().isBlank())
-          && (request.getNickname() != null && !request.getNickname().trim().isBlank());
+        return (request.getFirstname() != null && !request.getFirstname().trim().isBlank())
+                && (request.getLastname() != null && !request.getLastname().trim().isBlank())
+                && (request.getEmail() != null && !request.getEmail().trim().isBlank())
+                && (request.getPassword() != null && !request.getEmail().trim().isBlank())
+                && (request.getNickname() != null && !request.getNickname().trim().isBlank());
     }
 }
