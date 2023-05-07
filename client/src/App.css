@@ -83,3 +83,17 @@
     --bs-border-color: rgba(255, 255, 255, 0.1) !important;
     --bs-tertiary-bg: rgba(255, 255, 255, 0.15) !important;
 }
+
+/* Radio Buttons  theme */
+[data-theme="light"] .form-check-input[type=radio] {
+    background-color: #704f91 !important;
+    border-color: #704f91 !important;
+}
+[data-theme="dark"] .form-check-input[type=radio] {
+    background-color: #a97ed3 !important;
+    border-color: #a97ed3 !important;
+}
+/* text area in card should be white */
+[data-theme="light"] .card-body .form-control {
+    --bs-body-bg: #fff !important;
+}

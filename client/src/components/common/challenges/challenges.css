@@ -1,0 +1,21 @@
+
+
+
+
+/* set animation time for button */
+.submit-button {
+    transition: 0.5s;
+    width: 100%;
+    /* always center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* if button disabled, set width to heigh */
+.submit-button:disabled {
+    /* width equal height */
+    width: 200px;    
+    height: 180px;
+}
