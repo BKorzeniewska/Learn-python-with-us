@@ -65,6 +65,7 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
   const { theme } = useContext(ThemeContext);
 
   return (
+    <div className="sidebar-wrapper" style={{ width: props.width }}>
     <Nav className="flex-column sidebar" data-theme={theme} style={{ width: props.width }} >
       {result?.map((value) => {
         return (
@@ -78,6 +79,7 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
         );
       })}
     </Nav>
+    </div>
   );
 };
 
