@@ -1,10 +1,13 @@
 package com.example.learnpython.user;
 
 import com.example.learnpython.user.exception.UserNotFoundException;
+import com.example.learnpython.user.exception.UserRequestException;
 import com.example.learnpython.user.model.UserInfoResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -12,12 +15,32 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
 
     @Override
-    public UserInfoResponse getUserInfo(final long userId) {
-        final User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
+    public ResponseEntity<UserInfoResponse> getUserInfo(final String token, final Long userId) {
+
+        User user = null;
+
+        if (token == null && userId == null) {
+            throw new UserRequestException("Token or userId must be provided", "USER_NOT_FOUND");
+        }
+
+        if ((token != null && token.startsWith("Bearer ")) && userId == null) {
+            final String jwt = token.substring(7);
+            user = userRepository.findByToken(jwt).orElseThrow(
+                    () -> new UserNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+        }
+
+        if (userId != null) {
+            user = userRepository.findById(userId).orElseThrow(
+                    () -> new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
+        }
+
+        if (user == null) {
+            throw new UserNotFoundException("User with provided token or id not found", "USER_NOT_FOUND");
+        }
 
         final UserInfoResponse userInfoResponse = UserInfoResponse.builder()
                 .id(user.getId())
@@ -31,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         log.info("User info response: {}", userInfoResponse);
-        return userInfoResponse;
+        return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
     }
 
     @Override
