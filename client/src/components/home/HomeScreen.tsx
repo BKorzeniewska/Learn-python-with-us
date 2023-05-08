@@ -15,6 +15,8 @@ import { markdownTest } from "./markdownTest";
 import { AppWrapper } from "./AppWrapper";
 import { AuthContext } from "../auth/AuthContext";
 import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";
+import { ChooseChallenge } from "../common/challenges/choose";
+import { CodeChallenge } from "../common/challenges/code";
 
 type Props = {};
 
@@ -43,6 +45,27 @@ const HomeScreen = (props: Props) => {
               >
                 Secondary button
               </Button>
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <ChooseChallenge
+                title="Choose Challenge"
+                question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
+                answerOk="42"
+                answer2="43"
+                answer3="44"
+                answer4="45"
+              />
+            </div>
+          </Row>
+          <Row>
+            <div className="w25 my-3">
+              <CodeChallenge 
+                title="Code Challenge"
+                question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
+                codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
+              />
             </div>
           </Row>
           <Row>

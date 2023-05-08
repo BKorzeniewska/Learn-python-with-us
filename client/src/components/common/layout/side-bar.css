@@ -63,8 +63,14 @@
 }
 #side .sidebar {
   overflow: hidden;
-  overflow-y: auto;
-  height: 100%;
+  /* overflow-y: auto; */
+  /* height: 100%; */
+  transition: width 0.3s ease-in-out;
+  position: fixed;
+  overflow-y: scroll;
+}
+.sidebar-wrapper {
+  /* height: 100%; */
   transition: width 0.3s ease-in-out;
 }
 
@@ -79,6 +85,12 @@
     overflow: hidden;
     overflow-y: auto;
     height: 100%;
+  }
+  .sidebar-wrapper {
+    position: fixed;
+    /* height: 100%; */
+    z-index: 100;
+    transition: width 0.3s ease-in-out;
   }
 }
 

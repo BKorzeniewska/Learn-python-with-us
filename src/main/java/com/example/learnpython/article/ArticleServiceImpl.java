@@ -66,17 +66,19 @@ public class ArticleServiceImpl implements ArticleService {
 
         final int articleListIndex = articles.stream()
                 .filter(a -> a.getId() == articleId)
-                .findFirst().map(articles::indexOf)
+                .findFirst()
+                .map(articles::indexOf)
                 .orElse(-1);
 
         log.info("getArticlePageByChapter - articleListIndex: {}", articleListIndex);
 
         final Long previousArticleIndex = articleListIndex > 0 ? articles.get(articleListIndex - 1).getId() : null;
         final Long nextArticleIndex = articleListIndex < articles.size() -1 ? articles.get(articleListIndex + 1).getId() : null;
-
+        final Long totalElements = (long) articles.size();
+        final Long currentPage = (long) (articleListIndex + 1);
         final ArticleResponse articleResponse = articleMapper.toCreateArticleResponse(article);
 
-        return new ArticleDTO(articleResponse, previousArticleIndex, nextArticleIndex);
+        return new ArticleDTO(articleResponse, previousArticleIndex, nextArticleIndex, totalElements, currentPage);
     }
 
     @Override

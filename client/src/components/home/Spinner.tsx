@@ -6,9 +6,11 @@ export const LoadingSpinner = (props: {
     children: React.ReactNode;
 }) => {
     return (
-        <div style={{width: "100%", }}>
-            {props.isLoading ? <Spinner animation="border" role="status" className="mt-5">
-                <span className="sr-only">Loading...</span>
+        <div style={{width: "100%" }}>
+            {props.isLoading ? <Spinner animation="border" role="status">
+                <span className="sr-only" style={{
+                    position: "absolute",
+                }}>Loading</span>
             </Spinner> : props.children}
         </div>
     )
