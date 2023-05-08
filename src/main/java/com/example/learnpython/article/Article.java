@@ -27,7 +27,7 @@ public class Article {
     @Column(name = "TITLE", unique = true)
     private String title;
 
-    @Column(name = "CONTENT", length = 65_536)
+    @Column(name = "CONTENT", columnDefinition="TEXT")
     private String content;
 
     @Column(name = "CREATION_DATE")
