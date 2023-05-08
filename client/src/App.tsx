@@ -6,6 +6,7 @@ import { RegisterScreen } from './components/home/RegisterScreen';
 import { AuthProvider } from './components/auth/AuthContext';
 import { AcrticleScreen } from './components/home/ArticleScreen';
 import { ErrorProvider } from './components/home/ErrorContext';
+import { UserScreen } from './components/user/UserScreen';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
+            <Route path="/user/:userId" element={<UserScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>
