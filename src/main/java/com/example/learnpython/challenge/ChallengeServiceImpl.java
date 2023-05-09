@@ -7,9 +7,12 @@ import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
 import com.example.learnpython.challenge.model.Type;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
 
+import java.io.StringWriter;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -22,25 +25,35 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
 
-
-
-    //TODO
     @Transactional
     public void executeChallenge(ExecuteChallengeRequest request) {
         Challenge challenge = challengeRepository
                 .findById(request.challengeId())
                 .orElseThrow(
-                () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
-
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
         log.info("Executing challenge: {}", challenge);
 
+        // Validate input
+        if (!isValidInput(request.answer())) {
+            throw new IllegalArgumentException("Invalid input");
+        }
 
-        //TODO Execute python code code
-        /*try (PythonInterpreter interpreter = new PythonInterpreter()) {
+        // Execute python code code
+        try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter output = new StringWriter();
             interpreter.setOut(output);
 
             log.info("Executing user answer: {}", request.answer());
+
+            // Set resource limits
+            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
+            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
+
+            // Execute code in an isolated environment
+            interpreter.exec("import sys");
+            interpreter.exec("sys.path = []");
+            interpreter.exec("del sys");
+
             interpreter.exec(request.answer());
 
             String userResult = output.toString();
@@ -54,12 +67,37 @@ public class ChallengeServiceImpl implements ChallengeService {
                 log.info("Result: WRONG");
                 //test.setResult(TestResult.FAILED);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
-        }*/
-
+        }
     }
 
+    // TODO
+    //  to adopt
+    // This function checks whether each command in user code starts with one of the allowed expressions (e.g. print, input, int, float, str, bool).
+    // If the command does not start with a valid expression, the method returns false, which means the input is invalid.
+    // Otherwise, it returns true, which means the input is safe to execute.
+
+    private boolean isValidInput(String input) {
+        String[] allowedExpressions = {"print", "input", "int", "float", "str", "bool"};
+        String[] lines = input.split("\n");
+        for (String line : lines) {
+            String[] tokens = line.split("\\s");
+            if (tokens.length > 0) {
+                boolean isValid = false;
+                for (String expression : allowedExpressions) {
+                    if (tokens[0].startsWith(expression)) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Transactional
     public void executeClosedChallenge(ExecuteChallengeRequest request) {

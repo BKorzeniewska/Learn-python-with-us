@@ -11,5 +11,6 @@ public interface ChallengeService {
     ChallengeResponse getChallengeById(Long challengeId);
     List<ChallengeResponse> getChallenges();
     List<ChallengeResponse> getChallengesByArticleId(Long articleId);
+    Exe
 
 }
