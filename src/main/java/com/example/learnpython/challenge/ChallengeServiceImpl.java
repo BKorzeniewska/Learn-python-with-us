@@ -129,7 +129,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         log.info("challenge: {}", challenge);
         challengeRepository.save(challenge);
         return ChallengeResponse.builder()
-                .question(challenge.getQuestion())
+                .name(challenge.getName())
                 .question(challenge.getQuestion())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
                 .build();
@@ -188,5 +188,16 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .question(challenge.getQuestion())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
+    }
+
+    @Override
+    public void execute(ExecuteChallengeRequest request) {
+        if(request.type().equals(Type.CODE))
+        {
+            executeChallenge(request);
+        } else if (request.type().equals(Type.CLOSED)||request.type().equals(Type.OPEN)) {
+            executeClosedChallenge(request);
+
+        }
     }
 }

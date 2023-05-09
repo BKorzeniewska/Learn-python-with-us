@@ -40,9 +40,12 @@ public class ChallengeController {
         var challenges = challengeService.getChallengeByName(nameFragment);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
+    // TODO
+    // Agree with place where we add exp point to user's point for good answer
     @PostMapping("/execute")
-    @Operation(summary = "Create a new solution")
-    public ResponseEntity<ExecuteChallengeRequest> executeChallenge(@RequestBody ExecuteChallengeRequest challengeRequest) {
+    @Operation(summary = "Execute a challenge")
+    public ResponseEntity<ExecuteChallengeRequest> executeChallenge(@RequestBody ExecuteChallengeRequest executeChallengeRequest) {
+        challengeService.execute(executeChallengeRequest);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 }
