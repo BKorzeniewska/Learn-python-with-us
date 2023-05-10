@@ -29,6 +29,8 @@ public class Challenge {
 
     @Column(name = "QUESTION")
     private String question;
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private Type type;
 
