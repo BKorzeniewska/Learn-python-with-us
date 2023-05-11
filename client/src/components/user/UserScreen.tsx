@@ -13,14 +13,25 @@ export const UserScreen = () => {
 
   const location = useLocation();
   useEffect(() => {
-    loadUserById(userId || "0").then((data) => {
-      if (data.isOk) {
-        setResult(data.value);
-      } else {
-        setError("Nie udało się załadować informacji o użytkowniku");
-      }
-    });
-  }, [location]);
+    if (userId) {
+      loadUserById(userId).then((data) => {
+        if (data.isOk) {
+          setResult(data.value);
+        } else {
+          setError("Nie udało się załadować informacji o użytkowniku");
+        }
+      });
+    }
+    else{
+      loadUserById().then((data) => {
+        if (data.isOk) {
+          setResult(data.value);
+        } else {
+          setError("Nie udało się załadować informacji o użytkowniku");
+        }
+      });
+    }
+  }, [userId]);
 
   return (
     <AppWrapper hideSidebar>

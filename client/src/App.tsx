@@ -19,7 +19,7 @@ function App() {
             <Route path="/login" element={<LoginScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
-            <Route path="/user/:userId" element={<UserScreen />}></Route>
+            <Route path="/user/:userId?" element={<UserScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>

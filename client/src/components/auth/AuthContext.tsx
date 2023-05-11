@@ -5,7 +5,8 @@ import React from 'react';
 const setTokenCallback = (token: string | null) => {
   delete axios.defaults.headers.common['Authorization'];
 
-  axios.defaults.headers.common['Authorization'] = token;
+  axios.defaults.headers.common['Authorization'] = "Bearer "+token;
+  console.log(axios.defaults.headers.common['Authorization']);
   
   if (token !== null) {
     sessionStorage.setItem('token', token);

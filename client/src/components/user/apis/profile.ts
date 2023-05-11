@@ -15,8 +15,14 @@ export type UserInfo = {
 
 export type UserResponseError = "USER_NOT_FOUND"
 
-export const loadUserById = async (id: string): Promise<Result<UserInfo, UserResponseError>> => {
-    const response = Get<UserInfo>(`${baseUrl}/api/v1/user/${id}`);
+export const loadUserById = async (id?: string): Promise<Result<UserInfo, UserResponseError>> => {
+    let response: Promise<Result<UserInfo, unknown>>;
+    if(id !== undefined) {
+    const params = new URLSearchParams({ id });
+    response = Get<UserInfo>(`${baseUrl}/api/v1/user/info?${params.toString()}`);
+    } else {
+       response = Get<UserInfo>(`${baseUrl}/api/v1/user/info`);
+    console.log(response);}
 
     return response.then((data) => {
         if(data.isOk) {
