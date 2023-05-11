@@ -125,6 +125,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .name(request.getName())
                 .content(jsonConverter.convertToEntityAttribute(request.getContent()))
                 .question(request.getQuestion())
+                .type(request.getType())
                 .build();
         log.info("challenge: {}", challenge);
         challengeRepository.save(challenge);
