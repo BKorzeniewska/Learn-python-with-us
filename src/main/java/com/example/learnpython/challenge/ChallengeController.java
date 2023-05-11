@@ -2,6 +2,7 @@ package com.example.learnpython.challenge;
 
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
+import com.example.learnpython.challenge.model.ExecutedChallengeResponse;
 import com.example.learnpython.solution.Solution;
 import com.example.learnpython.solution.SolutionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,10 +43,9 @@ public class ChallengeController {
     }
     // TODO
     // Agree with place where we add exp point to user's point for good answer
-    @PostMapping("/execute")
+    @GetMapping("/execute")
     @Operation(summary = "Execute a challenge")
-    public ResponseEntity<ExecuteChallengeRequest> executeChallenge(@RequestBody ExecuteChallengeRequest executeChallengeRequest) {
-        challengeService.execute(executeChallengeRequest);
-        return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<ExecutedChallengeResponse> executeChallenge(@RequestBody ExecuteChallengeRequest executeChallengeRequest) {
+        return ResponseEntity.ok(challengeService.execute(executeChallengeRequest));
     }
 }

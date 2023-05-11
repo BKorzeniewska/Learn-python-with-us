@@ -3,6 +3,7 @@ package com.example.learnpython.challenge;
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
+import com.example.learnpython.challenge.model.ExecutedChallengeResponse;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ public interface ChallengeService {
     List<ChallengeResponse> getChallenges();
     List<ChallengeResponse> getChallengesByArticleId(Long articleId);
 
-    void execute(ExecuteChallengeRequest request);
+    ExecutedChallengeResponse execute(ExecuteChallengeRequest request);
 
 }

@@ -1,10 +1,7 @@
 package com.example.learnpython.challenge;
 
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
-import com.example.learnpython.challenge.model.ChallengeResponse;
-import com.example.learnpython.challenge.model.CreateChallengeRequest;
-import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
-import com.example.learnpython.challenge.model.Type;
+import com.example.learnpython.challenge.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.python.util.PythonInterpreter;
@@ -26,7 +23,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final JsonConverter jsonConverter;
 
     @Transactional
-    public void executeChallenge(ExecuteChallengeRequest request) {
+    public ExecutedChallengeResponse executeChallenge(ExecuteChallengeRequest request) {
         Challenge challenge = challengeRepository
                 .findById(request.challengeId())
                 .orElseThrow(
@@ -63,13 +60,25 @@ public class ChallengeServiceImpl implements ChallengeService {
             if (Objects.equals(output.toString().trim(), userResult.trim())) {
                 log.info("Result: TAK");
                 //test.setResult(TestResult.PASSED);
+                return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.SUCCESS)
+                        .build();
             } else {
                 log.info("Result: WRONG");
                 //test.setResult(TestResult.FAILED);
+                return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.FAIL)
+                        .build();
             }
         } catch (Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
         }
+        return ExecutedChallengeResponse.builder()
+                .challengeId(challenge.getId())
+                .result(Result.SUCCESS)
+                .build();
     }
 
     // TODO
@@ -100,7 +109,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Transactional
-    public void executeClosedChallenge(ExecuteChallengeRequest request) {
+    public ExecutedChallengeResponse executeClosedChallenge(ExecuteChallengeRequest request) {
         Challenge challenge = challengeRepository
                 .findById(request.challengeId())
                 .orElseThrow(
@@ -111,9 +120,17 @@ public class ChallengeServiceImpl implements ChallengeService {
         if(request.answer().equals(challenge.getContent().getCorrectAnswer()))
         {
             log.info("Result: GOOD SOUP");
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.SUCCESS)
+                    .build();
         }
         else {
             log.info("Result: WRONG");
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.FAIL)
+                    .build();
         }
     }
 
@@ -192,12 +209,12 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public void execute(ExecuteChallengeRequest request) {
+    public ExecutedChallengeResponse execute(ExecuteChallengeRequest request) {
         if(request.type().equals(Type.CODE))
         {
-            executeChallenge(request);
-        } else if (request.type().equals(Type.CLOSED)||request.type().equals(Type.OPEN)) {
-            executeClosedChallenge(request);
+            return executeChallenge(request);
+        } else {
+            return executeClosedChallenge(request);
 
         }
     }
