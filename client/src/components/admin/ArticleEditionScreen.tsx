@@ -2,7 +2,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Nav, NavDropdown, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Article, ArticleMenu, CreateArticleRequest, createArticle, loadArticleById, loadArticleMenu } from '../common/apis/article';
+import { Article, ArticleMenu, CreateArticleRequest, ModifyArticleRequest, createArticle, loadArticleById, loadArticleMenu, modifyArticle } from '../common/apis/article';
 import { useError } from '../home/ErrorContext';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { AppWrapper } from '../home/AppWrapper';
@@ -93,15 +93,14 @@ export const ArticleEditionScreen = () => {
                         <Form onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                             event.preventDefault();
                             setIsLoading(true);
-                            const request: CreateArticleRequest = {
-                                title: (event.target as any).elements.formTitle.value,
-                                content: (event.target as any).elements.formContent.value,
-                                chapterId: parseInt((event.target as any).elements.formChapterId.value),
-                                userId: 1, // set the user ID here
-                            };
-                            console.log(request);
-                            if(articleId === undefined)
-                            {
+
+                            if (articleId === undefined) {
+                                const request: CreateArticleRequest = {
+                                    title: (event.target as any).elements.formTitle.value,
+                                    content: (event.target as any).elements.formContent.value,
+                                    chapterId: parseInt((event.target as any).elements.formChapterId.value),
+                                };
+                                console.log(request);
                                 createArticle(request).then(
                                     (article) => {
                                         if (article.isOk) {
@@ -112,6 +111,24 @@ export const ArticleEditionScreen = () => {
                                     }
                                 )
                             }
+                            else {
+                                const request: ModifyArticleRequest = {
+                                    title: (event.target as any).elements.formTitle.value,
+                                    content: (event.target as any).elements.formContent.value,
+                                    id: parseInt(articleId),
+                                };
+                                console.log(request);
+                                modifyArticle(request).then(
+                                    (article) => {
+                                        if (article.isOk) {
+                                            navigate(`/article/${article.value.id}`);
+                                        } else {
+                                            setError("Nie udało się utworzyć artykułu");
+                                        }
+                                    }
+                                )
+
+                            }
                             console.log("submit");
                             setIsLoading(false);
                         }}>
@@ -119,14 +136,16 @@ export const ArticleEditionScreen = () => {
                                 <Form.Label>Tytuł:</Form.Label>
                                 <Form.Control type="text" placeholder="Wprowadź tytuł" defaultValue={article?.title} />
                             </Form.Group>
-                            <Form.Group className="mb-3" controlId="formChapterId">
-                                <Form.Label>Rozdział:</Form.Label>
-                                <Form.Select aria-label="Wybierz rozdział" defaultValue={article?.chapterId}>
-                                    {menu?.map((menu) => (
-                                        <option key={menu.name} value={menu.id}>{menu.name}</option>
-                                    ))}
-                                </Form.Select>
-                            </Form.Group>
+                            {articleId === undefined &&
+                                <Form.Group className="mb-3" controlId="formChapterId">
+                                    <Form.Label>Rozdział:</Form.Label>
+                                    <Form.Select aria-label="Wybierz rozdział" defaultValue={article?.chapterId}>
+                                        {menu?.map((menu) => (
+                                            <option key={menu.name} value={menu.id}>{menu.name}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Form.Group>}
+
                             <Form.Group className="mb-3" controlId="formContent">
                                 <Form.Label>Artykuł:</Form.Label>
                                 <Form.Control

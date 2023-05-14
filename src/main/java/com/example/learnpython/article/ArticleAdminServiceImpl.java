@@ -73,7 +73,7 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
         }
 
         //articleRepository.save(article);
-        articleRepository.updateArticle(article.getContent(), article.getTitle(), article.getId());
+        articleRepository.updateArticle(article.getTitle(), article.getContent(), article.getId());
 
         final Article updatedArticle = articleRepository.findById(request.getId())
                 .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
