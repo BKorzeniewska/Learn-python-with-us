@@ -113,11 +113,11 @@ export const UserScreen = () => {
                       {result.level}
                     </p>
                     <p>
-                      <strong>Experience Points: </strong>
+                      <strong>Punkty doświadczenia: </strong>
                       {result.exp}
                     </p>
                     <p>
-                      <strong>Challenges Solved: </strong>
+                      <strong>Rozwiązane zadania: </strong>
                       {result.challengesSolvedCount}
                     </p>
                   </div>

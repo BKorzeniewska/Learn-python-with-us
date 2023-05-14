@@ -1,4 +1,4 @@
-import { Get } from "../axiosFetch";
+import { Get, Post } from "../axiosFetch";
 import { Result } from "../poliTypes";
 import { baseUrl } from "./common";
 
@@ -32,6 +32,13 @@ export type ArticleMenu = {
     id: number;
     name: string;
     articles: ArticleShort[];
+}
+
+export type CreateArticleRequest = {
+    title : string;
+    content: string;
+    chapterId: number;
+    userId: number;
 }
 
 export type ArticleResponseError = "ARTICLE_NOT_FOUND"
@@ -68,6 +75,18 @@ export const loadArticleByIdExtended = async (id: string): Promise<Result<Articl
             return { isOk: true, value: data.value } as Result<ArticleExtended, ArticleResponseError>;
         } else {          
             return { isOk: false, error: "ARTICLE_NOT_FOUND" } as Result<ArticleExtended, ArticleResponseError>;
+        }
+    });
+}
+
+export const createArticle  = async (article: CreateArticleRequest): Promise<Result<Article, "UNAUTHORIZED">> => {
+    const response = Post<Article>(`${baseUrl}/api/admin/v1/article/create`, { article});
+
+    return response.then((data) => {
+        if(data.isOk) {
+            return { isOk: true, value: data.value } as Result<Article, "UNAUTHORIZED">;
+        } else {          
+            return { isOk: false, error: "UNAUTHORIZED" } as Result<Article, "UNAUTHORIZED">;
         }
     });
 }

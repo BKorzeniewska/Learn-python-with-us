@@ -7,6 +7,8 @@ import { AuthProvider } from './components/auth/AuthContext';
 import { AcrticleScreen } from './components/home/ArticleScreen';
 import { ErrorProvider } from './components/home/ErrorContext';
 import { UserScreen } from './components/user/UserScreen';
+import { AdminArticlesScreen } from './components/admin/AdminArticlesScreen';
+import { ArticleEditionScreen } from './components/admin/ArticleEditionScreen';
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
             <Route path="/user/:userId?" element={<UserScreen />}></Route>
+            <Route path="/admin/articles" element={<AdminArticlesScreen />}></Route>
+            <Route path="/admin/edit/:articleId?" element={<ArticleEditionScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>
