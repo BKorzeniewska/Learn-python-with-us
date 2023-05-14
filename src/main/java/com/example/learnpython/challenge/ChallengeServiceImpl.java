@@ -28,23 +28,24 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .findById(request.challengeId())
                 .orElseThrow(
                         () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+
         log.info("Executing challenge: {}", challenge);
 
-        // Validate input
-        if (!isValidInput(request.answer())) {
-            throw new IllegalArgumentException("Invalid input");
-        }
 
-        // Execute python code code
+        //TODO Execute python code code
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter output = new StringWriter();
             interpreter.setOut(output);
 
             log.info("Executing user answer: {}", request.answer());
 
+            // Validate input
+        if (!isValidInput(request.answer())) {
+            throw new IllegalArgumentException("Invalid input");
+        }
             // Set resource limits
-            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
-            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
+//            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
+//            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
 
             // Execute code in an isolated environment
             interpreter.exec("import sys");
@@ -59,31 +60,29 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             if (Objects.equals(output.toString().trim(), userResult.trim())) {
                 log.info("Result: TAK");
-                //test.setResult(TestResult.PASSED);
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.SUCCESS)
                         .output(output.toString())
                         .build();
+                //test.setResult(TestResult.PASSED);
             } else {
                 log.info("Result: WRONG");
-                //test.setResult(TestResult.FAILED);
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.FAIL)
                         .output(output.toString())
                         .build();
+                //test.setResult(TestResult.FAILED);
             }
-        } catch (Exception e) {
+        } catch(Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
-            throw new RuntimeException("Error executing Python script", e);
-//            return ExecutedChallengeResponse.builder()
-//                    .challengeId(challenge.getId())
-//                    .result(Result.FAIL)
-//                    .output(e.getMessage())
-//                    .build();
+            return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.FAIL)
+                        .output(e.getMessage())
+                        .build();
         }
-
     }
 
 
@@ -96,31 +95,31 @@ public class ChallengeServiceImpl implements ChallengeService {
     private boolean isValidInput(String input) {
         String[] allowedExpressions = {"print", "input", "int", "float", "str", "bool", "def"};
         String[] lines = input.split("\n");
-//        for (String line : lines) {
-//            String[] tokens = line.split("\\s");
-//            if (tokens.length > 0) {
-//                boolean isValid = false;
-//                for (String expression : allowedExpressions) {
-//                    if (tokens[0].startsWith(expression)) {
-//                        isValid = true;
-//                        break;
-//                    }
-//                }
-//                if (!isValid) {
-//                    if (tokens[0].matches("^\\d+(\\.\\d+)?([+\\-*/]\\d+(\\.\\d+)?)*$") ||
-//                            tokens[0].matches("^\\d+(\\.\\d+)?(e[+-]?\\d+)?$")) {
-//                        isValid = true;
-//                    } else {
-//                        // Sprawdź, czy pierwszy token jest definicją funkcji
-//                        if (tokens[0].startsWith("def") && tokens[tokens.length - 1].endsWith(":")) {
-//                            isValid = true;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        for (String line : lines) {
+            String[] tokens = line.split("\\s");
+            if (tokens.length > 0) {
+                boolean isValid = false;
+                for (String expression : allowedExpressions) {
+                    if (tokens[0].startsWith(expression)) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid) {
+                    if (tokens[0].matches("^\\d+(\\.\\d+)?([+\\-*/]\\d+(\\.\\d+)?)*$") ||
+                            tokens[0].matches("^\\d+(\\.\\d+)?(e[+-]?\\d+)?$")) {
+                        isValid = true;
+                    } else {
+                        // Sprawdź, czy pierwszy token jest definicją funkcji
+                        if (tokens[0].startsWith("def") && tokens[tokens.length - 1].endsWith(":")) {
+                            isValid = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
         return true;
     }
 
