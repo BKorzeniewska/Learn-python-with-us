@@ -1,6 +1,6 @@
 package com.example.learnpython.solution;
 
-import com.example.learnpython.solution.exception.SolutionsCountPerChallengeProjection;
+import com.example.learnpython.solution.model.SolutionsCountPerChallengeProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

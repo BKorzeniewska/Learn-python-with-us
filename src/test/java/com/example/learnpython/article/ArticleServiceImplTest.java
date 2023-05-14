@@ -29,7 +29,7 @@ class ArticleServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        articleServiceImplUnderTest = new ArticleServiceImpl(mockArticleRepository, chapterRepository, articleMapper);
+        articleServiceImplUnderTest = new ArticleServiceImpl(mockArticleRepository, articleMapper);
     }
 
     @Test

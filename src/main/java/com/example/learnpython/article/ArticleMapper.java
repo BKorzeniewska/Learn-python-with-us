@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface ArticleMapper {
 
     @Mapping(target="chapter.id", source="chapterId")
-    @Mapping(target="user.id", source="userId")
     Article toArticle(CreateArticleRequest createArticleRequest);
 
     @Mapping(target="chapterId", source="article.chapter.id")

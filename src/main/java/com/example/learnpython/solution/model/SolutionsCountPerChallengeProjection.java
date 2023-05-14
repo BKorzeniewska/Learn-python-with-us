@@ -1,4 +1,4 @@
-package com.example.learnpython.solution.exception;
+package com.example.learnpython.solution.model;
 
 public interface SolutionsCountPerChallengeProjection {
     Long getChallengeId();
