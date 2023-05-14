@@ -1,14 +1,15 @@
 package com.example.learnpython.challenge;
 
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
-import com.example.learnpython.challenge.model.ChallengeResponse;
-import com.example.learnpython.challenge.model.CreateChallengeRequest;
-import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
+import com.example.learnpython.challenge.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
 
+import java.io.StringWriter;
 import java.util.List;
+import java.util.Objects;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -21,24 +22,36 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
 
-
-    //TODO
     @Transactional
-    public void executeChallenge(ExecuteChallengeRequest request) {
+    public ExecutedChallengeResponse executeChallenge(ExecuteChallengeRequest request) {
         Challenge challenge = challengeRepository
                 .findById(request.challengeId())
                 .orElseThrow(
-                () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
 
         log.info("Executing challenge: {}", challenge);
 
 
         //TODO Execute python code code
-        /*try (PythonInterpreter interpreter = new PythonInterpreter()) {
+        try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter output = new StringWriter();
             interpreter.setOut(output);
 
             log.info("Executing user answer: {}", request.answer());
+
+            // Validate input
+        if (!isValidInput(request.answer())) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+            // Set resource limits
+//            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
+//            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
+
+            // Execute code in an isolated environment
+            interpreter.exec("import sys");
+            interpreter.exec("sys.path = []");
+            interpreter.exec("del sys");
+
             interpreter.exec(request.answer());
 
             String userResult = output.toString();
@@ -47,15 +60,93 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             if (Objects.equals(output.toString().trim(), userResult.trim())) {
                 log.info("Result: TAK");
+                return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.SUCCESS)
+                        .output(output.toString())
+                        .build();
                 //test.setResult(TestResult.PASSED);
             } else {
                 log.info("Result: WRONG");
+                return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.FAIL)
+                        .output(output.toString())
+                        .build();
                 //test.setResult(TestResult.FAILED);
             }
         } catch(Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
-        }*/
+            return ExecutedChallengeResponse.builder()
+                        .challengeId(challenge.getId())
+                        .result(Result.FAIL)
+                        .output(e.getMessage())
+                        .build();
+        }
+    }
 
+
+    // TODO
+    //  to adopt
+    // This function checks whether each command in user code starts with one of the allowed expressions (e.g. print, input, int, float, str, bool).
+    // If the command does not start with a valid expression, the method returns false, which means the input is invalid.
+    // Otherwise, it returns true, which means the input is safe to execute.
+
+    private boolean isValidInput(String input) {
+        String[] allowedExpressions = {"print", "input", "int", "float", "str", "bool", "def"};
+        String[] lines = input.split("\n");
+        for (String line : lines) {
+            String[] tokens = line.split("\\s");
+            if (tokens.length > 0) {
+                boolean isValid = false;
+                for (String expression : allowedExpressions) {
+                    if (tokens[0].startsWith(expression)) {
+                        isValid = true;
+                        break;
+                    }
+                }
+                if (!isValid) {
+                    if (tokens[0].matches("^\\d+(\\.\\d+)?([+\\-*/]\\d+(\\.\\d+)?)*$") ||
+                            tokens[0].matches("^\\d+(\\.\\d+)?(e[+-]?\\d+)?$")) {
+                        isValid = true;
+                    } else {
+                        // Sprawdź, czy pierwszy token jest definicją funkcji
+                        if (tokens[0].startsWith("def") && tokens[tokens.length - 1].endsWith(":")) {
+                            isValid = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    @Transactional
+    public ExecutedChallengeResponse executeClosedChallenge(ExecuteChallengeRequest request) {
+        Challenge challenge = challengeRepository
+                .findById(request.challengeId())
+                .orElseThrow(
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+
+        log.info("Executing challenge: {}", challenge);
+
+        if(request.answer().equals(challenge.getContent().getCorrectAnswer()))
+        {
+            log.info("Result: GOOD SOUP");
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.SUCCESS)
+                    .build();
+        }
+        else {
+            log.info("Result: WRONG");
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.FAIL)
+                    .build();
+        }
     }
 
 
@@ -66,14 +157,12 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .name(request.getName())
                 .content(jsonConverter.convertToEntityAttribute(request.getContent()))
                 .question(request.getQuestion())
+                .type(request.getType())
                 .build();
-
         log.info("challenge: {}", challenge);
         challengeRepository.save(challenge);
-        //return challengeMapper.toCreateChallengeResponse(challenge);
-
         return ChallengeResponse.builder()
-                .question(challenge.getQuestion())
+                .name(challenge.getName())
                 .question(challenge.getQuestion())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
                 .build();
@@ -132,5 +221,26 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .question(challenge.getQuestion())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
+    }
+    @Transactional
+    @Override
+    public ExecutedChallengeResponse execute(ExecuteChallengeRequest request) {
+        Challenge challenge = challengeRepository
+                .findById(request.challengeId())
+                .orElseThrow(
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+        if(request.type().equals(Type.CODE) && request.type().equals( challenge.getType()))
+        {
+            return executeChallenge(request);
+        } else if( (request.type().equals(Type.OPEN)|| request.type().equals(Type.CLOSED) && request.type().equals( challenge.getType()))
+        ){
+            return executeClosedChallenge(request);
+        }
+        else {
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.FAIL)
+                    .build();
+        }
     }
 }

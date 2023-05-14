@@ -8,5 +8,6 @@ import lombok.Data;
 public class ChallengeResponse {
     private String question;
     private String name;
+    private Type type;
     private String content;
 }

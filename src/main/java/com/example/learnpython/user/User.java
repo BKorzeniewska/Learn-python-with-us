@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private String lastname;
     @Column(name = "NICKNAME")
     private String nickname;
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD",length = 64)
     private String password;
     @Column(name = "LEVEL")
     private int level = 0;
