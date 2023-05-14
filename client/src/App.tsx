@@ -6,6 +6,10 @@ import { RegisterScreen } from './components/home/RegisterScreen';
 import { AuthProvider } from './components/auth/AuthContext';
 import { AcrticleScreen } from './components/home/ArticleScreen';
 import { ErrorProvider } from './components/home/ErrorContext';
+import { UserScreen } from './components/user/UserScreen';
+import { AdminArticlesScreen } from './components/admin/AdminArticlesScreen';
+import { ArticleEditionScreen } from './components/admin/ArticleEditionScreen';
+import { ChallengesScreen } from './components/common/challenges/ChallengesScreen';
 
 
 function App() {
@@ -18,6 +22,10 @@ function App() {
             <Route path="/login" element={<LoginScreen />}></Route>
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
+            <Route path="/user/:userId?" element={<UserScreen />}></Route>
+            <Route path="/admin/articles" element={<AdminArticlesScreen />}></Route>
+            <Route path="/admin/edit/:articleId?" element={<ArticleEditionScreen />}></Route>
+            <Route path="/challenges/:articleId" element={<ChallengesScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>

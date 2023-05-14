@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.exp=:exp, u.level=:level WHERE u.id=:id")
     void updateLevelAndExpById(final Long id, final Integer level, final Long exp);
 
+    @Query("SELECT u FROM User u INNER JOIN Token t ON u.id = t.user.id WHERE t.token =:token AND (t.expired = false OR t.revoked = false)")
+    Optional<User> findByToken(final String token);
+
     @Query("DELETE FROM User u WHERE u.email=:email")
     void deleteByEmail(final String email);
 }

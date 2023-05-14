@@ -2,7 +2,9 @@ package com.example.learnpython.article;
 
 import com.example.learnpython.article.model.ArticleDTO;
 import com.example.learnpython.article.model.ArticleResponse;
+import com.example.learnpython.article.model.ModifyArticleRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,10 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/article")
+@Log4j2
 @RequiredArgsConstructor
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ArticleAdminServiceImpl articleAdminService;
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

@@ -4,16 +4,13 @@ import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.article.model.ArticleDTO;
 import com.example.learnpython.article.model.ArticleResponse;
 import com.example.learnpython.article.model.CreateArticleRequest;
+import com.example.learnpython.article.model.ModifyArticleRequest;
 import com.example.learnpython.chapter.ChapterRepository;
 import com.example.learnpython.user.User;
 import com.example.learnpython.article.exception.InvalidDateException;
+import com.example.learnpython.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,33 +22,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ChapterRepository chapterRepository;
     private final ArticleMapper articleMapper;
-
-
-    @Override
-    public ArticleResponse createArticle(CreateArticleRequest request) {
-
-        //validate user
-
-        //validate chapter
-        var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
-                () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
-
-        var article = Article.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .chapter(chapter)
-                .creationDate(LocalDate.now())
-                .user(User.builder().id(request.getUserId()).build())
-                .build();
-
-        articleRepository.save(article);
-
-        log.info("article: {}", article);
-
-        return articleMapper.toCreateArticleResponse(article);
-    }
 
     @Override
     public ArticleDTO getArticlePageByChapter(final Long articleId) {

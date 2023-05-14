@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateArticleRequest {
+public class ModifyArticleRequest {
+    private Long id;
     private String title;
     private String content;
-    private Long chapterId;
 }

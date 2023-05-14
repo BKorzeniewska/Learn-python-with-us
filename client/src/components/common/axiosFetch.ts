@@ -46,3 +46,22 @@ export async function Post<T, E=APIError>(url: string, data: any, token?: string
         return { isOk: false, error: error } as Result<T, AxiosError<E>>;
     });
 }
+
+export async function Put<T, E=APIError>(url: string, data: any, token?: string): Promise<Result<T, AxiosError<E>>> {
+    const response = axios.put<T>(url, data,
+        {
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            validateStatus: (status) => {
+                return status < 300 && status >= 200;
+            }
+        });
+
+    return response.then((data) => {
+        return { isOk: true, value: data.data } as Result<T, AxiosError<E>>;
+    }).catch((error: E|AxiosError) => {
+        return { isOk: false, error: error } as Result<T, AxiosError<E>>;
+    });
+}

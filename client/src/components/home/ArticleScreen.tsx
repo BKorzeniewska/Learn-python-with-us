@@ -73,10 +73,14 @@ export const AcrticleScreen = () => {
                                     <Button onClick={() => navigate(`/article/${article.previousArticleIndex}`)} variant="primary">Poprzedni artykuł</Button>)}
 
                                     </Col>
+                                    <Col className="col-3" style={{ textAlign: "center" }}>
+                                    <Button
+                                     onClick={() => navigate(`/challenges/${article?.article.id}`)} variant="primary">Wykonaj zadania</Button>
+                                    </Col>
                                     <Col className="col-3">
                                     {article && article.nextArticleIndex !== null && (
                                     <Button
-                                            style={{ float: "right" }}//TODO: can casue problems
+                                            style={{ float: "right" }}
                                             variant="primary"
                                             onClick={() => navigate(`/article/${article.nextArticleIndex}`)}
                                         >Następny artykuł</Button>)}

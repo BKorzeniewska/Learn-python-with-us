@@ -54,7 +54,7 @@ export const MainNavbar = (props : Props) => {
                 }
 
               </NavDropdown.Item>
-              <NavDropdown.Item onClick = {() => navigate("/profile")}>Profil</NavDropdown.Item>
+              <NavDropdown.Item onClick = {() => navigate("/user/")}>Profil</NavDropdown.Item>
               <NavDropdown.Item onClick = {(event) => logout(event)}>Wyloguj</NavDropdown.Item>
             </NavDropdown>
         </Nav>
