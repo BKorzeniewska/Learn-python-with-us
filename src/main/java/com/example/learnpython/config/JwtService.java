@@ -1,5 +1,6 @@
 package com.example.learnpython.config;
 
+import com.example.learnpython.token.ExpiredTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -51,7 +52,7 @@ public class JwtService {
       return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
+    boolean isTokenExpired(String token) {
       return extractExpiration(token).before(new Date());
     }
 
