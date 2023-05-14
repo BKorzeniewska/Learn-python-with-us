@@ -63,6 +63,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.SUCCESS)
+                        .output(output.toString())
                         .build();
             } else {
                 log.info("Result: WRONG");
@@ -70,16 +71,21 @@ public class ChallengeServiceImpl implements ChallengeService {
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.FAIL)
+                        .output(output.toString())
                         .build();
             }
         } catch (Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
+            throw new RuntimeException("Error executing Python script", e);
+//            return ExecutedChallengeResponse.builder()
+//                    .challengeId(challenge.getId())
+//                    .result(Result.FAIL)
+//                    .output(e.getMessage())
+//                    .build();
         }
-        return ExecutedChallengeResponse.builder()
-                .challengeId(challenge.getId())
-                .result(Result.SUCCESS)
-                .build();
+
     }
+
 
     // TODO
     //  to adopt
@@ -88,23 +94,33 @@ public class ChallengeServiceImpl implements ChallengeService {
     // Otherwise, it returns true, which means the input is safe to execute.
 
     private boolean isValidInput(String input) {
-        String[] allowedExpressions = {"print", "input", "int", "float", "str", "bool"};
+        String[] allowedExpressions = {"print", "input", "int", "float", "str", "bool", "def"};
         String[] lines = input.split("\n");
-        for (String line : lines) {
-            String[] tokens = line.split("\\s");
-            if (tokens.length > 0) {
-                boolean isValid = false;
-                for (String expression : allowedExpressions) {
-                    if (tokens[0].startsWith(expression)) {
-                        isValid = true;
-                        break;
-                    }
-                }
-                if (!isValid) {
-                    return false;
-                }
-            }
-        }
+//        for (String line : lines) {
+//            String[] tokens = line.split("\\s");
+//            if (tokens.length > 0) {
+//                boolean isValid = false;
+//                for (String expression : allowedExpressions) {
+//                    if (tokens[0].startsWith(expression)) {
+//                        isValid = true;
+//                        break;
+//                    }
+//                }
+//                if (!isValid) {
+//                    if (tokens[0].matches("^\\d+(\\.\\d+)?([+\\-*/]\\d+(\\.\\d+)?)*$") ||
+//                            tokens[0].matches("^\\d+(\\.\\d+)?(e[+-]?\\d+)?$")) {
+//                        isValid = true;
+//                    } else {
+//                        // Sprawdź, czy pierwszy token jest definicją funkcji
+//                        if (tokens[0].startsWith("def") && tokens[tokens.length - 1].endsWith(":")) {
+//                            isValid = true;
+//                        } else {
+//                            return false;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return true;
     }
 
@@ -207,15 +223,25 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
     }
-
+    @Transactional
     @Override
     public ExecutedChallengeResponse execute(ExecuteChallengeRequest request) {
-        if(request.type().equals(Type.CODE))
+        Challenge challenge = challengeRepository
+                .findById(request.challengeId())
+                .orElseThrow(
+                        () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
+        if(request.type().equals(Type.CODE) && request.type().equals( challenge.getType()))
         {
             return executeChallenge(request);
-        } else {
+        } else if( (request.type().equals(Type.OPEN)|| request.type().equals(Type.CLOSED) && request.type().equals( challenge.getType()))
+        ){
             return executeClosedChallenge(request);
-
+        }
+        else {
+            return ExecutedChallengeResponse.builder()
+                    .challengeId(challenge.getId())
+                    .result(Result.FAIL)
+                    .build();
         }
     }
 }

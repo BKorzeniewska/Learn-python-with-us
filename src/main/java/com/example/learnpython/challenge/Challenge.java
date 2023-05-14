@@ -41,6 +41,7 @@ public class Challenge {
     @Column(name = "CONTENT", columnDefinition = "jsonb")
     private ContentJson content;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "challenge")
     private List<Solution> solutions;
 

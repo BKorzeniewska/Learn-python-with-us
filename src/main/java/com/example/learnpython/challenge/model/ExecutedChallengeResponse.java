@@ -8,4 +8,6 @@ import lombok.Data;
 public class ExecutedChallengeResponse {
     private long challengeId;
     private Result result;
+    private String  output;
+
 }
