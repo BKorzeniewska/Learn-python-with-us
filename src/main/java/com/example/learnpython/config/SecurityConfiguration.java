@@ -1,6 +1,7 @@
 package com.example.learnpython.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +20,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
 
+@Log4j2
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -27,15 +29,8 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
-    private static final String[] AUTH_WHITELIST = {
-            // -- Endpoints
-            "/api/v1/**",
-            // -- Swagger UI v3
-            "/v3/api-docs/**",
-            "v3/api-docs/**",
-            "/swagger-ui/**",
-            "swagger-ui/**",
-    };
+    private final ApplicationDynamicConfig applicationDynamicConfig;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +38,10 @@ public class SecurityConfiguration {
         http
           .cors().and().csrf().disable()
           .authorizeHttpRequests( auth -> auth
-                .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAuthWitheList()).permitAll()
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasRole("PRIVILEGED_USER")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasRole("MODERATOR")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAdminEndpointsList()).hasRole("ADMIN")
                 .anyRequest().authenticated()
           )
           .sessionManagement()

@@ -36,3 +36,20 @@ server:
         include-stacktrace: always
         include-exception: true
 
+com:
+    learnpython:
+        securityConfig:
+            authWitheList:
+                - "/api/v1/**"
+                - "/v3/api-docs/**"
+                - "v3/api-docs/**"
+                - "/swagger-ui/**"
+                - "swagger-ui/**"
+            moderatorEndpointsList:
+                - "siema1"
+            adminEndpointsList:
+                - "siema2"
+            privilegedUserEndpointsList:
+                - "siema3"
+
+
