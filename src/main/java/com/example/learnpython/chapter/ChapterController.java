@@ -21,12 +21,6 @@ public class ChapterController {
         return new ResponseEntity<>(chapters, HttpStatus.OK);
     }
 
-    @PostMapping("/create/{chapterName}")
-    public ResponseEntity<ChapterResponse> createChapter(@PathVariable("chapterName") String chapterName) {
-        var chapter = chapterService.createChapter(chapterName);
-        return new ResponseEntity<>(chapter, HttpStatus.CREATED);
-    }
-
     @GetMapping("/menu")
     public ResponseEntity<List<MenuChapterResponse>> getMenuChapters() {
         var chapters = chapterService.getMenuChapters();

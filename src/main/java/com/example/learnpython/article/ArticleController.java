@@ -20,10 +20,8 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ArticleAdminServiceImpl articleAdminService;
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<ArticleResponse> getArticleById(@PathVariable("id") Long articleId) {
         var article = articleService.getArticleById(articleId);
         return new ResponseEntity<>(article, HttpStatus.OK);

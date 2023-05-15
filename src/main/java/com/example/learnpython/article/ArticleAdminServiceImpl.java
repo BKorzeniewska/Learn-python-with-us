@@ -46,7 +46,7 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
 
         articleRepository.save(article);
 
-        log.info("article: {}", article);
+        log.info("article: {}", article.getTitle());
 
         return articleMapper.toCreateArticleResponse(article);
     }

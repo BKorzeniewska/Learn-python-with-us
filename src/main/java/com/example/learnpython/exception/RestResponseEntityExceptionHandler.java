@@ -1,5 +1,6 @@
 package com.example.learnpython.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,5 +19,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .httpStatus(exception.getHttpStatus().name())
                 .timestamp(LocalDateTime.now())
                 .build(), exception.getHttpStatus());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception exception) {
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse = new ErrorResponse(
+                LocalDateTime.now(),
+                "UNEXPECTED_ERROR",
+                httpStatus.name(),
+                exception.getMessage()
+        );
+        // Log the exception or perform additional error handling if needed
+        return new ResponseEntity<>(errorResponse, httpStatus);
     }
 }
