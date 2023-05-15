@@ -1,5 +1,6 @@
 package com.example.learnpython.exception;
 
+import com.example.learnpython.token.ExpiredTokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,7 +31,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 httpStatus.name(),
                 exception.getMessage()
         );
-        // Log the exception or perform additional error handling if needed
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
 }

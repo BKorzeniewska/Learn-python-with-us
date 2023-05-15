@@ -19,7 +19,8 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
       """)
     List<Token> findAllValidTokenByUser(Long id);
 
-    @Query("DELETE FROM Token t WHERE t.expired = true OR t.revoked = true")
+    @Transactional
+    @Query(value = "DELETE FROM token WHERE expired = true OR revoked = true", nativeQuery = true)
     void deleteAllInvalidTokens();
 
     //@Transactional
