@@ -33,4 +33,12 @@ public class ArticleAdminController {
         log.info("modifyArticle() - end");
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{articleId}")
+    public ResponseEntity<?> deleteArticle(@PathVariable("articleId") final Long articleId) {
+        log.info("deleteArticle() - start: {}", articleId);
+        articleAdminService.deleteArticle(articleId);
+        log.info("deleteArticle() - end");
+        return new ResponseEntity<>(articleId, HttpStatus.OK);
+    }
 }

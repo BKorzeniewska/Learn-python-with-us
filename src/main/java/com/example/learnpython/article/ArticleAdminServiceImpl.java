@@ -80,4 +80,13 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
 
         return articleMapper.toCreateArticleResponse(updatedArticle);
     }
+
+    @Override
+    public void deleteArticle(final Long articleId) {
+        if (articleId == null) {
+            throw new ArticleNotFoundException("Article ID cannot be null", "ARTICLE_ID_NULL");
+        }
+
+        articleRepository.deleteArticleById(articleId);
+    }
 }

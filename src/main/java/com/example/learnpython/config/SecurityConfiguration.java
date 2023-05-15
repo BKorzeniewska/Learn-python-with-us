@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,8 +38,8 @@ public class SecurityConfiguration {
           .cors().and().csrf().disable()
           .authorizeHttpRequests( auth -> auth
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAuthWitheList()).permitAll()
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasRole("PRIVILEGED_USER")
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasRole("MODERATOR")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasAnyRole("MODERATOR", "ADMIN")
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAdminEndpointsList()).hasRole("ADMIN")
                 .anyRequest().authenticated()
           )

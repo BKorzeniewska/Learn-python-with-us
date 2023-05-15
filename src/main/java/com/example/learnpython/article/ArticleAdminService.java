@@ -9,4 +9,6 @@ public interface ArticleAdminService {
     ArticleResponse createArticle(final CreateArticleRequest request, final String bearerToken);
 
     ArticleResponse modifyArticle(final ModifyArticleRequest request);
+
+    void deleteArticle(final Long articleId);
 }
