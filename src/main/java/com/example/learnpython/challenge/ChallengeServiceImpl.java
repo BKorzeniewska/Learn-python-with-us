@@ -63,7 +63,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.SUCCESS)
-                        .output(output.toString())
+                        .output(output.toString().trim())
                         .build();
                 //test.setResult(TestResult.PASSED);
             } else {
@@ -71,7 +71,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.FAIL)
-                        .output(output.toString())
+                        .output(output.toString().trim())
                         .build();
                 //test.setResult(TestResult.FAILED);
             }
