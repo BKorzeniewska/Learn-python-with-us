@@ -2,6 +2,7 @@ package com.example.learnpython.token;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,8 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
       """)
     List<Token> findAllValidTokenByUser(Long id);
 
+
+    @Modifying
     @Transactional
     @Query(value = "DELETE FROM token WHERE expired = true OR revoked = true", nativeQuery = true)
     void deleteAllInvalidTokens();

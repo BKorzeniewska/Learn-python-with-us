@@ -1,7 +1,6 @@
 package com.example.learnpython.config;
 
 
-import com.example.learnpython.exception.BaseServiceException;
 import com.example.learnpython.token.ExpiredTokenException;
 import com.example.learnpython.token.TokenRepository;
 import com.google.gson.Gson;
@@ -11,10 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
