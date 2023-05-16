@@ -165,6 +165,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         return ChallengeResponse.builder()
                 .name(challenge.getName())
                 .question(challenge.getQuestion())
+                .type(challenge.getType())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
                 .build();
     }
