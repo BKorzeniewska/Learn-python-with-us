@@ -17,9 +17,9 @@ export const loadCommentsByArticleId = async (id: string): Promise<Result<Commen
     const response = Get<CommentResponse[]>(`${baseUrl}/api/v1/comment/${id}`);
 
     return response.then((data) => {
-        if(data.isOk) {
+        if (data.isOk) {
             return { isOk: true, value: data.value } as Result<CommentResponse[], CommentResponseError>;
-        } else {          
+        } else {
             return { isOk: false, error: "COMMENTS_NOT_FOUND" } as Result<CommentResponse[], CommentResponseError>;
         }
     });

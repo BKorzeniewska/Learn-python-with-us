@@ -13,45 +13,45 @@ type Props = {
 export const CommentForm = (props: Props) => {
     const { errorMessages, setError } = useError();
 
-  
+
     return (
         <Card className="mt-4">
-        <Card.Body>
-            <Card.Title>Napisz komentarz</Card.Title>
+            <Card.Body>
+                <Card.Title>Napisz komentarz</Card.Title>
 
-            <Form
-                onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault()
-                    // setIsLoading(true)
-                    console.log("submit add comment")
-                    setError("Backend nie działa XD")
-                }}
-            >
-                <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlTextarea1"
+                <Form
+                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault()
+                        // setIsLoading(true)
+                        console.log("submit add comment")
+                        setError("Backend nie działa XD")
+                    }}
                 >
-                    <Form.Label>Twój komentarz</Form.Label>
-                    <Form.Control 
-                        as="textarea"
-                        style={{fontFamily: "monospace"}}
-                        rows={5} 
-                        defaultValue={""}
+                    <Form.Group
+                        className="mb-3"
+                        controlId="exampleForm.ControlTextarea1"
+                    >
+                        <Form.Label>Twój komentarz</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            style={{ fontFamily: "monospace" }}
+                            rows={5}
+                            defaultValue={""}
 
                         />
-                </Form.Group>
-                <Form.Group>
-                    <Button
-                        variant="primary"
-                        type="submit"
-                        className="submit-button"
+                    </Form.Group>
+                    <Form.Group>
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            className="submit-button"
                         >
                             Submit
-                    </Button>
-                </Form.Group>
-            </Form>
+                        </Button>
+                    </Form.Group>
+                </Form>
 
-        </Card.Body>
-    </Card>
+            </Card.Body>
+        </Card>
     );
-  };
+};

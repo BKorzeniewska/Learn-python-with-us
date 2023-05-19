@@ -14,7 +14,7 @@ type Props = {
 export const CommentSection = (props: Props) => {
     const [comments, setComments] = useState<CommentResponse[]>();
     const { errorMessages, setError } = useError();
-    const {isLoggedIn} = useContext(AuthContext);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         loadCommentsByArticleId(props.articleId.toString()).then((com) => {
@@ -28,7 +28,7 @@ export const CommentSection = (props: Props) => {
 
     return (
         <div>
-            {isLoggedIn() && <CommentForm articleId={props.articleId}/>}
+            {isLoggedIn() && <CommentForm articleId={props.articleId} />}
             {comments &&
                 comments.map((comment) => (
                     <Comment
