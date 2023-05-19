@@ -28,15 +28,11 @@ export const CommentSection = (props: Props) => {
 
     return (
         <div>
-            {isLoggedIn() && <CommentForm articleId={props.articleId} />}
-            {comments &&
-                comments.map((comment) => (
-                    <Comment
-                        content={comment.content}
-                        userId={comment.userId}
-                        date={comment.createdAt}
-                    />
-                ))}
+          {isLoggedIn() && <CommentForm setComments={setComments} articleId={props.articleId} />}
+          {comments &&
+            comments.slice().reverse().map((comment) => (
+              <Comment data={comment} key={comment.id} />
+            ))}
         </div>
-    );
+      );
 };

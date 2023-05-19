@@ -1,5 +1,5 @@
 import { baseUrl } from "../../common/apis/common";
-import { Get } from "../../common/axiosFetch";
+import { APIError, Get, Post } from "../../common/axiosFetch";
 import { Result } from "../../common/poliTypes";
 
 
@@ -8,10 +8,17 @@ export type CommentResponse = {
     content: string;
     createdAt: string;
     articleId: number;
-    userId: number;
+    userDetails: UserDetails;
 }
 
-export type CommentResponseError = "COMMENTS_NOT_FOUND"
+type UserDetails = {
+    id: number;
+    nickname: string;
+    email: string;
+    firstname: string;
+}
+
+export type CommentResponseError = "COMMENTS_NOT_FOUND";
 
 export const loadCommentsByArticleId = async (id: string): Promise<Result<CommentResponse[], CommentResponseError>> => {
     const response = Get<CommentResponse[]>(`${baseUrl}/api/v1/comment/${id}`);
@@ -24,3 +31,17 @@ export const loadCommentsByArticleId = async (id: string): Promise<Result<Commen
         }
     });
 }
+
+export const createComment = async (articleId: number, content: string): Promise<Result<CommentResponse, APIError>> => {
+    const response = Post<CommentResponse, APIError>(`${baseUrl}/api/v1/comment/create`, { articleId, content });
+  
+    return response.then((data) => {
+      if (data.isOk) {
+        return { isOk: true, value: data.value } as Result<CommentResponse, APIError>;
+      } else {
+        return { isOk: false, error: data.error } as Result<CommentResponse, APIError|any>;
+        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError bo tam jest spro informacji z serwera
+      }
+    });
+  };
+  

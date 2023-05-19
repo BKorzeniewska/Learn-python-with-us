@@ -1,42 +1,25 @@
 import { useEffect, useState } from "react";
-import { CommentResponse } from "./apis/comment"
+import { CommentResponse } from "./apis/comment";
 import { UserInfo, loadUserById } from "../user/apis/profile";
 import { useError } from "../home/ErrorContext";
-
+import { Card } from "react-bootstrap";
 
 type Props = {
-    content: string;
-    userId: number;
-    date: string;
-}
+  data: CommentResponse;
+};
 
 export const Comment = (props: Props) => {
-    const [user, setUser] = useState<UserInfo | undefined>(undefined);
-    const { errorMessages, setError } = useError();
-
-    useEffect(() => {
-        loadUserById(props.userId.toString()).then((currentUser) => {
-            if (currentUser.isOk) {
-                setUser(currentUser.value);
-            } else {
-                setError("Nie udało się wczytać informacji o użytkowniku");
-            }
-        });
-    }, [props.userId]);
-
-    return (
-        <div className="card mb-3">
-            <div className="card-body">
-                {user && (
-                    <div>
-                        <h5 className="card-title">{user.nickname}</h5>
-                        <p className="card-text">{props.content}</p>
-                        <p className="card-text">
-                            <small className="text-muted">{props.date}</small>
-                        </p>
-                    </div>
-                )}
-            </div>
+  return (
+    <Card className="mb-3">
+      <Card.Body>
+        <div>
+          <Card.Title>{props.data.userDetails.nickname}</Card.Title>
+          <Card.Text>{props.data.content}</Card.Text>
+          <Card.Text>
+            <small className="text-muted">{props.data.createdAt}</small>
+          </Card.Text>
         </div>
-    );
+      </Card.Body>
+    </Card>
+  );
 };

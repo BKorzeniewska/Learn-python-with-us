@@ -44,11 +44,13 @@ export const ArticleEditionScreen = () => {
         () => {
             if (articleId) {
                 loadArticleById(articleId || "0").then(
-                    (article) => {
-                        if (article.isOk) {
-                            setArticle(article.value);
+                    (art) => {
+                        if (art.isOk) {
+                            setArticle(art.value);
+                            setCurrentText(art.value.content);
                         } else {
                             setError("Nie udało się wczytać artykułu");
+                            setCurrentText("Coś poszło nie tak...");
                             setArticle(
 
                                 {
@@ -61,6 +63,7 @@ export const ArticleEditionScreen = () => {
 
                                 });
                         }
+                        
                     }
                 )
             }
@@ -76,8 +79,9 @@ export const ArticleEditionScreen = () => {
                         date: new Date().toISOString(),
 
                     });
+                    setCurrentText(article?.content || "");
             }
-            setCurrentText(article?.content || "");
+            
         }, [articleId]
     );
 
@@ -87,7 +91,7 @@ export const ArticleEditionScreen = () => {
                 <h2>{article?.title}</h2>
                 <Row>
                     <Col>
-                        <MarkDownRenderer content={currentText} />
+                        <MarkDownRenderer content={currentText} key={currentText}/>
                     </Col>
                     <Col>
                         <Form onSubmit={(event: React.FormEvent<HTMLFormElement>) => {

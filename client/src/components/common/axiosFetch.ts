@@ -3,10 +3,11 @@ import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { Result } from "./poliTypes";
 
-type APIError<T=string> = {
+export type APIError<T=string> = {
     timestamp: string;
     errorCode: T;
     errorMessage: string;
+    httpStatus: string;
 }
 
 export async function Get<T, E=APIError>(url: string): Promise<Result<T, AxiosError<E>>> {
