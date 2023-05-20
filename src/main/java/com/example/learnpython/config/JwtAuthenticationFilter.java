@@ -1,15 +1,21 @@
 package com.example.learnpython.config;
 
 
+import com.example.learnpython.exception.BaseServiceException;
 import com.example.learnpython.token.ExpiredTokenException;
 import com.example.learnpython.token.TokenRepository;
+import com.google.gson.Gson;
 import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenRepository tokenRepository;
+    private final static Gson GSON = new Gson();
 
     @Override
     protected void doFilterInternal(
@@ -39,6 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
+        response.setContentType("application/json");
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -48,11 +57,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             userEmail = jwtService.extractUsername(jwt);
         } catch (ExpiredJwtException ex) {
-            throw new ExpiredTokenException("Token expired", "TOKEN_EXPIRED");
+            final ExpiredTokenException exception = new ExpiredTokenException("Token expired", "TOKEN_EXPIRED", HttpStatus.BAD_REQUEST);
+            response.getWriter().write(GSON.toJson(exception));
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return;
         } catch (ClaimJwtException ex) {
-            throw new ExpiredTokenException("Invalid JWT claim", "INVALID_CLAIM");
+            final ExpiredTokenException exception = new ExpiredTokenException("Claim exception", "CLAIM_EXCEPTION", HttpStatus.BAD_REQUEST);
+            response.getWriter().write(GSON.toJson(exception));
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return;
         } catch (Exception ex) {
-            throw new ExpiredTokenException("An error occurred", "UNKNOWN_ERROR");
+            final ExpiredTokenException exception = new ExpiredTokenException("Unknown error", "ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.getWriter().write(GSON.toJson(exception));
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return;
         }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {

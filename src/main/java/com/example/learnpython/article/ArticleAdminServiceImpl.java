@@ -46,7 +46,7 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
 
         articleRepository.save(article);
 
-        log.info("article: {}", article);
+        log.info("article: {}", article.getTitle());
 
         return articleMapper.toCreateArticleResponse(article);
     }
@@ -79,5 +79,14 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
                 .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
 
         return articleMapper.toCreateArticleResponse(updatedArticle);
+    }
+
+    @Override
+    public void deleteArticle(final Long articleId) {
+        if (articleId == null) {
+            throw new ArticleNotFoundException("Article ID cannot be null", "ARTICLE_ID_NULL");
+        }
+
+        articleRepository.deleteArticleById(articleId);
     }
 }

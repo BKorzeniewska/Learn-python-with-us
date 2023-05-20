@@ -36,6 +36,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query(value = "UPDATE article SET title = :title, content = :content WHERE article_id = :articleId", nativeQuery = true)
     void updateArticle(final String title, final String content, final Long articleId);
 
+    @Transactional
     @Modifying
     @Query("DELETE FROM Article a WHERE a.id = :articleId")
     void deleteArticleById(final Long articleId);

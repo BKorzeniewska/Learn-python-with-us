@@ -8,5 +8,4 @@ import lombok.Data;
 public class CreateCommentRequest {
     private String content;
     private Long articleId;
-    private Long userId;
 }

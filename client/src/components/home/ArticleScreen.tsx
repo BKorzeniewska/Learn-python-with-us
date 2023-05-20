@@ -7,6 +7,8 @@ import { LoadingSpinner } from "./Spinner";
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";
+import { Comment } from "../comments/Comment";
+import { CommentSection } from "../comments/CommentSection";
 
 export const AcrticleScreen = () => {
     const { articleId } = useParams();
@@ -34,11 +36,11 @@ export const AcrticleScreen = () => {
                                     chapterId: 0,
                                     userId: 0,
                                     date: new Date().toISOString(),
-                                  },
-                                  previousArticleIndex: null,
-                                  nextArticleIndex: null,
-                                  currentArticle: 0,
-                                  totalArticles: 0,
+                                },
+                                previousArticleIndex: null,
+                                nextArticleIndex: null,
+                                currentArticle: 0,
+                                totalArticles: 0,
                             });
                     }
                 }
@@ -69,23 +71,27 @@ export const AcrticleScreen = () => {
                                 </Row>
                                 <Row className="my-3 justify-content-between">
                                     <Col className="col-3">
-                                    {article && article.previousArticleIndex !== null && (
-                                    <Button onClick={() => navigate(`/article/${article.previousArticleIndex}`)} variant="primary">Poprzedni artykuł</Button>)}
+                                        {article && article.previousArticleIndex !== null && (
+                                            <Button onClick={() => navigate(`/article/${article.previousArticleIndex}`)} variant="primary">Poprzedni artykuł</Button>)}
 
                                     </Col>
                                     <Col className="col-3" style={{ textAlign: "center" }}>
-                                    <Button
-                                     onClick={() => navigate(`/challenges/${article?.article.id}`)} variant="primary">Wykonaj zadania</Button>
+                                        <Button
+                                            onClick={() => navigate(`/challenges/${article?.article.id}`)} variant="primary">Wykonaj zadania</Button>
                                     </Col>
                                     <Col className="col-3">
-                                    {article && article.nextArticleIndex !== null && (
-                                    <Button
-                                            style={{ float: "right" }}
-                                            variant="primary"
-                                            onClick={() => navigate(`/article/${article.nextArticleIndex}`)}
-                                        >Następny artykuł</Button>)}
+                                        {article && article.nextArticleIndex !== null && (
+                                            <Button
+                                                style={{ float: "right" }}
+                                                variant="primary"
+                                                onClick={() => navigate(`/article/${article.nextArticleIndex}`)}
+                                            >Następny artykuł</Button>)}
                                     </Col>
 
+                                </Row>
+                                <Row>
+                                    <CommentSection articleId={article?.article.id!!}></CommentSection>
+                                    {/* <Comment userId={1} content="chuju jebany kurwa" date="12 marca skurwysyny"></Comment> */}
                                 </Row>
                             </LoadingSpinner>
                         </div>

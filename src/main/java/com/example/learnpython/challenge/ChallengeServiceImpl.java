@@ -34,8 +34,9 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         //TODO Execute python code code
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
-            StringWriter output = new StringWriter();
-            interpreter.setOut(output);
+            StringWriter outputUser = new StringWriter();
+            StringWriter outputServer = new StringWriter();
+            interpreter.setOut(outputUser);
 
             log.info("Executing user answer: {}", request.answer());
 
@@ -48,22 +49,22 @@ public class ChallengeServiceImpl implements ChallengeService {
 //            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
 
             // Execute code in an isolated environment
-            interpreter.exec("import sys");
-            interpreter.exec("sys.path = []");
-            interpreter.exec("del sys");
+//            interpreter.exec("import sys");
+//            interpreter.exec("sys.path = []");
+//            interpreter.exec("del sys");
 
             interpreter.exec(request.answer());
 
-            String userResult = output.toString();
-
+            String userResult = outputUser.toString();
+            interpreter.setOut(outputServer);
             interpreter.exec(challenge.getContent().getCorrectAnswer());
 
-            if (Objects.equals(output.toString().trim(), userResult.trim())) {
+            if (Objects.equals(outputServer.toString().trim(), userResult.trim())) {
                 log.info("Result: TAK");
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.SUCCESS)
-                        .output(output.toString())
+                        .output(outputServer.toString().trim())
                         .build();
                 //test.setResult(TestResult.PASSED);
             } else {
@@ -71,7 +72,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
                         .result(Result.FAIL)
-                        .output(output.toString())
+                        .output(outputServer.toString().trim())
                         .build();
                 //test.setResult(TestResult.FAILED);
             }
@@ -164,6 +165,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         return ChallengeResponse.builder()
                 .name(challenge.getName())
                 .question(challenge.getQuestion())
+                .type(challenge.getType())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
                 .build();
     }

@@ -1,9 +1,9 @@
 package com.example.learnpython.exception;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-@Getter
+@Data
 public class BaseServiceException extends RuntimeException {
 
     private final String errorCode;

@@ -6,6 +6,7 @@ import { ArticleMenu, loadArticleMenu } from '../common/apis/article';
 import { useError } from '../home/ErrorContext';
 import { ThemeContext } from '../themes/ThemeProvider';
 import { AppWrapper } from '../home/AppWrapper';
+import {AddChapter} from './AddChapter';
 
 type ChapterProps = {
   id: number;
@@ -50,6 +51,7 @@ export const AdminArticlesScreen = () => {
 
   const [result, setResult] = useState<ArticleMenu[]>();
   const { errorMessages, setError } = useError();
+  const [addChapter, setAddChapter] = useState(false);
 
   const location = useLocation();
   useEffect(() => {
@@ -62,15 +64,26 @@ export const AdminArticlesScreen = () => {
     });
   }, [location]);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <AppWrapper hideSidebar>
+      <AddChapter isShown={showModal} onClose={handleCloseModal} />
       <Container className="my-5">
         <div className="">
           <div className="d-flex justify-content-end mb-3">
             <button className="btn btn-success" onClick={() => navigate('/admin/edit')}>
               Dodaj artykuł
             </button>
-            <button className="btn btn-success" onClick={() => navigate('')}>
+            <button className="btn btn-success" onClick={handleOpenModal}>
               Dodaj rozdział
             </button>
           </div>
