@@ -1,15 +1,18 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.article.Article;
+import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
 
 import java.io.StringWriter;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +22,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
+    private final ArticleRepository articleRepository;
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
 
@@ -41,9 +45,9 @@ public class ChallengeServiceImpl implements ChallengeService {
             log.info("Executing user answer: {}", request.answer());
 
             // Validate input
-        if (!isValidInput(request.answer())) {
-            throw new IllegalArgumentException("Invalid input");
-        }
+            if (!isValidInput(request.answer())) {
+                throw new IllegalArgumentException("Invalid input");
+            }
             // Set resource limits
 //            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
 //            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
@@ -76,13 +80,13 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .build();
                 //test.setResult(TestResult.FAILED);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
             return ExecutedChallengeResponse.builder()
-                        .challengeId(challenge.getId())
-                        .result(Result.FAIL)
-                        .output(e.getMessage())
-                        .build();
+                    .challengeId(challenge.getId())
+                    .result(Result.FAIL)
+                    .output(e.getMessage())
+                    .build();
         }
     }
 
@@ -133,15 +137,13 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         log.info("Executing challenge: {}", challenge);
 
-        if(request.answer().equals(challenge.getContent().getCorrectAnswer()))
-        {
+        if (request.answer().equals(challenge.getContent().getCorrectAnswer())) {
             log.info("Result: GOOD SOUP");
             return ExecutedChallengeResponse.builder()
                     .challengeId(challenge.getId())
                     .result(Result.SUCCESS)
                     .build();
-        }
-        else {
+        } else {
             log.info("Result: WRONG");
             return ExecutedChallengeResponse.builder()
                     .challengeId(challenge.getId())
@@ -150,7 +152,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
     }
 
-
+    @Transactional
     @Override
     public ChallengeResponse createChallenge(CreateChallengeRequest request) {
         //var challenge = challengeMapper.toChallenge(request);
@@ -160,13 +162,32 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .question(request.getQuestion())
                 .type(request.getType())
                 .build();
-        log.info("challenge: {}", challenge);
+        Set<Article> articles = new HashSet<>();
+        for (Long id : request.getArticlesID()) {
+            final Article article = articleRepository
+                    .findById(id)
+                    .orElseThrow(() -> new ArticleNotFoundException(
+                            "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+            articles.add(article);
+
+        }
+        challenge.setArticles(articles);
         challengeRepository.save(challenge);
+        for (Article article : articles) {
+            Hibernate.initialize(article);
+            Hibernate.initialize(article.getChallenges());
+            article.getChallenges().add(challenge);
+            articleRepository.save(article);
+        }
+
+        log.info("challenge: {}", challenge);
+
         return ChallengeResponse.builder()
                 .name(challenge.getName())
                 .question(challenge.getQuestion())
                 .type(challenge.getType())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
+                .articlesID((List<Long>) request.getArticlesID())
                 .build();
     }
 
@@ -217,13 +238,14 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .orElseThrow(() -> new ChallengeNotFoundException(
                         "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
 
-        return  challenges.stream()
+        return challenges.stream()
                 .map(challenge -> ChallengeResponse.builder()
                         .question(challenge.getQuestion())
                         .question(challenge.getQuestion())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
     }
+
     @Transactional
     @Override
     public ExecutedChallengeResponse execute(ExecuteChallengeRequest request) {
@@ -231,14 +253,12 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .findById(request.challengeId())
                 .orElseThrow(
                         () -> new ChallengeNotFoundException("Challenge not found", "CHALLENGE_NOT_FOUND"));
-        if(request.type().equals(Type.CODE) && request.type().equals( challenge.getType()))
-        {
+        if (request.type().equals(Type.CODE) && request.type().equals(challenge.getType())) {
             return executeChallenge(request);
-        } else if( (request.type().equals(Type.OPEN)|| request.type().equals(Type.CLOSED) && request.type().equals( challenge.getType()))
-        ){
+        } else if ((request.type().equals(Type.OPEN) || request.type().equals(Type.CLOSED) && request.type().equals(challenge.getType()))
+        ) {
             return executeClosedChallenge(request);
-        }
-        else {
+        } else {
             return ExecutedChallengeResponse.builder()
                     .challengeId(challenge.getId())
                     .result(Result.FAIL)
