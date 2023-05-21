@@ -201,8 +201,10 @@ public class ChallengeServiceImpl implements ChallengeService {
         return challenges.stream()
                 .map(challenge -> ChallengeResponse.builder()
                         .question(challenge.getQuestion())
-                        .question(challenge.getQuestion())
+                        .name(challenge.getName())
+                        .type(challenge.getType())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
+
                 .toList();
     }
 
@@ -215,7 +217,8 @@ public class ChallengeServiceImpl implements ChallengeService {
         //return challengeMapper.toCreateChallengeResponse(challenge);
         return ChallengeResponse.builder()
                 .question(challenge.getQuestion())
-                .question(challenge.getQuestion())
+                .name(challenge.getName())
+                .type(challenge.getType())
                 .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
                 .build();
     }
@@ -226,7 +229,8 @@ public class ChallengeServiceImpl implements ChallengeService {
         return challenges.stream()
                 .map(challenge -> ChallengeResponse.builder()
                         .question(challenge.getQuestion())
-                        .question(challenge.getQuestion())
+                        .name(challenge.getName())
+                        .type(challenge.getType())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
     }
@@ -241,7 +245,8 @@ public class ChallengeServiceImpl implements ChallengeService {
         return challenges.stream()
                 .map(challenge -> ChallengeResponse.builder()
                         .question(challenge.getQuestion())
-                        .question(challenge.getQuestion())
+                        .name(challenge.getName())
+                        .type(challenge.getType())
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
     }
