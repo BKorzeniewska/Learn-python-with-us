@@ -234,7 +234,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
                 .toList();
     }
-
+    @Transactional
     @Override
     public List<ChallengeResponse> getChallengesByArticleId(Long articleId) {
         var challenges = challengeRepository
@@ -243,11 +243,19 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
 
         return challenges.stream()
-                .map(challenge -> ChallengeResponse.builder()
-                        .question(challenge.getQuestion())
-                        .name(challenge.getName())
-                        .type(challenge.getType())
-                        .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
+                .map(challenge -> {
+                    List<Long> articleIds = challenge.getArticles().stream()
+                            .map(Article::getId)
+                            .toList();
+
+                    return ChallengeResponse.builder()
+                            .question(challenge.getQuestion())
+                            .name(challenge.getName())
+                            .type(challenge.getType())
+                            .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
+                            .articlesID(articleIds)
+                            .build();
+                })
                 .toList();
     }
 
