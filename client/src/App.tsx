@@ -9,7 +9,8 @@ import { ErrorProvider } from './components/home/ErrorContext';
 import { UserScreen } from './components/user/UserScreen';
 import { AdminArticlesScreen } from './components/admin/AdminArticlesScreen';
 import { ArticleEditionScreen } from './components/admin/ArticleEditionScreen';
-import { ChallengesScreen } from './components/common/challenges/ChallengesScreen';
+import { ChallengesScreen } from './components/challenges/ChallengesScreen';
+import { ChallengeScreen } from './components/challenges/ChallengeScreen';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/admin/articles" element={<AdminArticlesScreen />}></Route>
             <Route path="/admin/edit/:articleId?" element={<ArticleEditionScreen />}></Route>
             <Route path="/challenges/:articleId" element={<ChallengesScreen />}></Route>
+            <Route path="/challenge" element={<ChallengeScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>

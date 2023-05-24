@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
-import { MarkDownRenderer } from '../markdown/MarkDownRenderer';
+import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import './challenges.css'
 
 // implementation of choose component, which is used to choose between 4 answers and has question

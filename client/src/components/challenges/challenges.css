@@ -47,3 +47,26 @@
     animation-duration: 1s;
     animation-iteration-count: 1;
 }
+
+.custom-list-item {
+    border: 0px solid;
+    border-radius: 7px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+[data-theme="dark"] .custom-list-item {
+    background-color: #333;
+}
+
+[data-theme="light"] .custom-list-item {
+    background-color: #e2e2e2;
+}
+
+[data-theme="dark"] .custom-list-item:hover{
+    background-color: #3d3d3d;
+}
+
+[data-theme="light"] .custom-list-item:hover {
+    background-color: #c7c7c7;
+}

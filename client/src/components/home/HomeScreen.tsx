@@ -15,8 +15,8 @@ import { markdownTest } from "./markdownTest";
 import { AppWrapper } from "./AppWrapper";
 import { AuthContext } from "../auth/AuthContext";
 import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";
-import { ChooseChallenge } from "../common/challenges/choose";
-import { CodeChallenge } from "../common/challenges/code";
+import { ChooseChallenge } from "../challenges/choose";
+import { CodeChallenge } from "../challenges/code";
 
 type Props = {};
 

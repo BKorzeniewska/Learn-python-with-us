@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
-import { MarkDownRenderer } from '../markdown/MarkDownRenderer';
+import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { LoadingSpinner } from '../../home/Spinner';
+import { LoadingSpinner } from '../home/Spinner';
 import "./challenges.css"; 
 
 // implementation of choose component, which is used to choose between 4 answers and has question
