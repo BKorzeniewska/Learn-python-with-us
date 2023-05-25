@@ -26,10 +26,28 @@ export const ChallengesScreen = () => {
         }
     }, [articleId]);
 
+  
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const val = event.currentTarget.value;
+      console.log(val);
+    };
+
 
     return (
         <AppWrapper hideSidebar>
           <Container className="my-5">
+          <Form className="d-flex mb-5">
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2 rounded-pill"
+              aria-label="Search"
+              onKeyUp={handleKeyPress}
+            />
+            <Button className="rounded-pill" variant="primary">
+              Search
+            </Button>
+          </Form>
             {challenges &&
               challenges.map((challenge) => (
                 <div

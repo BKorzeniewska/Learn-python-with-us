@@ -16,7 +16,12 @@ export const ChallengeScreen = () => {
     const [challenges, setChallenges] = useState<ChallengeResponse[]>();
     const { errorMessages, setError } = useError();
     const location = useLocation();
-    const challenge = location.state?.challenge;
+    const challenge: ChallengeResponse = location.state?.challenge;
+
+    type ChallengeContent = {
+        correctAnswer: string;
+    }
+    const challengeContent: ChallengeContent = JSON.parse(challenge.content);
 
 
     return (
@@ -24,10 +29,11 @@ export const ChallengeScreen = () => {
             <Container className="my-5">
                 {challenge && (
                     <div>
+                        {challengeContent.correctAnswer}
                         {challenge.type === 'CLOSED' && (
                             <ChooseChallenge
-                                title="Choose Challenge"
-                                question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
+                                title={challenge.name}
+                                question={challenge.question}
                                 answerOk="42"
                                 answer2="43"
                                 answer3="44"
@@ -36,8 +42,8 @@ export const ChallengeScreen = () => {
                         )}
                         {challenge.type === 'CODE' && (
                             <CodeChallenge
-                                title="Code Challenge"
-                                question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
+                                title={challenge.name}
+                                question={challenge.question}
                                 codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
                             />
                         )}
