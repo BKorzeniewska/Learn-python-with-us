@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -43,6 +44,7 @@ public class User implements UserDetails {
     private long exp = 0L;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private UUID uuid = UUID.randomUUID();
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
