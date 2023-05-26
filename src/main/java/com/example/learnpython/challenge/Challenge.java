@@ -7,12 +7,15 @@ import com.example.learnpython.challenge.model.Type;
 import com.example.learnpython.solution.Solution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,10 +45,26 @@ public class Challenge {
     private ContentJson content;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "challenge")
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.EAGER)
     private List<Solution> solutions;
 
-    @ManyToMany(mappedBy = "challenges")
+    @ManyToMany(mappedBy = "challenges", fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<Article> articles;
+    private List<Article> articles;
+
+    public List<Article> getArticles() {
+        Hibernate.initialize(articles);
+        return articles;
+    }
+
+    public List<Long> getArticlesID() {
+        List<Long> articleIds = new ArrayList<>();
+        List<Article> initializedArticles = getArticles();
+
+        for (Article article : initializedArticles) {
+            articleIds.add(article.getId());
+        }
+
+        return articleIds;
+    }
 }

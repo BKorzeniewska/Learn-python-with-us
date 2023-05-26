@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @Builder
 public class ChallengeResponse {
+    private Long id;
     private String question;
     private String name;
     private Type type;

@@ -3,6 +3,7 @@ package com.example.learnpython.comment;
 
 import com.example.learnpython.comment.model.CommentResponse;
 import com.example.learnpython.comment.model.CreateCommentRequest;
+import jakarta.transaction.Transactional;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,6 +15,6 @@ public interface CommentMapper {
     @Mapping(target="userDetails.nickname", source="user.nickname")
     @Mapping(target="userDetails.email", source="user.email")
     @Mapping(target="userDetails.firstname", source="user.firstname")
-    @Mapping(target="articleId", source="article.id")
+
     CommentResponse toCommentResponse(final Comment comment);
 }

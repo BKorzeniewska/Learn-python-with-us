@@ -35,8 +35,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         log.info("Executing challenge: {}", challenge);
 
-
-        //TODO Execute python code code
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
@@ -48,14 +46,6 @@ public class ChallengeServiceImpl implements ChallengeService {
             if (!isValidInput(request.answer())) {
                 throw new IllegalArgumentException("Invalid input");
             }
-            // Set resource limits
-//            interpreter.exec("import resource\nresource.setrlimit(resource.RLIMIT_CPU, (1,1))");
-//            interpreter.exec("resource.setrlimit(resource.RLIMIT_DATA, (1024,1024))");
-
-            // Execute code in an isolated environment
-//            interpreter.exec("import sys");
-//            interpreter.exec("sys.path = []");
-//            interpreter.exec("del sys");
 
             interpreter.exec(request.answer());
 
@@ -70,7 +60,6 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .result(Result.SUCCESS)
                         .output(outputServer.toString().trim())
                         .build();
-                //test.setResult(TestResult.PASSED);
             } else {
                 log.info("Result: WRONG");
                 return ExecutedChallengeResponse.builder()
@@ -78,7 +67,6 @@ public class ChallengeServiceImpl implements ChallengeService {
                         .result(Result.FAIL)
                         .output(outputServer.toString().trim())
                         .build();
-                //test.setResult(TestResult.FAILED);
             }
         } catch (Exception e) {
             log.error("Error executing Python script: {}", e.getMessage());
@@ -115,7 +103,6 @@ public class ChallengeServiceImpl implements ChallengeService {
                             tokens[0].matches("^\\d+(\\.\\d+)?(e[+-]?\\d+)?$")) {
                         isValid = true;
                     } else {
-                        // Sprawdź, czy pierwszy token jest definicją funkcji
                         if (tokens[0].startsWith("def") && tokens[tokens.length - 1].endsWith(":")) {
                             isValid = true;
                         } else {
@@ -162,7 +149,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .question(request.getQuestion())
                 .type(request.getType())
                 .build();
-        Set<Article> articles = new HashSet<>();
+        List<Article> articles = new ArrayList<>();
         for (Long id : request.getArticlesID()) {
             final Article article = articleRepository
                     .findById(id)
@@ -183,6 +170,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         log.info("challenge: {}", challenge);
 
         return ChallengeResponse.builder()
+                .id(challenge.getId())
                 .name(challenge.getName())
                 .question(challenge.getQuestion())
                 .type(challenge.getType())
@@ -199,12 +187,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenges with provided name not found", "CHALLENGES_NOT_FOUND"));
 
         return challenges.stream()
-                .map(challenge -> ChallengeResponse.builder()
-                        .question(challenge.getQuestion())
-                        .name(challenge.getName())
-                        .type(challenge.getType())
-                        .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
-
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
                 .toList();
     }
 
@@ -214,24 +197,15 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .findById(challengeId)
                 .orElseThrow(() -> new ChallengeNotFoundException(
                         "Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
-        //return challengeMapper.toCreateChallengeResponse(challenge);
-        return ChallengeResponse.builder()
-                .question(challenge.getQuestion())
-                .name(challenge.getName())
-                .type(challenge.getType())
-                .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
-                .build();
+
+        return challengeMapper.toCreateChallengeResponse(challenge,jsonConverter);
     }
 
     @Override
     public List<ChallengeResponse> getChallenges() {
         var challenges = challengeRepository.findAll();
         return challenges.stream()
-                .map(challenge -> ChallengeResponse.builder()
-                        .question(challenge.getQuestion())
-                        .name(challenge.getName())
-                        .type(challenge.getType())
-                        .content(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build())
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
                 .toList();
     }
     @Transactional
@@ -243,19 +217,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
 
         return challenges.stream()
-                .map(challenge -> {
-                    List<Long> articleIds = challenge.getArticles().stream()
-                            .map(Article::getId)
-                            .toList();
-
-                    return ChallengeResponse.builder()
-                            .question(challenge.getQuestion())
-                            .name(challenge.getName())
-                            .type(challenge.getType())
-                            .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
-                            .articlesID(articleIds)
-                            .build();
-                })
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
                 .toList();
     }
 
