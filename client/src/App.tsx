@@ -7,10 +7,11 @@ import { AuthProvider } from './components/auth/AuthContext';
 import { AcrticleScreen } from './components/home/ArticleScreen';
 import { ErrorProvider } from './components/home/ErrorContext';
 import { UserScreen } from './components/user/UserScreen';
-import { AdminArticlesScreen } from './components/admin/AdminArticlesScreen';
-import { ArticleEditionScreen } from './components/admin/ArticleEditionScreen';
+import { AdminArticlesScreen } from './components/admin/article/AdminArticlesScreen';
+import { ArticleEditionScreen } from './components/admin/article/ArticleEditionScreen';
 import { ChallengesScreen } from './components/challenges/ChallengesScreen';
 import { ChallengeScreen } from './components/challenges/ChallengeScreen';
+import { AdminUsersScreen } from './components/admin/users/AdminUsersScreen';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/user/:userId?" element={<UserScreen />}></Route>
             <Route path="/admin/articles" element={<AdminArticlesScreen />}></Route>
             <Route path="/admin/edit/:articleId?" element={<ArticleEditionScreen />}></Route>
+            <Route path="/admin/users" element={<AdminUsersScreen />}></Route>
             <Route path="/challenges/:articleId" element={<ChallengesScreen />}></Route>
             <Route path="/challenge" element={<ChallengeScreen />}></Route>
           </Routes>

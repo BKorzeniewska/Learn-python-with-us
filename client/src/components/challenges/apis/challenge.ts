@@ -29,42 +29,42 @@ export type ExecutedChallengeResponse = {
 
 }
 
+type ChallengeErrors = "INTERNAL_SERVER_ERROR" | any;
 
-export const createChallenge = async (challenge: ChallengeRequest): Promise<Result<ChallengeResponse, APIError>> => {
-    const response = Post<ChallengeResponse, APIError>(`${baseUrl}/api/v1/challenge/create`, challenge);
+export const createChallenge = async (challenge: ChallengeRequest): Promise<Result<ChallengeResponse, APIError<ChallengeErrors>>> => {
+    const response = Post<ChallengeResponse, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/create`, challenge);
   
     return response.then((data) => {
       if (data.isOk) {
-        return { isOk: true, value: data.value } as Result<ChallengeResponse, APIError>;
+        return { isOk: true, value: data.value } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
       } else {
-        return { isOk: false, error: data.error } as Result<ChallengeResponse, APIError|any>;
-        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError bo tam jest spro informacji z serwera
+        return { isOk: false, error: data.error.response?.data } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
+        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError<CreateChallengeErrors> bo tam jest spro informacji z serwera
       }
     });
   };
   
-  export const executeChallenge = async (challenge: ExecuteChallengeRequest): Promise<Result<ExecutedChallengeResponse, APIError>> => {
-    const response = Post<ExecutedChallengeResponse, APIError>(`${baseUrl}/api/v1/challenge/execute`, challenge);
+  export const executeChallenge = async (challenge: ExecuteChallengeRequest): Promise<Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>> => {
+    const response = Post<ExecutedChallengeResponse, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/execute`, challenge);
   
     return response.then((data) => {
       if (data.isOk) {
-        return { isOk: true, value: data.value } as Result<ExecutedChallengeResponse, APIError>;
+        return { isOk: true, value: data.value } as Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>;
       } else {
-        return { isOk: false, error: data.error } as Result<ExecutedChallengeResponse, APIError|any>;
-        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError bo tam jest spro informacji z serwera
+        return { isOk: false, error: data.error.response?.data } as Result<ExecutedChallengeResponse, APIError<ChallengeErrors>|any>;
+        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError<CreateChallengeErrors> bo tam jest spro informacji z serwera
       }
     });
   };
 
-  export const getChallengesByArticleId = async (articleId: number): Promise<Result<ChallengeResponse[], APIError>> => {
-    const response = Get<ChallengeResponse[], APIError>(`${baseUrl}/api/v1/challenge/article/${articleId}`);
+  export const getChallengesByArticleId = async (articleId: number): Promise<Result<ChallengeResponse[], APIError<ChallengeErrors>>> => {
+    const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/article/${articleId}`);
   
     return response.then((data) => {
       if (data.isOk) {
-        return { isOk: true, value: data.value } as Result<ChallengeResponse[], APIError>;
+        return { isOk: true, value: data.value } as Result<ChallengeResponse[], APIError<ChallengeErrors>>;
       } else {
-        return { isOk: false, error: data.error } as Result<ChallengeResponse[], APIError|any>;
-        // TODO: Trzeba zrobić podzadek z tymi errorami, fajnie jakby zwracało ten typ APIError bo tam jest spro informacji z serwera
+        return { isOk: false, error: data.error.response?.data  } as Result<ChallengeResponse[], APIError<ChallengeErrors>>;
       }
     });
   };

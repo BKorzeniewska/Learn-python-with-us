@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { createChapter } from "../common/apis/chapter";
-import { useError } from "../home/ErrorContext";
+import { createChapter } from "../../common/apis/chapter";
+import { useError } from "../../home/ErrorContext";
 
 type Props = {
   isShown: boolean;
