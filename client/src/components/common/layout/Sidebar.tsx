@@ -66,7 +66,7 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
 
   return (
     <div className="sidebar-wrapper" style={{ width: props.width }}>
-    <Nav className="flex-column sidebar" data-theme={theme} style={{ width: props.width }} >
+    <Nav className="sidebar" data-theme={theme} style={{ width: props.width }} >
       {result?.map((value) => {
         return (
           <div key={value.id}>

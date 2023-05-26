@@ -97,3 +97,15 @@
 [data-theme="light"] .card-body .form-control {
     --bs-body-bg: #fff !important;
 }
+::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+::-webkit-scrollbar-track {
+    background-color: #333 !;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 3px;
+}

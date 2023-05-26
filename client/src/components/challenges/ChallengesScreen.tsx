@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, ReactNode, useContext, useEffect, useState } from 'react';
 import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ export const ChallengesScreen = () => {
     const { articleId } = useParams();
     const [challenges, setChallenges] = useState<ChallengeResponse[]>();
     const { errorMessages, setError } = useError();
+    const [searchInput, setSearchInput] = useState<string>();
 
     useEffect(() => {
         if (articleId !== undefined) {
@@ -27,10 +28,15 @@ export const ChallengesScreen = () => {
     }, [articleId]);
 
   
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      const val = event.currentTarget.value;
+    const handleKeyPress = (event: ChangeEvent<HTMLInputElement>) => {
+      const val = event.target.value;
+      setSearchInput(val);
       console.log(val);
     };
+
+    const handleSearch = () => {
+      console.log(searchInput);
+    }
 
 
     return (
@@ -42,9 +48,9 @@ export const ChallengesScreen = () => {
               placeholder="Search"
               className="me-2 rounded-pill"
               aria-label="Search"
-              onKeyUp={handleKeyPress}
+              onChange={handleKeyPress}
             />
-            <Button className="rounded-pill" variant="primary">
+            <Button className="rounded-pill" variant="primary" onClick={handleSearch}>
               Search
             </Button>
           </Form>

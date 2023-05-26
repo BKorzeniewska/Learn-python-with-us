@@ -62,15 +62,18 @@
   height: 100%;
 }
 #side .sidebar {
-  overflow: hidden;
+  /* overflow: hidden; */
   /* overflow-y: auto; */
   /* height: 100%; */
   transition: width 0.3s ease-in-out;
   position: fixed;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 .sidebar-wrapper {
-  /* height: 100%; */
+  height: 100%;
   transition: width 0.3s ease-in-out;
 }
 

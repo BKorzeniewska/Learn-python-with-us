@@ -2,10 +2,10 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Container, Nav, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArticleMenu, loadArticleMenu } from '../common/apis/article';
-import { useError } from '../home/ErrorContext';
-import { ThemeContext } from '../themes/ThemeProvider';
-import { AppWrapper } from '../home/AppWrapper';
+import { ArticleMenu, loadArticleMenu } from '../../common/apis/article';
+import { useError } from '../../home/ErrorContext';
+import { ThemeContext } from '../../themes/ThemeProvider';
+import { AppWrapper } from '../../home/AppWrapper';
 import {AddChapter} from './AddChapter';
 
 type ChapterProps = {
