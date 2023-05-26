@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -57,16 +59,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             userEmail = jwtService.extractUsername(jwt);
         } catch (ExpiredJwtException ex) {
+            log.error("Token expired", ex);
             final ExpiredTokenException exception = new ExpiredTokenException("Token expired", "TOKEN_EXPIRED", HttpStatus.BAD_REQUEST);
             response.getWriter().write(GSON.toJson(exception));
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return;
         } catch (ClaimJwtException ex) {
+            log.error("Claim exception", ex);
             final ExpiredTokenException exception = new ExpiredTokenException("Claim exception", "CLAIM_EXCEPTION", HttpStatus.BAD_REQUEST);
             response.getWriter().write(GSON.toJson(exception));
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             return;
         } catch (Exception ex) {
+            log.error("Unknown error", ex);
             final ExpiredTokenException exception = new ExpiredTokenException("Unknown error", "ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
             response.getWriter().write(GSON.toJson(exception));
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

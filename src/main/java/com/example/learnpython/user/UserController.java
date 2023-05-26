@@ -18,7 +18,7 @@ public class UserController {
     private final ChangeRoleService changeRoleService;
 
 
-    @GetMapping("/dupa")
+    @GetMapping()
     public ResponseEntity<UsersDTO> getUsers(@RequestBody final GetUsersRequest request) {
 
         log.info("Get users() - start, request = {}", request);
