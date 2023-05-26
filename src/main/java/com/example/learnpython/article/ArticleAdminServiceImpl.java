@@ -32,6 +32,15 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
         final User user = userRepository.findByToken(token)
                 .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
 
+
+        if (request.getTitle() == null || request.getTitle().isEmpty()) {
+            throw new ArticleNotFoundException("Article title cannot be null or empty", "ARTICLE_TITLE_EMPTY");
+        }
+
+        if (request.getContent() == null || request.getContent().isEmpty()) {
+            throw new ArticleNotFoundException("Article content cannot be null or empty", "ARTICLE_CONTENT_EMPTY");
+        }
+
         //validate chapter
         var chapter = chapterRepository.findById(request.getChapterId()).orElseThrow(
                 () -> new ArticleNotFoundException("Provided ChapterID not found", "CHAPTER_NOT_FOUND"));
