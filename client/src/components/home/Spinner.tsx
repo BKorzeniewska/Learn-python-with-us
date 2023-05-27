@@ -10,6 +10,7 @@ export const LoadingSpinner = (props: {
             {props.isLoading ? <Spinner animation="border" role="status">
                 <span className="sr-only" style={{
                     position: "absolute",
+                    fontSize: "0.8rem",
                 }}>Loading</span>
             </Spinner> : props.children}
         </div>

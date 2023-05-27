@@ -7,7 +7,26 @@ import { ChallengeResponse, getChallengesByArticleId } from './apis/challenge';
 import { useError } from '../home/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
+import { OpenChallenge } from './open';
 
+type OpenChallengeContent = {
+    correctAnswer: string;
+}
+export type PossibleAnswers = {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+}
+type ClosedChallengeContent = {
+    correctAnswer: string;
+    possibleAnswers: PossibleAnswers;
+}
+type CodeChallengeContent = {
+    correctAnswer: string;
+}
+
+type ChallengeContent = OpenChallengeContent | ClosedChallengeContent | CodeChallengeContent;
 
 
 export const ChallengeScreen = () => {
@@ -16,35 +35,40 @@ export const ChallengeScreen = () => {
     const [challenges, setChallenges] = useState<ChallengeResponse[]>();
     const { errorMessages, setError } = useError();
     const location = useLocation();
-    const challenge: ChallengeResponse = location.state?.challenge;
+    const challenge: ChallengeResponse | undefined = location.state?.challenge;
 
-    type ChallengeContent = {
-        correctAnswer: string;
-    }
-    const challengeContent: ChallengeContent = JSON.parse(challenge.content);
 
+    let challengeContent: ChallengeContent = JSON.parse(challenge?.content || '{"correctAnswer": "42"}');
+
+    console.log(challengeContent);
 
     return (
         <AppWrapper hideSidebar>
             <Container className="my-5">
                 {challenge && (
                     <div>
-                        {challengeContent.correctAnswer}
                         {challenge.type === 'CLOSED' && (
+
                             <ChooseChallenge
+                                id={challenge.id}
                                 title={challenge.name}
                                 question={challenge.question}
-                                answerOk="42"
-                                answer2="43"
-                                answer3="44"
-                                answer4="45"
+                                possibleAnswers={(challengeContent as ClosedChallengeContent).possibleAnswers}
                             />
                         )}
                         {challenge.type === 'CODE' && (
                             <CodeChallenge
+                                id={challenge.id}
                                 title={challenge.name}
                                 question={challenge.question}
                                 codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
+                            />
+                        )}
+                        {challenge.type === "OPEN" && (
+                            <OpenChallenge
+                                id={challenge.id}
+                                title={challenge.name}
+                                question={challenge.question}
                             />
                         )}
                     </div>

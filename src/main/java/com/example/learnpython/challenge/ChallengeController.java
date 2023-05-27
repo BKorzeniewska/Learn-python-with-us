@@ -43,7 +43,7 @@ public class ChallengeController {
     }
     // TODO
     // Agree with place where we add exp point to user's point for good answer
-    @GetMapping("/execute")
+    @PostMapping("/execute")
     @Operation(summary = "Execute a challenge")
     public ResponseEntity<ExecutedChallengeResponse> executeChallenge(@RequestBody ExecuteChallengeRequest executeChallengeRequest) {
         return ResponseEntity.ok(challengeService.execute(executeChallengeRequest));
