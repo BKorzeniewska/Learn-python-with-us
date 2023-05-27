@@ -4,6 +4,7 @@ import com.example.learnpython.token.ExpiredTokenException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -17,9 +18,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(BaseServiceException.class)
     public ResponseEntity<ErrorResponse> handleProductServiceException(BaseServiceException exception) {
 
-        log.error("BaseServiceException error: ", exception);
         log.error("BaseServiceException error: {}", exception.getMessage());
-        log.error("Unexpected error code: {}", exception.getErrorCode());
+        log.error("BaseServiceException error code: {}", exception.getErrorCode());
 
         return new ResponseEntity<>(new ErrorResponse().builder()
                 .errorMessage(exception.getMessage())
@@ -44,5 +44,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 exception.getMessage()
         );
         return new ResponseEntity<>(errorResponse, httpStatus);
+    }
+
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthException(AuthenticationException exception) {
+        log.error("AuthenticationException error: {}", exception.getMessage());
+
+        return new ResponseEntity<>(new ErrorResponse().builder()
+                .errorMessage(exception.getMessage())
+                .errorCode("BAD_CREDENTIALS")
+                .httpStatus(HttpStatus.BAD_REQUEST.name())
+                .timestamp(LocalDateTime.now())
+                .build(), HttpStatus.BAD_REQUEST);
     }
 }

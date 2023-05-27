@@ -43,4 +43,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /*@Query("SELECT u FROM User u WHERE LOWER(u.nickname) LIKE LOWER(CONCAT('%', :nickname, '%'))")
     Page<User> findByNicknameContainingIgnoreCase(final String nickname, final Pageable pageable);*/
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.password=:password WHERE u.email=:email")
+    void updatePasswordByEmail(final String email, final String password);
 }

@@ -4,7 +4,9 @@ import com.example.learnpython.article.Article;
 import com.example.learnpython.comment.Comment;
 import com.example.learnpython.solution.Solution;
 import com.example.learnpython.token.Token;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,23 +30,35 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long id;
+
+    @Email
     @Column(name = "EMAIL", unique = true)
     private String email;
+
     @Column(name = "FIRSTNAME")
     private String firstname;
+
     @Column(name = "LASTNAME")
     private String lastname;
+
     @Column(name = "NICKNAME")
     private String nickname;
+
     @Column(name = "PASSWORD",length = 64)
+    @JsonIgnore
     private String password;
+
     @Column(name = "LEVEL")
     private int level = 0;
+
     @Column(name = "EXP")
     private long exp = 0L;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
     private UUID uuid = UUID.randomUUID();
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
@@ -59,6 +73,9 @@ public class User implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserHistory> articlesHistory;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PasswordResetToken> passwordResetToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

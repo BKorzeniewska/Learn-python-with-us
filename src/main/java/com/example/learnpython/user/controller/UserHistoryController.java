@@ -1,6 +1,5 @@
 package com.example.learnpython.user.controller;
 
-import com.example.learnpython.user.model.dto.ChangeRoleRequest;
 import com.example.learnpython.user.service.UserHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
