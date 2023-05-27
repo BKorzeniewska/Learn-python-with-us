@@ -14,10 +14,10 @@ public class TokenScheduler {
     private final TokenRepository tokenRepository;
 
     //TODO fix deleting query
-    //@Scheduled(cron = "0 0 0 */3 * *", zone = "Europe/Warsaw")
-    /*@Scheduled(fixedRate = 1000)
+    //TODO move to service logic
+    @Scheduled(cron = "0 0 0 */3 * *", zone = "Europe/Warsaw")
     public void deleteExpiredTokens() {
         log.info("Deleting expired tokens");
         tokenRepository.deleteAllInvalidTokens();
-    }*/
+    }
 }

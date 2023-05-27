@@ -3,7 +3,8 @@ package com.example.learnpython.article;
 import com.example.learnpython.challenge.Challenge;
 import com.example.learnpython.chapter.Chapter;
 import com.example.learnpython.comment.Comment;
-import com.example.learnpython.user.User;
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.model.entity.UserHistory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +44,9 @@ public class Article {
 
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "article")
+    private List<UserHistory> userHistories;
 
     @ManyToMany
     @JoinTable(

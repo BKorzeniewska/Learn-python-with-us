@@ -1,5 +1,7 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.repository;
 
+import com.example.learnpython.user.model.entity.Role;
+import com.example.learnpython.user.model.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

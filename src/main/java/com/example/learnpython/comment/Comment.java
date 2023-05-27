@@ -1,7 +1,7 @@
 package com.example.learnpython.comment;
 
 import com.example.learnpython.article.Article;
-import com.example.learnpython.user.User;
+import com.example.learnpython.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

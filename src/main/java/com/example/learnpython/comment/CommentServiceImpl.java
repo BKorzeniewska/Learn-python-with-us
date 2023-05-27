@@ -6,8 +6,8 @@ import com.example.learnpython.comment.exception.CommentIllegalStateException;
 import com.example.learnpython.comment.exception.CommentNotFoundException;
 import com.example.learnpython.comment.model.CommentResponse;
 import com.example.learnpython.comment.model.CreateCommentRequest;
-import com.example.learnpython.user.User;
-import com.example.learnpython.user.UserRepository;
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

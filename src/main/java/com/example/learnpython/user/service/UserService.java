@@ -1,6 +1,6 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.service;
 
-import com.example.learnpython.user.model.UserInfoResponse;
+import com.example.learnpython.user.model.dto.UserInfoResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {

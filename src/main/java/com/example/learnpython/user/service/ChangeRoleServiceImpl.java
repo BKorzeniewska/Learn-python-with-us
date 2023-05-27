@@ -1,11 +1,16 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.service;
 
+import com.example.learnpython.comment.exception.CommentIllegalStateException;
+import com.example.learnpython.user.model.entity.Role;
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.repository.UserMapper;
+import com.example.learnpython.user.repository.UserRepository;
 import com.example.learnpython.user.exception.UserNotFoundException;
 import com.example.learnpython.user.exception.UserRequestException;
-import com.example.learnpython.user.model.ChangeRoleRequest;
-import com.example.learnpython.user.model.GetUsersRequest;
-import com.example.learnpython.user.model.UserResponse;
-import com.example.learnpython.user.model.UsersDTO;
+import com.example.learnpython.user.model.dto.ChangeRoleRequest;
+import com.example.learnpython.user.model.dto.GetUsersRequest;
+import com.example.learnpython.user.model.dto.UserResponse;
+import com.example.learnpython.user.model.dto.UsersDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +29,13 @@ public class ChangeRoleServiceImpl implements ChangeRoleService {
 
     @Override
     @Transactional
-    public void changeRole(final ChangeRoleRequest changeRoleRequest, final String token) {
+    public void changeRole(final ChangeRoleRequest changeRoleRequest, final String bearerToken) {
+
+
+        if (bearerToken == null || bearerToken.isBlank()) {
+            throw new CommentIllegalStateException("Bearer token cannot be blank", "BEARER_TOKEN_BLANK");
+        }
+        final String token = bearerToken.substring(7);
 
         final User currentUser = userRepository.findByToken(token)
                 .orElseThrow(() -> new UserNotFoundException("User with provided token not found", "USER_NOT_FOUND"));

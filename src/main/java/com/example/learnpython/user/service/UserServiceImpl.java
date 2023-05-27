@@ -1,8 +1,10 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.service;
 
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.repository.UserRepository;
 import com.example.learnpython.user.exception.UserNotFoundException;
 import com.example.learnpython.user.exception.UserRequestException;
-import com.example.learnpython.user.model.UserInfoResponse;
+import com.example.learnpython.user.model.dto.UserInfoResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,4 +1,4 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.model.entity;
 
 import com.example.learnpython.article.Article;
 import com.example.learnpython.comment.Comment;
@@ -56,6 +56,9 @@ public class User implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserHistory> articlesHistory;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
