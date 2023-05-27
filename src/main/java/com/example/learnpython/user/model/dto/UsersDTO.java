@@ -1,4 +1,4 @@
-package com.example.learnpython.user.model;
+package com.example.learnpython.user.model.dto;
 
 import lombok.Data;
 import org.springframework.data.domain.Page;

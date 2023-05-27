@@ -1,4 +1,4 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.model.entity;
 
 import lombok.Data;
 

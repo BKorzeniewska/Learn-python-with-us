@@ -1,8 +1,10 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.controller;
 
-import com.example.learnpython.user.model.GetUsersRequest;
-import com.example.learnpython.user.model.UserInfoResponse;
-import com.example.learnpython.user.model.UsersDTO;
+import com.example.learnpython.user.model.dto.GetUsersRequest;
+import com.example.learnpython.user.model.dto.UserInfoResponse;
+import com.example.learnpython.user.model.dto.UsersDTO;
+import com.example.learnpython.user.service.ChangeRoleService;
+import com.example.learnpython.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

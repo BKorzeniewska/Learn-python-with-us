@@ -1,6 +1,7 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.controller;
 
-import com.example.learnpython.user.model.ChangeRoleRequest;
+import com.example.learnpython.user.model.dto.ChangeRoleRequest;
+import com.example.learnpython.user.service.ChangeRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;

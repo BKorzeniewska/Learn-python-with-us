@@ -1,6 +1,7 @@
 package com.example.learnpython.mail;
 
 import com.example.learnpython.auth.RegisterRequest;
+import com.example.learnpython.user.model.dto.ResetPasswordRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -27,14 +28,25 @@ public class EmailSenderService {
      */
     @Bean
     public void init() {
-        if (mailTemplateRepository.findAll().isEmpty()) {
+
+        if (mailTemplateRepository.findByType(MailType.REGISTER) == null) {
             mailTemplateRepository.save(
-                MailTemplate
-                    .builder()
-                    .body(RegisterConfirmationEmail.MAIL_BODY)
-                    .subject(RegisterConfirmationEmail.SUBJECT)
-                    .type(MailType.REGISTER)
-                .build());
+                    MailTemplate
+                            .builder()
+                            .body(RegisterConfirmationEmail.MAIL_BODY)
+                            .subject(RegisterConfirmationEmail.SUBJECT)
+                            .type(MailType.REGISTER)
+                            .build());
+        }
+
+        if (mailTemplateRepository.findByType(MailType.RESET_PASSWORD) == null) {
+            mailTemplateRepository.save(
+                    MailTemplate
+                            .builder()
+                            .body(ResetPasswordEmail.MAIL_BODY)
+                            .subject(ResetPasswordEmail.SUBJECT)
+                            .type(MailType.RESET_PASSWORD)
+                            .build());
         }
     }
 
@@ -44,6 +56,19 @@ public class EmailSenderService {
             log.info("Sending email to {}", request.getEmail());
             template.setBody(template.getBody().replace("${USERNAME}", request.getNickname()));
             sendSimpleEmail(request.getEmail(), template.getBody(), template.getSubject());
+        } catch (MessagingException e) {
+            log.error("Error while sending email", e);
+        }
+    }
+
+    public void sendResetPasswordEmail(final ResetPasswordRequest request) {
+        final MailTemplate template = mailTemplateRepository.findByType(MailType.RESET_PASSWORD);
+        try {
+            log.info("Sending email to {}", request.email());
+            template.setBody(template.getBody()
+                    .replace("${USERNAME}", request.email())
+                    .replace("${TOKEN}", request.token()));
+            sendSimpleEmail(request.email(), template.getBody(), template.getSubject());
         } catch (MessagingException e) {
             log.error("Error while sending email", e);
         }

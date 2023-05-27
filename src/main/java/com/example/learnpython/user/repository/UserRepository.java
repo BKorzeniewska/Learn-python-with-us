@@ -1,5 +1,7 @@
-package com.example.learnpython.user;
+package com.example.learnpython.user.repository;
 
+import com.example.learnpython.user.model.entity.Role;
+import com.example.learnpython.user.model.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +43,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /*@Query("SELECT u FROM User u WHERE LOWER(u.nickname) LIKE LOWER(CONCAT('%', :nickname, '%'))")
     Page<User> findByNicknameContainingIgnoreCase(final String nickname, final Pageable pageable);*/
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE User u SET u.password=:password WHERE u.email=:email")
+    void updatePasswordByEmail(final String email, final String password);
 }

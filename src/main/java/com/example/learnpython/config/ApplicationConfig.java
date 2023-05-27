@@ -1,7 +1,7 @@
 package com.example.learnpython.config;
 
 
-import com.example.learnpython.user.UserRepository;
+import com.example.learnpython.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

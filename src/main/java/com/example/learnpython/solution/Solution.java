@@ -2,7 +2,7 @@ package com.example.learnpython.solution;
 
 
 import com.example.learnpython.challenge.Challenge;
-import com.example.learnpython.user.User;
+import com.example.learnpython.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
