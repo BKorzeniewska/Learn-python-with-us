@@ -3,7 +3,7 @@ import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Pagin
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppWrapper } from '../../home/AppWrapper';
-import { GetUsersRequest, GetUsersResponse, getUsers } from './apis/users';
+import { ChangeRoleRequest, GetUsersRequest, GetUsersResponse, User, UserRole, changeRole, getUsers } from './apis/users';
 import { useError } from '../../home/ErrorContext';
 
 
@@ -41,6 +41,33 @@ export const AdminUsersScreen = () => {
   }, [sendRequest, location, pageNumber,searchInput]);
 
 
+  const handleRoleChange = (user: User, newRole: UserRole) => {
+    const updatedUser = { ...user, role: newRole };
+    const req: ChangeRoleRequest = {
+      userId: user.id,
+      role: newRole,
+    }
+    changeRole(req).then((response) => {
+      if (response.isOk) {
+        // Update the user's role in the state
+        setUsers((prevUsers) => {
+          if (prevUsers) {
+            const updatedResults = prevUsers.results.map((u) => {
+              if (u.nickname === user.nickname) {
+                return updatedUser;
+              }
+              return u;
+            });
+            return { ...prevUsers, results: updatedResults };
+          }
+          return prevUsers;
+        });
+      } else {
+        setError("Failed to update user role.");
+      }
+    });
+  }
+
   return (
     <AppWrapper hideSidebar>
       <Container className="my-5">
@@ -67,6 +94,16 @@ export const AdminUsersScreen = () => {
                 <div className="fw-bold">{user.nickname}</div>
                 {user.email}, {user.firstname}, {user.lastname}
               </div>
+              <NavDropdown
+                title={user.role}
+                id={`dropdown-${user.nickname}`}
+                onSelect={(selectedRole) => handleRoleChange(user, selectedRole as UserRole)}
+              >
+                <NavDropdown.Item eventKey="USER">USER</NavDropdown.Item>
+                <NavDropdown.Item eventKey="ADMIN">ADMIN</NavDropdown.Item>
+                <NavDropdown.Item eventKey="MODERATOR">MODERATOR</NavDropdown.Item>
+                <NavDropdown.Item eventKey="PRIVILEGED_USER">PRIVILEGED USER</NavDropdown.Item>
+              </NavDropdown>
             </div>
           ))}
         {users &&
