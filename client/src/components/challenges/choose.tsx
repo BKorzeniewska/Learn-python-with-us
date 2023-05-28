@@ -4,7 +4,7 @@ import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import './challenges.css'
 import { PossibleAnswers } from './ChallengeScreen';
 import { LoadingSpinner } from '../home/Spinner';
-import { ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
 import { type } from 'os';
 import { useError } from '../home/ErrorContext';
 
@@ -14,10 +14,11 @@ type ChooseChallengeProps = {
     title: string,
     question: string,
     possibleAnswers: PossibleAnswers,
+    onChallengeComplete: (status: ChallengeResult) => void,
 }
 
 export const ChooseChallenge = (props: ChooseChallengeProps) => {
-    const [selectedAnswer, setSelectedAnswer] = useState<string|null>(null); // Track the selected answer
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Track the selected answer
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(false); // Track if the selected answer is correct
     const [isLoading, setIsLoading] = React.useState(false);
     const { errorMessages, setError } = useError();
@@ -32,14 +33,14 @@ export const ChooseChallenge = (props: ChooseChallengeProps) => {
             <Card.Body>
                 <Card.Title>{props.title}</Card.Title>
                 <Card.Text>
-                    <MarkDownRenderer content={props.question}/>
+                    <MarkDownRenderer content={props.question} />
                 </Card.Text>
 
                 <Form
                     className="mb-3"
                     onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                         event.preventDefault()
-                        if(selectedAnswer === null) {
+                        if (selectedAnswer === null) {
                             setError("Proszę wybrać odpowiedź.")
                             return;
                         }
@@ -52,61 +53,56 @@ export const ChooseChallenge = (props: ChooseChallengeProps) => {
                         }
                         executeChallenge(result).then((ans) => {
                             setIsLoading(false);
-                            if(ans.isOk){
-                                if(ans.value.result === "SUCCESS"){
-                                    console.log("correct");
-                                }
-                                else{
-                                    console.log("incorrect");
-                                }
+                            if (ans.isOk) {
+                                props.onChallengeComplete(ans.value.result);
                             }
-                            else{
+                            else {
                                 console.log("cos sie zjebalo kurwa :/");
                             }
                         });
                     }}
                 >
 
-                        <Form.Check
-                            type="radio"
-                            label={props.possibleAnswers.A}
-                            name="formHorizontalRadios"
-                            onClick={() => setSelectedAnswer("A")}
-                        />
-                        <Form.Check
-                            type="radio"
-                            label={props.possibleAnswers.B}
-                            name="formHorizontalRadios"
-                            onClick={() => setSelectedAnswer("B")}
-                        />
-                        <Form.Check
-                            type="radio"
-                            label={props.possibleAnswers.C}
-                            name="formHorizontalRadios"
-                            onClick={() => setSelectedAnswer("C")}
-                        />
-                        <Form.Check
-                            type="radio"
-                            label={props.possibleAnswers.D}
-                            name="formHorizontalRadios"
-                            onClick={() => setSelectedAnswer("D")}
-                        />
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            className="submit-button"
-                            disabled={isLoading}
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.A}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("A")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.B}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("B")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.C}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("C")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.D}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("D")}
+                    />
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        className="submit-button"
+                        disabled={isLoading}
+                    >
+                        <LoadingSpinner
+                            isLoading={isLoading}
                         >
-                            <LoadingSpinner
-                                isLoading={isLoading}
-                            >
-                                Submit
-                            </LoadingSpinner>
-                        </Button>
+                            Submit
+                        </LoadingSpinner>
+                    </Button>
                 </Form>
 
             </Card.Body>
         </Card>
     )
-    
+
 }

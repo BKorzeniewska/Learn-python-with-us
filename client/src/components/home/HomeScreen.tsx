@@ -54,6 +54,7 @@ const HomeScreen = (props: Props) => {
                 title="Choose Challenge"
                 question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
                 possibleAnswers={{ A: "42", B: "43", C: "44", D: "45" }}
+                onChallengeComplete={() => {}}
               />
             </div>
           </Row>
@@ -64,6 +65,7 @@ const HomeScreen = (props: Props) => {
                 title="Code Challenge"
                 question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
                 codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
+                onChallengeComplete={() => {}}
               />
             </div>
           </Row>

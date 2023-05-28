@@ -3,11 +3,12 @@ import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row }
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppWrapper } from '../home/AppWrapper';
-import { ChallengeResponse, getChallengesByArticleId } from './apis/challenge';
+import { ChallengeResponse, ChallengeResult, getChallengesByArticleId } from './apis/challenge';
 import { useError } from '../home/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
+import { BsCheckCircle } from 'react-icons/bs';
 
 type OpenChallengeContent = {
     correctAnswer: string;
@@ -36,45 +37,75 @@ export const ChallengeScreen = () => {
     const { errorMessages, setError } = useError();
     const location = useLocation();
     const challenge: ChallengeResponse | undefined = location.state?.challenge;
-
+    const [challengeDone, setChallengeDone] = useState(false); // State to track if challenge was done correctly
 
     let challengeContent: ChallengeContent = JSON.parse(challenge?.content || '{"correctAnswer": "42"}');
 
     console.log(challengeContent);
+
+    // Function to handle challenge completion
+    const handleChallengeCompletion = (status: ChallengeResult) => {
+        if (status === "SUCCESS") {
+            setChallengeDone(true); // Set challengeDone to true when challenge is completed
+        }
+        else {
+            setChallengeDone(false);
+            setError("Nie udało się wykonać zadania");
+        }
+    };
+
+    // Function to navigate to the next challenge
+    const goToNextChallenge = () => {
+        // Implement your logic to navigate to the next challenge
+        navigate('/next-challenge'); // Replace '/next-challenge' with the actual URL or route for the next challenge
+    };
 
     return (
         <AppWrapper hideSidebar>
             <Container className="my-5">
                 {challenge && (
                     <div>
-                        {challenge.type === 'CLOSED' && (
-
-                            <ChooseChallenge
-                                id={challenge.id}
-                                title={challenge.name}
-                                question={challenge.question}
-                                possibleAnswers={(challengeContent as ClosedChallengeContent).possibleAnswers}
-                            />
-                        )}
-                        {challenge.type === 'CODE' && (
-                            <CodeChallenge
-                                id={challenge.id}
-                                title={challenge.name}
-                                question={challenge.question}
-                                codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
-                            />
-                        )}
-                        {challenge.type === "OPEN" && (
-                            <OpenChallenge
-                                id={challenge.id}
-                                title={challenge.name}
-                                question={challenge.question}
-                            />
+                        {challengeDone ? ( // If challengeDone is true, display completion information and button to next challenge
+                            <div>
+                                <div className='challenge-complete-wrapper'>
+                                    <BsCheckCircle size={80} color="green" className="mb-3" /> {/* Add tick sign symbol */}
+                                    <p className="mb-3">Zadanie wykonane prawidłowo!</p>
+                                    <Button onClick={goToNextChallenge}>Następne zadanie</Button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div>
+                                {challenge.type === 'CLOSED' && (
+                                    <ChooseChallenge
+                                        id={challenge.id}
+                                        title={challenge.name}
+                                        question={challenge.question}
+                                        possibleAnswers={(challengeContent as ClosedChallengeContent).possibleAnswers}
+                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the ChooseChallenge component
+                                    />
+                                )}
+                                {challenge.type === 'CODE' && (
+                                    <CodeChallenge
+                                        id={challenge.id}
+                                        title={challenge.name}
+                                        question={challenge.question}
+                                        codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
+                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the CodeChallenge component
+                                    />
+                                )}
+                                {challenge.type === "OPEN" && (
+                                    <OpenChallenge
+                                        id={challenge.id}
+                                        title={challenge.name}
+                                        question={challenge.question}
+                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the OpenChallenge component
+                                    />
+                                )}
+                            </div>
                         )}
                     </div>
                 )}
             </Container>
         </AppWrapper>
     );
-
 };

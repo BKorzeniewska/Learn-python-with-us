@@ -70,3 +70,27 @@
 [data-theme="light"] .custom-list-item:hover {
     background-color: #c7c7c7;
 }
+
+.challenge-complete-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 2rem;
+    border: 0px solid;
+    border-radius: 7px;
+    padding: 30px;
+    margin-bottom: 10px;
+    max-width: fit-content;
+    width: auto;
+    margin: 0 auto;
+    
+}
+
+[data-theme="dark"] .challenge-complete-wrapper {
+    background-color: #333;
+}
+
+[data-theme="light"] .challenge-complete-wrapper {
+    background-color: #e2e2e2;
+}

@@ -6,7 +6,7 @@ import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { LoadingSpinner } from '../home/Spinner';
 import "./challenges.css"; 
-import { ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
 
 // implementation of choose component, which is used to choose between 4 answers and has question
 type CodeChallengeProps = {
@@ -14,6 +14,7 @@ type CodeChallengeProps = {
     title: string,
     question: string,
     codeTemplate: string,
+    onChallengeComplete: (status: ChallengeResult) => void,
 }
 
 export const CodeChallenge = (props: CodeChallengeProps) => {
@@ -38,12 +39,7 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
             if(ans.isOk){
-                if(ans.value.result === "SUCCESS"){
-                    console.log("correct");
-                }
-                else{
-                    console.log("incorrect");
-                }
+                props.onChallengeComplete(ans.value.result);
             }
             else{
                 console.log("cos sie zjebalo kurwa :/");

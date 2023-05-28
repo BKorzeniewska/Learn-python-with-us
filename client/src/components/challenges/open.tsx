@@ -6,13 +6,14 @@ import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { LoadingSpinner } from '../home/Spinner';
 import "./challenges.css"; 
-import { ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
 
 
 type ClosedChallengeProps = {
     id: number,
     title: string,
     question: string,
+    onChallengeComplete: (status: ChallengeResult) => void,
 }
 
 export const OpenChallenge = (props: ClosedChallengeProps) => {
@@ -35,12 +36,7 @@ export const OpenChallenge = (props: ClosedChallengeProps) => {
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
             if(ans.isOk){
-                if(ans.value.result === "SUCCESS"){
-                    console.log("correct");
-                }
-                else{
-                    console.log("incorrect");
-                }
+                props.onChallengeComplete(ans.value.result);
             }
             else{
                 console.log("cos sie zjebalo kurwa :/");
