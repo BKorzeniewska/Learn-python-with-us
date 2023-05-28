@@ -12,6 +12,7 @@ import { ArticleEditionScreen } from './components/admin/article/ArticleEditionS
 import { ChallengesScreen } from './components/challenges/ChallengesScreen';
 import { ChallengeScreen } from './components/challenges/ChallengeScreen';
 import { AdminUsersScreen } from './components/admin/users/AdminUsersScreen';
+import { AdminScreen } from './components/admin/AdminScreen';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/admin/users" element={<AdminUsersScreen />}></Route>
             <Route path="/challenges/:articleId" element={<ChallengesScreen />}></Route>
             <Route path="/challenge" element={<ChallengeScreen />}></Route>
+            <Route path="/admin" element={<AdminScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>

@@ -1,7 +1,7 @@
 import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
-import { authenticate } from "../common/apis/login";
+import { authenticate } from "../auth/apis/login";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { useContext, useState } from "react";
@@ -16,7 +16,7 @@ type LoginFormData = {
 
 export const LoginScreen = () => {
     const navigate = useNavigate();
-    const { setToken } = useContext(AuthContext);
+    const { setToken, setRole } = useContext(AuthContext);
     const { errorMessages, setError } = useError();
 
 
@@ -27,6 +27,7 @@ export const LoginScreen = () => {
         response.then((data) => {
             if(data.isOk) {
                 setToken(data.value.token);
+                setRole(data.value.role);
                 navigate("/");
             } else {    
                 setError('Nie udało się zalogować. Spróbuj ponownie.');

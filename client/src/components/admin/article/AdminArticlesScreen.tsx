@@ -1,12 +1,12 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Container, Nav, NavDropdown } from 'react-bootstrap';
+import { Accordion, Container, Nav, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArticleMenu, loadArticleMenu } from '../../common/apis/article';
 import { useError } from '../../home/ErrorContext';
 import { ThemeContext } from '../../themes/ThemeProvider';
 import { AppWrapper } from '../../home/AppWrapper';
-import {AddChapter} from './AddChapter';
+import { AddChapter } from './AddChapter';
 
 type ChapterProps = {
   id: number;
@@ -92,6 +92,30 @@ export const AdminArticlesScreen = () => {
               <Chapter key={chapter.id} chapter={chapter} />
             ))}
           </Nav>
+          <Accordion defaultActiveKey="0" flush>
+            {result?.map((chapter) => (
+              <Accordion.Item eventKey={chapter.name}>
+                <Accordion.Header>{chapter.name}</Accordion.Header>
+                <Accordion.Body>
+                  <Nav className="flex-column">
+                    {chapter.articles.map((article) => (
+                      <li key={article.id} className={`border rounded p-2 my-2 `}>
+                        {article.title}
+                        <button className="btn btn-sm btn-primary mx-2" onClick={() => navigate(`/admin/edit/${article.id}`)}>
+                          Edytuj
+                        </button>
+                        <button className="btn btn-sm btn-danger" onClick={() => navigate(`/admin/edit/${article.id}`)}>
+                          Usuń
+                        </button>
+                      </li>
+                    ))}
+                  </Nav>
+
+                </Accordion.Body>
+              </Accordion.Item>
+            ))}
+
+          </Accordion>
         </div>
       </Container>
     </AppWrapper>

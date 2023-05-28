@@ -1,7 +1,8 @@
 
-import { Post } from "../axiosFetch";
-import { Result } from "../poliTypes";
-import { baseUrl } from "./common";
+import { Post } from "../../common/axiosFetch";
+import { Result } from "../../common/poliTypes";
+import { baseUrl } from "../../common/apis/common";
+import { UserRole } from "../../admin/users/apis/users";
 
 export type authenticateRequest = {
     email: string;
@@ -9,6 +10,7 @@ export type authenticateRequest = {
 }
 export type authenticateResponse = {
     token: string;
+    role: UserRole;
 }
 
 export type registerRequest = {
@@ -34,8 +36,8 @@ export const authenticate = async (email: string, password: string): Promise<Res
     });
 }
 
-export const register = async (request: registerRequest): Promise<Result<registerResponse, "UNAUTHORIZED">> => {
-    const response = Post<registerResponse>(`${baseUrl}/api/v1/auth/register`, request);
+export const register = async (request: registerRequest): Promise<Result<authenticateResponse, "UNAUTHORIZED">> => {
+    const response = Post<authenticateResponse>(`${baseUrl}/api/v1/auth/register`, request);
 
     return response.then((data) => {
         if(data.isOk) {
