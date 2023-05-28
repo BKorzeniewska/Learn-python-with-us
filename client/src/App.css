@@ -82,6 +82,8 @@
 
     --bs-border-color: rgba(255, 255, 255, 0.1) !important;
     --bs-tertiary-bg: rgba(255, 255, 255, 0.15) !important;
+    /* --bs-pagination-disabled-bg: rgba(255, 255, 255, 0.25) !important; */
+    --bs-secondary-bg: rgba(255, 255, 255, 0.075) !important;
 }
 
 /* Radio Buttons  theme */

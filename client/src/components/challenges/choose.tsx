@@ -2,76 +2,107 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import './challenges.css'
+import { PossibleAnswers } from './ChallengeScreen';
+import { LoadingSpinner } from '../home/Spinner';
+import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { type } from 'os';
+import { useError } from '../home/ErrorContext';
 
 // implementation of choose component, which is used to choose between 4 answers and has question
 type ChooseChallengeProps = {
+    id: number,
     title: string,
     question: string,
-    answerOk: string,
-    answer2: string,
-    answer3: string,
-    answer4: string,
+    possibleAnswers: PossibleAnswers,
+    onChallengeComplete: (status: ChallengeResult) => void,
 }
 
 export const ChooseChallenge = (props: ChooseChallengeProps) => {
-    const [selectedAnswer, setSelectedAnswer] = useState<number|null>(null); // Track the selected answer
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null); // Track the selected answer
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(false); // Track if the selected answer is correct
+    const [isLoading, setIsLoading] = React.useState(false);
+    const { errorMessages, setError } = useError();
 
-    const sendAnswer = (answer: number) => {
-        
-    }
 
-    const onRightAnswer = (ans: number) => {
-        setSelectedAnswer(ans);
-        setIsAnswerCorrect(true);
-        sendAnswer(ans);
-    }
-
-    const onWrongAnswer = (ans: number) => {
-        setSelectedAnswer(ans);
-        setIsAnswerCorrect(false);
-        sendAnswer(ans);
-    }
-    
-    var answers = [{q: props.answerOk, a: () => onRightAnswer(0), id: 0}, 
-                   {q: props.answer2, a: () => onWrongAnswer(1), id: 1},
-                   {q: props.answer3, a: () => onWrongAnswer(2), id: 2},
-                   {q: props.answer4, a: () => onWrongAnswer(3), id: 3}]
-
-    useEffect( () => {              
-        answers.sort(() => Math.random() - 0.5)
-    }, [])
+    // useEffect( () => {              
+    //     answers.sort(() => Math.random() - 0.5)
+    // }, [])
 
     return (
         <Card>
             <Card.Body>
                 <Card.Title>{props.title}</Card.Title>
                 <Card.Text>
-                    <MarkDownRenderer content={props.question}/>
+                    <MarkDownRenderer content={props.question} />
                 </Card.Text>
 
                 <Form
                     className="mb-3"
-                >
-                    {answers.map((answer) => (
-                        <Form.Check
-                            type="radio"
-                            label={answer.q}
-                            name="formHorizontalRadios"
-                            onClick={answer.a}
-                            className={
-                                selectedAnswer === answer.id
-                                    ? isAnswerCorrect
-                                        ? 'selected correct'
-                                        : 'selected wrong'
-                                    : ''
+                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault()
+                        if (selectedAnswer === null) {
+                            setError("Proszę wybrać odpowiedź.")
+                            return;
+                        }
+                        setIsLoading(true)
+                        console.log("submit")
+                        const result: ExecuteChallengeRequest = {
+                            challengeId: props.id,
+                            answer: selectedAnswer,
+                            type: "CLOSED",
+                        }
+                        executeChallenge(result).then((ans) => {
+                            setIsLoading(false);
+                            if (ans.isOk) {
+                                props.onChallengeComplete(ans.value.result);
                             }
-                        />
-                    ))}
+                            else {
+                                console.log("cos sie zjebalo kurwa :/");
+                            }
+                        });
+                    }}
+                >
+
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.A}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("A")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.B}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("B")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.C}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("C")}
+                    />
+                    <Form.Check
+                        type="radio"
+                        label={props.possibleAnswers.D}
+                        name="formHorizontalRadios"
+                        onClick={() => setSelectedAnswer("D")}
+                    />
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        className="submit-button"
+                        disabled={isLoading}
+                    >
+                        <LoadingSpinner
+                            isLoading={isLoading}
+                        >
+                            Submit
+                        </LoadingSpinner>
+                    </Button>
                 </Form>
 
             </Card.Body>
         </Card>
     )
-    
+
 }

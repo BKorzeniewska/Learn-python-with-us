@@ -21,6 +21,7 @@ export const CommentForm = (props: Props) => {
       const response = await createComment(props.articleId, formContent);
       if (response.isOk) {
         props.setComments((prevComments) => [...prevComments || [], response.value]);
+        setFormContent("");
 
       } else {
         setError("Nie udało się dodać komentarza");

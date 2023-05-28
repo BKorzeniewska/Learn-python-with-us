@@ -1,4 +1,4 @@
-import { Get, Post, Put } from "../axiosFetch";
+import { CheckToken, Get, Post, Put } from "../axiosFetch";
 import { Result } from "../poliTypes";
 import { baseUrl } from "./common";
 
@@ -61,7 +61,7 @@ export const loadArticleById = async (id: string): Promise<Result<Article, Artic
 }
 
 export const loadArticleMenu = async (): Promise<Result<ArticleMenu[], ArticleResponseError>> => {
-    const response = Get<ArticleMenu[]>(`${baseUrl}/api/v1/chapters/menu`);
+    const response = CheckToken(Get<ArticleMenu[]>(`${baseUrl}/api/v1/chapters/menu`));
 
     return response.then((data) => {
         if(data.isOk) {

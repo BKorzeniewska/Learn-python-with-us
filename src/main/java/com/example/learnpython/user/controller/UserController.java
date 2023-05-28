@@ -20,7 +20,7 @@ public class UserController {
     private final ChangeRoleService changeRoleService;
 
 
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity<UsersDTO> getUsers(@RequestBody final GetUsersRequest request) {
 
         log.info("Get users() - start, request = {}", request);

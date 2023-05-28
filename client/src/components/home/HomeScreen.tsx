@@ -50,21 +50,22 @@ const HomeScreen = (props: Props) => {
           <Row>
             <div className="w25 my-3">
               <ChooseChallenge
+                id={100}
                 title="Choose Challenge"
                 question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
-                answerOk="42"
-                answer2="43"
-                answer3="44"
-                answer4="45"
+                possibleAnswers={{ A: "42", B: "43", C: "44", D: "45" }}
+                onChallengeComplete={() => {}}
               />
             </div>
           </Row>
           <Row>
             <div className="w25 my-3">
-              <CodeChallenge 
+              <CodeChallenge
+                id={101}
                 title="Code Challenge"
                 question={"What is the answer to life, the universe and everything?\n `codetest`\n ```py \n print('hello')\n ```"}
                 codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
+                onChallengeComplete={() => {}}
               />
             </div>
           </Row>
@@ -165,7 +166,7 @@ const HomeScreen = (props: Props) => {
 
           <Row>
             <div className="w25 my-3">
-              <MarkDownRenderer content={markdownTest}/>
+              <MarkDownRenderer content={markdownTest} />
             </div>
           </Row>
         </Container>

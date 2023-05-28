@@ -51,15 +51,15 @@ public class ChangeRoleServiceImpl implements ChangeRoleService {
             throw new UserRequestException("You can't change your own role", "ROLE_CHANGE_ERROR");
         }
 
-        if (user.getRole().equals(Role.ADMIN)) {
-            throw new UserRequestException("You can't change role of admin", "ROLE_CHANGE_ERROR");
-        }
+//        if (user.getRole().equals(Role.ADMIN)) {
+//            throw new UserRequestException("You can't change role of admin", "ROLE_CHANGE_ERROR");
+//        }
 
         if (user.getRole().getValue() == changeRoleRequest.role().getValue()) {
             throw new UserRequestException("User role is already the same", "ROLE_CHANGE_ERROR");
         }
 
-        if (currentUser.getRole().getValue() >= changeRoleRequest.role().getValue()) {
+        if (currentUser.getRole().getValue() < changeRoleRequest.role().getValue()) {
             throw new UserRequestException("You can't change role to higher than yours", "ROLE_CHANGE_ERROR");
         }
 

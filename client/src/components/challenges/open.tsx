@@ -8,19 +8,16 @@ import { LoadingSpinner } from '../home/Spinner';
 import "./challenges.css"; 
 import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
 
-// implementation of choose component, which is used to choose between 4 answers and has question
-type CodeChallengeProps = {
+
+type ClosedChallengeProps = {
     id: number,
     title: string,
     question: string,
-    codeTemplate: string,
     onChallengeComplete: (status: ChallengeResult) => void,
 }
 
-export const CodeChallenge = (props: CodeChallengeProps) => {
-    const lineCount = props.codeTemplate.split("\n").length
-    const [isLoading, setIsLoading] = React.useState(false)
-
+export const OpenChallenge = (props: ClosedChallengeProps) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [answer, setAnswer] = useState("");
 
     const handleAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -34,7 +31,7 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
         const result: ExecuteChallengeRequest = {
             challengeId: props.id,
             answer: answer,
-            type: "CODE",
+            type: "OPEN",
         }
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
@@ -55,28 +52,16 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
                     <MarkDownRenderer content={props.question} />
                 </Card.Text>
 
-                <Form
-                    onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-                        event.preventDefault()
-                        handleSubmit(event);
-                        // setIsLoading(true)
-                        
-                        // console.log("submit")
-                    }}
-                >
-                    <Form.Group
-                        className="mb-3"
-                        controlId="exampleForm.ControlTextarea1"
-                    >
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                         <Form.Label>Write answer below</Form.Label>
                         <Form.Control 
                             as="textarea"
-                            style={{fontFamily: "monospace"}}
-                            rows={lineCount+2} 
-                            defaultValue={props.codeTemplate}
+                            style={{ fontFamily: "monospace" }}
+                            rows={4}
+                            value={answer}
                             onChange={handleAnswerChange}
-
-                            />
+                        />
                     </Form.Group>
                     <Form.Group>
                         <Button
@@ -85,21 +70,16 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
                             className="submit-button"
                             disabled={isLoading}
                         >
-                            <LoadingSpinner
-                                isLoading={isLoading}
-                            >
+                            <LoadingSpinner isLoading={isLoading}>
                                 Submit
                             </LoadingSpinner>
                         </Button>
                     </Form.Group>
                     <Form.Group>
-                        {/*output*/}
-                        
+                        {/* output */}
                     </Form.Group>
                 </Form>
-
             </Card.Body>
         </Card>
-    )
-
+    );
 }
