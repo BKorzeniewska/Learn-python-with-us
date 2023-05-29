@@ -38,22 +38,26 @@ public class ChallengeServiceImpl implements ChallengeService {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
-            interpreter.setOut(outputUser);
 
+            List<String> inputs=challenge.getContent().getInput();
             log.info("Executing user answer: {}", request.answer());
+            for( int i=0;i<inputs.size();i++)
+            {
+                interpreter.setOut(outputUser);
+                // Validate input
+//                if (!isValidInput(request.answer())) {
+//                    throw new IllegalArgumentException("Invalid input");
+//                }
+                interpreter.exec(inputs.get(i));
+                interpreter.exec(request.answer());
+                interpreter.exec(challenge.getContent().getCorrectAnswer());
 
-            // Validate input
-            if (!isValidInput(request.answer())) {
-                throw new IllegalArgumentException("Invalid input");
+                interpreter.setOut(outputServer);
+                interpreter.exec("c=a+b");
+                interpreter.exec(challenge.getContent().getCorrectAnswer());
             }
 
-            interpreter.exec(request.answer());
-
-            String userResult = outputUser.toString();
-            interpreter.setOut(outputServer);
-            interpreter.exec(challenge.getContent().getCorrectAnswer());
-
-            if (Objects.equals(outputServer.toString().trim(), userResult.trim())) {
+            if (Objects.equals(outputServer.toString().trim(), outputUser.toString().trim())) {
                 log.info("Result: TAK");
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
