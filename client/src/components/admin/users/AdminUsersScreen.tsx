@@ -63,7 +63,7 @@ export const AdminUsersScreen = () => {
           return prevUsers;
         });
       } else {
-        setError("Failed to update user role.");
+        setError("Failed to update user role.\n"+response.error.errorMessage +"\n"+response.error.errorCode );
       }
     });
   }

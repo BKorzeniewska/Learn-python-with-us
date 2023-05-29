@@ -74,3 +74,15 @@ export const getChallengesByArticleId = async (articleId: number): Promise<Resul
   });
 };
 
+export const getChallengesByName = async (nameFrangment: string): Promise<Result<ChallengeResponse[], APIError<ChallengeErrors>>> => {
+  const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/name/${nameFrangment}`);
+
+  return response.then((data) => {
+    if (data.isOk) {
+      return { isOk: true, value: data.value } as Result<ChallengeResponse[], APIError<ChallengeErrors>>;
+    } else {
+      return { isOk: false, error: data.error.response?.data } as Result<ChallengeResponse[], APIError<ChallengeErrors>>;
+    }
+  });
+};
+

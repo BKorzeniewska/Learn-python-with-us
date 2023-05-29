@@ -92,7 +92,7 @@ export const AdminArticlesScreen = () => {
               <Chapter key={chapter.id} chapter={chapter} />
             ))}
           </Nav>
-          <Accordion defaultActiveKey="0" flush>
+          {/* <Accordion defaultActiveKey="0" flush>
             {result?.map((chapter) => (
               <Accordion.Item eventKey={chapter.name}>
                 <Accordion.Header>{chapter.name}</Accordion.Header>
@@ -115,7 +115,7 @@ export const AdminArticlesScreen = () => {
               </Accordion.Item>
             ))}
 
-          </Accordion>
+          </Accordion> */}
         </div>
       </Container>
     </AppWrapper>

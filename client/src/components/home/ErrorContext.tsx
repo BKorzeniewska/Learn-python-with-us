@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect } from 'react';
+import { Fragment, createContext, useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import "./error.css"
+import React from 'react';
 
 type ErrorMessage = {
   message: string;
@@ -15,7 +16,7 @@ type ErrorContextType = {
 
 const ErrorContext = createContext<ErrorContextType>({
   errorMessages: [],
-  setError: () => {},
+  setError: () => { },
 });
 
 export const useError = () => useContext(ErrorContext);
@@ -25,7 +26,7 @@ export const ErrorProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setError = (errorMessage: string) => {
     const timestamp = Date.now();
-    setErrorMessages((prevMessages) => [...prevMessages, {message: errorMessage, timestamp }]);
+    setErrorMessages((prevMessages) => [...prevMessages, { message: errorMessage, timestamp }]);
     console.log(errorMessages);
   };
 
@@ -34,7 +35,7 @@ export const ErrorProvider = ({ children }: { children: React.ReactNode }) => {
       const now = Date.now();
       setErrorMessages((prevMessages) => prevMessages.filter((message) => now - message.timestamp <= 2500));
     };
-  
+
     if (errorMessages.length > 0) {
       const interval = setInterval(clearErrors, 400);
       return () => clearInterval(interval);
@@ -43,14 +44,19 @@ export const ErrorProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ErrorContext.Provider value={{ errorMessages, setError }}>
-            <div className="error-wrapper">
+      <div className="error-wrapper">
         {errorMessages.map((errorMessage, index) => (
           <Alert
             key={index}
             className="error-alert"
             variant="danger"
           >
-            {errorMessage.message}
+            {errorMessage.message.split('\n').map((line, lineIndex) => (
+              <Fragment key={lineIndex}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
           </Alert>
         ))}
       </div>
