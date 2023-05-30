@@ -14,6 +14,6 @@ public class ContentJson {
     protected String correctAnswer;
 
     protected Map<Character, String> possibleAnswers;
-    protected Map<String,String> code;
+    protected Map<String,List<String>> code;
 
 }
