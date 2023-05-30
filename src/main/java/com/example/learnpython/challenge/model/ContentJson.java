@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -12,4 +13,6 @@ import java.util.Map;
 public class ContentJson {
     protected String correctAnswer;
     protected Map<Character, String> possibleAnswers;
+    protected Map<String,List<String>> code;
+
 }

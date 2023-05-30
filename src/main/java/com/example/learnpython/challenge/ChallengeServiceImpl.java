@@ -38,22 +38,32 @@ public class ChallengeServiceImpl implements ChallengeService {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
-            interpreter.setOut(outputUser);
-
+            Map<String,List<String>> answers= challenge.getContent().getCode();
+            List<String> results=answers.get("results");
+            List<String>inputs=answers.get("inputs");
             log.info("Executing user answer: {}", request.answer());
+            for( int i=0;i<results.size();i++)
+            {
+                interpreter.setOut(outputUser);
+                // Validate input
+//                if (!isValidInput(request.answer())) {
+//                    throw new IllegalArgumentException("Invalid input");
+//                }
+                String[] input=inputs.get(i).split(" " );
+                for(int j=0;j<input.length;j++)
+                {
+                    interpreter.exec(input[j]);
+                    System.out.println(input[i]);
+                }
 
-            // Validate input
-            if (!isValidInput(request.answer())) {
-                throw new IllegalArgumentException("Invalid input");
+                interpreter.exec(request.answer());
+                interpreter.exec(answers.get("toPrint").get(0));
+                interpreter.setOut(outputServer);
+                interpreter.exec(results.get(i));
+                interpreter.exec(answers.get("toPrint").get(0));
             }
 
-            interpreter.exec(request.answer());
-
-            String userResult = outputUser.toString();
-            interpreter.setOut(outputServer);
-            interpreter.exec(challenge.getContent().getCorrectAnswer());
-
-            if (Objects.equals(outputServer.toString().trim(), userResult.trim())) {
+            if (Objects.equals(outputServer.toString().trim(), outputUser.toString().trim())) {
                 log.info("Result: TAK");
                 return ExecutedChallengeResponse.builder()
                         .challengeId(challenge.getId())
