@@ -12,7 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class ContentJson {
     protected String correctAnswer;
-
     protected Map<Character, String> possibleAnswers;
     protected Map<String,List<String>> code;
 

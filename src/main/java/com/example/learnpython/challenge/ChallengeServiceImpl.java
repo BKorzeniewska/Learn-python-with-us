@@ -49,14 +49,15 @@ public class ChallengeServiceImpl implements ChallengeService {
 //                if (!isValidInput(request.answer())) {
 //                    throw new IllegalArgumentException("Invalid input");
 //                }
-                String input= inputs.get(i);
-                System.out.println(input);
-                interpreter.exec("a=4 b=10");
-                interpreter.exec(input);
-                System.out.println(input);
-                interpreter.exec(input+" "+request.answer());
-                interpreter.exec(answers.get("toPrint").get(0));
+                String[] input=inputs.get(i).split(" " );
+                for(int j=0;j<input.length;j++)
+                {
+                    interpreter.exec(input[j]);
+                    System.out.println(input[i]);
+                }
 
+                interpreter.exec(request.answer());
+                interpreter.exec(answers.get("toPrint").get(0));
                 interpreter.setOut(outputServer);
                 interpreter.exec(results.get(i));
                 interpreter.exec(answers.get("toPrint").get(0));
