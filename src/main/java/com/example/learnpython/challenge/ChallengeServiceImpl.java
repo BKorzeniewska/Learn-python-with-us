@@ -38,10 +38,11 @@ public class ChallengeServiceImpl implements ChallengeService {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
-
-            List<String> inputs=challenge.getContent().getInput();
+            Map<String,List<String>> answers= challenge.getContent().getCode();
+            List<String> results=answers.get("results");
+            List<String>inputs=answers.get("inputs");
             log.info("Executing user answer: {}", request.answer());
-            for( int i=0;i<inputs.size();i++)
+            for( int i=0;i<results.size();i++)
             {
                 interpreter.setOut(outputUser);
                 // Validate input
@@ -50,11 +51,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 //                }
                 interpreter.exec(inputs.get(i));
                 interpreter.exec(request.answer());
-                interpreter.exec(challenge.getContent().getCorrectAnswer());
+                interpreter.exec(answers.get("toPrint").get(0));
 
                 interpreter.setOut(outputServer);
-                interpreter.exec("c=a+b");
-                interpreter.exec(challenge.getContent().getCorrectAnswer());
+                interpreter.exec(results.get(i));
+                interpreter.exec(answers.get("toPrint").get(0));
             }
 
             if (Objects.equals(outputServer.toString().trim(), outputUser.toString().trim())) {
