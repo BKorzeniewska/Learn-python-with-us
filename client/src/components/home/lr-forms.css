@@ -17,3 +17,13 @@
 [data-theme="dark"] .form-container{
     background-color: #333;
 }
+
+.forgot-password-text {
+    color: rgb(100, 100, 100);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .forgot-password-text:hover {
+    color: darkblue;
+  }

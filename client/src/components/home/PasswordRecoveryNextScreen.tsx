@@ -1,7 +1,7 @@
 import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
 import { AppWrapper } from "./AppWrapper";
-import { authenticate } from "../auth/apis/login";
+import { RecoveryRequest, authenticate, passowrdRecovery, passowrdRecoveryRequest } from "../auth/apis/login";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { useContext, useState } from "react";
@@ -9,37 +9,11 @@ import axios from "axios";
 import { useError } from "./ErrorContext";
 
 
-type LoginFormData = {
-    email: string;
-    password: string;
-}
 
-export const LoginScreen = () => {
+export const PasswordRecoveryNextScreen = () => {
     const navigate = useNavigate();
     const { setToken, setRole } = useContext(AuthContext);
     const { errorMessages, setError } = useError();
-
-
-
-    const handleSubmit = (e: LoginFormData) => {
-
-        const response = authenticate(e.email, e.password);
-        response.then((data) => {
-            if(data.isOk) {
-                setToken(data.value.token);
-                setRole(data.value.role);
-                navigate("/");
-            } else {    
-                setError('Nie udało się zalogować. Spróbuj ponownie.');
-            }
-
-        });
-        // print response
-        console.log(response);
-    }
-    
-    //todo: validate form data
-    //todo: display error message
 
     return (
         <>
@@ -48,7 +22,9 @@ export const LoginScreen = () => {
                 <div className="form-container">
                     <Row>
                         <div className="m-auto my-3 text-center">
-                            <h1>Zaloguj się</h1>
+                            <h1>Odzyskiwanie konta</h1>
+                            Użyj kodu przesłanego na twój adres mailowy<br/>
+                            i wpisz nowe hasło!
                         </div>
                     </Row>
                     <Row>
@@ -56,13 +32,22 @@ export const LoginScreen = () => {
                             <Form
                                 onSubmit={(e) => {
                                     e.preventDefault();
-
-                                    const formData: LoginFormData = {
+                                    const req: RecoveryRequest ={
                                         email: e.currentTarget.email.value,
-                                        password: e.currentTarget.pass.value,
-                                    };
+                                        token: e.currentTarget.token.value,
+                                        newPassword: e.currentTarget.password.value
+                                    }
 
-                                    handleSubmit(formData);
+                                    const response = passowrdRecovery(req);
+                                    response.then((data) => {
+                                        if(data.isOk) {
+                                            navigate("/login");
+                                            setError('Udało się odzyskać konto, zaloguj się ponownie.');
+                                        } else {    
+                                            setError('Nie udało się odzyskać hasła. Spróbuj ponownie.');
+                                        }
+                            
+                                    });
                                 }}
                             >
                                 <Form.Group
@@ -74,22 +59,23 @@ export const LoginScreen = () => {
                                 </Form.Group>
                                 <Form.Group
                                     className="mb-3"
-                                    controlId="pass"
+                                    controlId="token"
                                 >
-                                    <Form.Label>Hasło</Form.Label>
+                                    <Form.Label>Kod</Form.Label>
+                                    <Form.Control type="text" placeholder="8412a319-ca66-42e1-9ef6-99374cadf98d" />
+                                </Form.Group>
+                                <Form.Group
+                                    className="mb-3"
+                                    controlId="password"
+                                >
+                                    <Form.Label>Nowe hasło</Form.Label>
                                     <Form.Control type="password" />
                                 </Form.Group>
+
                                 <Form.Group>
                                     <Button variant="primary" type="submit" className="w-100 mb-3">
-                                        Zaloguj
+                                        Odzyskaj
                                     </Button>
-                                    Nie masz jeszcze konta?
-                                    <Button variant="secondary" type="button" className="w-100 mb-3" onClick={() => navigate("/register")}>
-                                        Zarejestruj
-                                    </Button>
-                                    <p className="forgot-password-text" onClick={() => navigate("/password-recovery")}>
-                                        Zapomniałeś hasła?
-                                    </p>
                                 </Form.Group>
 
                             </Form>
