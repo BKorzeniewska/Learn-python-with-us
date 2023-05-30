@@ -8,5 +8,6 @@ import lombok.Data;
 public class ModifyArticleRequest {
     private Long id;
     private String title;
+    private Boolean visible;
     private String content;
 }

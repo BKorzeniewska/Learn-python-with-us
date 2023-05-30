@@ -149,45 +149,6 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
     }
 
-    @Transactional
-    @Override
-    public ChallengeResponse createChallenge(CreateChallengeRequest request) {
-        //var challenge = challengeMapper.toChallenge(request);
-        Challenge challenge = Challenge.builder()
-                .name(request.getName())
-                .content(jsonConverter.convertToEntityAttribute(request.getContent()))
-                .question(request.getQuestion())
-                .type(request.getType())
-                .build();
-        List<Article> articles = new ArrayList<>();
-        for (Long id : request.getArticlesID()) {
-            final Article article = articleRepository
-                    .findById(id)
-                    .orElseThrow(() -> new ArticleNotFoundException(
-                            "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
-            articles.add(article);
-
-        }
-        challenge.setArticles(articles);
-        challengeRepository.save(challenge);
-        for (Article article : articles) {
-            Hibernate.initialize(article);
-            Hibernate.initialize(article.getChallenges());
-            article.getChallenges().add(challenge);
-            articleRepository.save(article);
-        }
-
-        log.info("challenge: {}", challenge);
-
-        return ChallengeResponse.builder()
-                .id(challenge.getId())
-                .name(challenge.getName())
-                .question(challenge.getQuestion())
-                .type(challenge.getType())
-                .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
-                .articlesID((List<Long>) request.getArticlesID())
-                .build();
-    }
 
     @Override
     public List<ChallengeResponse> getChallengeByName(String name) {
