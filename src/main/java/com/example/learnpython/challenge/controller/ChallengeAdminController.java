@@ -20,8 +20,8 @@ public class ChallengeAdminController {
 
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
-    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse) {
-        return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse));
+    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse,@RequestHeader("Authorization") final String bearerToken) {
+        return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse, bearerToken));
     }
 
     @PutMapping("/update")

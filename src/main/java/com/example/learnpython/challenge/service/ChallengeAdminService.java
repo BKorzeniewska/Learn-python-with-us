@@ -6,8 +6,8 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface ChallengeAdminService {
-    ChallengeResponse createChallenge(CreateChallengeRequest request);
-    ChallengeResponse modifyChallenge(ModifyChallengeRequest request);
+    ChallengeResponse createChallenge(final CreateChallengeRequest request, final String bearerToken);
+    ChallengeResponse modifyChallenge(final ModifyChallengeRequest request);
     void deleteChallenge(final Long challengeId);
 
 

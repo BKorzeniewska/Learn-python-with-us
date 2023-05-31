@@ -11,6 +11,8 @@ import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import com.example.learnpython.challenge.model.ModifyChallengeRequest;
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,18 +28,26 @@ import java.util.List;
 public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     private final ChallengeRepository challengeRepository;
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
 
     @Transactional
     @Override
-    public ChallengeResponse createChallenge(CreateChallengeRequest request) {
-        //var challenge = challengeMapper.toChallenge(request);
+    public ChallengeResponse createChallenge(final CreateChallengeRequest request, final String bearerToken) {
+        //validate user
+        final String token = bearerToken.substring(7);
+        final User user = userRepository.findByToken(token)
+                .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+
+
         Challenge challenge = Challenge.builder()
                 .name(request.getName())
                 .content(jsonConverter.convertToEntityAttribute(request.getContent()))
                 .question(request.getQuestion())
                 .type(request.getType())
+                .user(user)
+                .exp(request.getExp())
                 .build();
         List<Article> articles = new ArrayList<>();
         for (Long id : request.getArticlesID()) {
@@ -59,14 +69,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
         log.info("challenge: {}", challenge);
 
-        return ChallengeResponse.builder()
-                .id(challenge.getId())
-                .name(challenge.getName())
-                .question(challenge.getQuestion())
-                .type(challenge.getType())
-                .content(jsonConverter.convertToDatabaseColumn(challenge.getContent()))
-                .articlesID((List<Long>) request.getArticlesID())
-                .build();
+        return challengeMapper.toCreateChallengeResponse(challenge, jsonConverter);
     }
 
     @Transactional
@@ -88,6 +91,9 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         }
         if (request.getVisible() != null) {
             challenge.setVisible(request.getVisible());
+        }
+        if (request.getExp() != null) {
+            challenge.setExp(request.getExp());
         }
         if (request.getContent() != null) {
             challenge.setContent(jsonConverter.convertToEntityAttribute(request.getContent()));

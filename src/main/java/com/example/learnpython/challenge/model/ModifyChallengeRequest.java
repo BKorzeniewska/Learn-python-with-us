@@ -13,6 +13,7 @@ public class ModifyChallengeRequest {
     private String name;
     private Type type;
     private Boolean visible;
+    private Long exp;
     private String content;
     private List<Long> articlesID;
 }
