@@ -20,8 +20,8 @@ public class ChallengeAdminController {
 
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
-    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse) {
-        return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse));
+    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse,@RequestHeader("Authorization") final String bearerToken) {
+        return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse, bearerToken));
     }
 
     @PutMapping("/update")
@@ -33,7 +33,7 @@ public class ChallengeAdminController {
     }
 
     @DeleteMapping("/delete/{challengeId}")
-    public ResponseEntity<?> deleteChallenge(@PathVariable("articleId") final Long challengeId) {
+    public ResponseEntity<?> deleteChallenge(@PathVariable("challengeId") final Long challengeId) {
         log.info("deleteChallenge() - start: {}", challengeId);
         challengeAdminService.deleteChallenge(challengeId);
         log.info("deleteChallenge() - end");

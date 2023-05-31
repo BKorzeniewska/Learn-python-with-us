@@ -14,6 +14,8 @@ public class ChallengeResponse {
     private String question;
     private String name;
     private Boolean visible;
+    private Long userId;
+    private Long exp;
     private Type type;
     private String content;
     private List<Long> articlesID;
