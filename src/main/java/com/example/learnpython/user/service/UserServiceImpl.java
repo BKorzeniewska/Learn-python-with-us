@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void deleteUserByEmail(final String email) {
 
         final User user = userRepository.findByEmail(email).orElseThrow(

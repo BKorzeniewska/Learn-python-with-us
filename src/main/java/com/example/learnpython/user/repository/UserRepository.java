@@ -29,9 +29,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u INNER JOIN Token t ON u.id = t.user.id WHERE t.token =:token AND (t.expired = false OR t.revoked = false)")
     Optional<User> findByToken(final String token);
 
-    @Transactional
+    /*@Transactional
     @Modifying
     @Query("DELETE FROM User u WHERE u.email=:email")
+    void deleteByEmail(final String email);*/
+
+    //write jpa method to delete user by email
+
+    @Transactional
+    @Modifying
     void deleteByEmail(final String email);
 
     @Transactional
