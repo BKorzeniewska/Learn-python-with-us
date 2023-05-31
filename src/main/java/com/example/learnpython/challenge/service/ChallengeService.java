@@ -1,4 +1,4 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.service;
 
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;

@@ -13,9 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class TokenScheduler {
     private final TokenRepository tokenRepository;
 
-    //TODO fix deleting query
-    //TODO move to service logic
+    //Północ co 3 dni
     @Scheduled(cron = "0 0 0 */3 * *", zone = "Europe/Warsaw")
+    //@Scheduled(fixedRate = 1000)
     public void deleteExpiredTokens() {
         log.info("Deleting expired tokens");
         tokenRepository.deleteAllInvalidTokens();

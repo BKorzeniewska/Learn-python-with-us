@@ -23,7 +23,8 @@ public class Solution {
     private long id;
 
     @Column(name = "ATTEMPTED_AT")
-    private LocalDateTime attemptedAt;
+    @Builder.Default
+    private LocalDateTime attemptedAt = LocalDateTime.now();
 
     @Column(name = "ANSWER")
     private String answer;

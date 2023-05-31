@@ -35,7 +35,7 @@ public class Article {
     private LocalDate creationDate;
 
     @Column(name = "VISIBLE")
-    private boolean visible;
+    private Boolean visible;
 
     @ManyToOne
     @JoinColumn(name="CHAPTER_ID", nullable = false)

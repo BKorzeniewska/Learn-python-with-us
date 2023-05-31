@@ -1,13 +1,14 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.service;
 
-import com.example.learnpython.article.Article;
 import com.example.learnpython.article.ArticleRepository;
-import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.challenge.Challenge;
+import com.example.learnpython.challenge.ChallengeMapper;
+import com.example.learnpython.challenge.ChallengeRepository;
+import com.example.learnpython.challenge.JsonConverter;
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.python.util.PythonInterpreter;
 import org.springframework.stereotype.Service;
 
