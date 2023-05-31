@@ -66,6 +66,9 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .role(savedUser.getRole())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 
@@ -88,6 +91,9 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .role(user.getRole())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 

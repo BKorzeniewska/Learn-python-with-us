@@ -100,6 +100,9 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
             throw new ArticleNotFoundException("Article ID cannot be null", "ARTICLE_ID_NULL");
         }
 
+        articleRepository.findById(articleId)
+                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+
         articleRepository.deleteArticleById(articleId);
     }
 }
