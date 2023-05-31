@@ -12,6 +12,7 @@ public class CreateChallengeRequest {
     private String question;
     private String name;
     private Type type;
+    private Long exp;
     private Boolean visible;
     private String content;
     private List<Long> articlesID;
