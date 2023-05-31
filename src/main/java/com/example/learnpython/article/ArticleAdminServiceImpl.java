@@ -51,6 +51,7 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
                 .chapter(chapter)
                 .creationDate(LocalDate.now())
                 .user(user)
+                .visible(false)
                 .build();
 
         articleRepository.save(article);
@@ -80,9 +81,12 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
         if (request.getContent() != null) {
             article.setContent(request.getContent());
         }
+        if (request.getVisible() != null) {
+            article.setVisible(request.getVisible());
+        }
 
         //articleRepository.save(article);
-        articleRepository.updateArticle(article.getTitle(), article.getContent(), article.getId());
+        articleRepository.updateArticle(article.getTitle(), article.getContent(),article.isVisible(), article.getId());
 
         final Article updatedArticle = articleRepository.findById(request.getId())
                 .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
