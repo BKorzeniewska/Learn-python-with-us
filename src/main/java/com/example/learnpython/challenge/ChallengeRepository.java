@@ -19,11 +19,5 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE challenge SET question = :question, content = :content, name = :name, type = :type, visible = :visible  WHERE challenge_id = :challengeId", nativeQuery = true)
-    void updateChallenge(final String name, final String question, final String content, final Type type,final boolean visible, final Long challengeId);
-
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM Challenge c WHERE c.id = :challengeId")
-    void deleteChallengeById(final Long challengeId);
+    void deleteById(Long challengeId);
 }

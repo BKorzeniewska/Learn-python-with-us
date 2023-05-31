@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 public class ChallengeAdminController {
     private final ChallengeAdminService challengeAdminService;
+
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
     public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse) {

@@ -38,20 +38,18 @@ public class ChallengeServiceImpl implements ChallengeService {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
-            Map<String,List<String>> answers= challenge.getContent().getCode();
-            List<String> results=answers.get("results");
-            List<String>inputs=answers.get("inputs");
+            Map<String, List<String>> answers = challenge.getContent().getCode();
+            List<String> results = answers.get("results");
+            List<String> inputs = answers.get("inputs");
             log.info("Executing user answer: {}", request.answer());
-            for( int i=0;i<results.size();i++)
-            {
+            for (int i = 0; i < results.size(); i++) {
                 interpreter.setOut(outputUser);
                 // Validate input
 //                if (!isValidInput(request.answer())) {
 //                    throw new IllegalArgumentException("Invalid input");
 //                }
-                String[] input=inputs.get(i).split(" " );
-                for(int j=0;j<input.length;j++)
-                {
+                String[] input = inputs.get(i).split(" ");
+                for (int j = 0; j < input.length; j++) {
                     interpreter.exec(input[j]);
                     System.out.println(input[i]);
                 }
@@ -158,7 +156,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenges with provided name not found", "CHALLENGES_NOT_FOUND"));
 
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
                 .toList();
     }
 
@@ -169,16 +167,17 @@ public class ChallengeServiceImpl implements ChallengeService {
                 .orElseThrow(() -> new ChallengeNotFoundException(
                         "Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
 
-        return challengeMapper.toCreateChallengeResponse(challenge,jsonConverter);
+        return challengeMapper.toCreateChallengeResponse(challenge, jsonConverter);
     }
 
     @Override
     public List<ChallengeResponse> getChallenges() {
         var challenges = challengeRepository.findAll();
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
                 .toList();
     }
+
     @Transactional
     @Override
     public List<ChallengeResponse> getChallengesByArticleId(Long articleId) {
@@ -188,7 +187,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                         "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
 
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge,jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
                 .toList();
     }
 

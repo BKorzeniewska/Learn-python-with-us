@@ -19,11 +19,12 @@ import java.util.List;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class ChallengeAdminServiceImpl  implements ChallengeAdminService {
+public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     private final ChallengeRepository challengeRepository;
     private final ArticleRepository articleRepository;
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
+
     @Transactional
     @Override
     public ChallengeResponse createChallenge(CreateChallengeRequest request) {
@@ -64,37 +65,30 @@ public class ChallengeAdminServiceImpl  implements ChallengeAdminService {
                 .build();
     }
 
-
+    @Transactional
     @Override
     public ChallengeResponse modifyChallenge(ModifyChallengeRequest request) {
-        if (request.getId() == null)
-        {
-            throw new  ChallengeNotFoundException("Challenge  ID cannot be null", "CHALLENGE_ID_NULL");
+        if (request.getId() == null) {
+            throw new ChallengeNotFoundException("Challenge  ID cannot be null", "CHALLENGE_ID_NULL");
         }
-        final Challenge challenge= challengeRepository.findById(request.getId())
+        final Challenge challenge = challengeRepository.findById(request.getId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
-        if (request.getName()!= null)
-        {
+        if (request.getName() != null) {
             challenge.setName(request.getName());
         }
-        if (request.getQuestion()!= null)
-        {
+        if (request.getQuestion() != null) {
             challenge.setQuestion(request.getQuestion());
         }
-        if (request.getType()!= null)
-        {
+        if (request.getType() != null) {
             challenge.setType(request.getType());
         }
-        if (request.getVisible()!= null)
-        {
+        if (request.getVisible() != null) {
             challenge.setVisible(request.getVisible());
         }
-        if (request.getContent()!= null)
-        {
+        if (request.getContent() != null) {
             challenge.setContent(jsonConverter.convertToEntityAttribute(request.getContent()));
         }
-        if(request.getArticlesID()!= null)
-        {
+        if (request.getArticlesID() != null) {
             List<Article> articles = new ArrayList<>();
             for (Long id : request.getArticlesID()) {
                 final Article article = articleRepository
@@ -106,20 +100,19 @@ public class ChallengeAdminServiceImpl  implements ChallengeAdminService {
             }
             challenge.setArticles(articles);
         }
-        challengeRepository.updateChallenge(challenge.getName(),challenge.getQuestion(), request.getContent(), challenge.getType(),challenge.getVisible(), challenge.getId());
+        challengeRepository.save(challenge);
 
-        final Challenge updatedChallenge = challengeRepository.findById(request.getId())
-                .orElseThrow(()->new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
-        return challengeMapper.toCreateChallengeResponse(updatedChallenge,jsonConverter);
+        Challenge updatedChallenge = challengeRepository.findById(request.getId())
+                .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter);
     }
 
     @Override
     public void deleteChallenge(Long challengeId) {
-        if(challengeId!= null)
-        {
+        if (challengeId != null) {
             throw new ChallengeNotFoundException("Challenge ID cannot be null", "CHALLENGE_ID_NULL");
         }
-        challengeRepository.deleteChallengeById(challengeId);
+        challengeRepository.deleteById(challengeId);
     }
 
 }
