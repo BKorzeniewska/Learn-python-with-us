@@ -39,6 +39,8 @@ public class Challenge {
 
     @Column(name = "NAME")
     private String name;
+    @Column(name = "VISIBLE")
+    private Boolean visible;
 
     @Convert(converter = JsonConverter.class)
     @Column(name = "CONTENT", columnDefinition = "jsonb")

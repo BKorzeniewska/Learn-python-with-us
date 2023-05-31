@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface ChallengeService {
-    ChallengeResponse createChallenge(CreateChallengeRequest request);
     List<ChallengeResponse> getChallengeByName(String name);
     ChallengeResponse getChallengeById(Long challengeId);
     List<ChallengeResponse> getChallenges();
