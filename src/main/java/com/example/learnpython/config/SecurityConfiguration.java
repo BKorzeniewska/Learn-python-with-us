@@ -38,7 +38,8 @@ public class SecurityConfiguration {
           .cors().and().csrf().disable()
           .authorizeHttpRequests( auth -> auth
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAuthWitheList()).permitAll()
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getUserEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER", "USER")
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getPrivilegedUserEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER")
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasAnyRole("MODERATOR", "ADMIN")
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAdminEndpointsList()).hasRole("ADMIN")
                 .anyRequest().authenticated()

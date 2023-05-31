@@ -17,6 +17,7 @@ public class ApplicationDynamicConfig {
         private String[] moderatorEndpointsList;
         private String[] adminEndpointsList;
         private String[] privilegedUserEndpointsList;
+        private String[] userEndpointsList;
     }
 
 }

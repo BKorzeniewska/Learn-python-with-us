@@ -51,5 +51,7 @@ com:
                 - "siema2"
             privilegedUserEndpointsList:
                 - "siema3"
+            userEndpointsList:
+                - "api/user/v1/challenge/**"
 
 
