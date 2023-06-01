@@ -57,7 +57,7 @@ export const ChallengeScreen = () => {
     // Function to navigate to the next challenge
     const goToNextChallenge = () => {
         // Implement your logic to navigate to the next challenge
-        navigate('/next-challenge'); // Replace '/next-challenge' with the actual URL or route for the next challenge
+        navigate(-1); // Replace '/next-challenge' with the actual URL or route for the next challenge
     };
 
     return (

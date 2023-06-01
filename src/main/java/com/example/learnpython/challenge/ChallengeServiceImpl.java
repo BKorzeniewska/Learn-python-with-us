@@ -53,7 +53,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 for(int j=0;j<input.length;j++)
                 {
                     interpreter.exec(input[j]);
-                    System.out.println(input[i]);
+                    System.out.println(input[j]);
                 }
 
                 interpreter.exec(request.answer());
