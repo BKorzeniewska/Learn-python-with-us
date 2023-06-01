@@ -33,8 +33,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE article SET title = :title, content = :content WHERE article_id = :articleId", nativeQuery = true)
-    void updateArticle(final String title, final String content, final Long articleId);
+    @Query(value = "UPDATE article SET title = :title, content = :content, visible = :visible WHERE article_id = :articleId", nativeQuery = true)
+    void updateArticle(final String title, final String content, final  boolean visible, final Long articleId);
 
     @Transactional
     @Modifying

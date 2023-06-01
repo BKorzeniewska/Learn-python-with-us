@@ -34,6 +34,9 @@ public class Article {
     @Column(name = "CREATION_DATE")
     private LocalDate creationDate;
 
+    @Column(name = "VISIBLE")
+    private Boolean visible;
+
     @ManyToOne
     @JoinColumn(name="CHAPTER_ID", nullable = false)
     private Chapter chapter;

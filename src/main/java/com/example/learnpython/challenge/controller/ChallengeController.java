@@ -1,9 +1,9 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.controller;
 
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
 import com.example.learnpython.challenge.model.ExecutedChallengeResponse;
-import com.example.learnpython.solution.Solution;
+import com.example.learnpython.challenge.service.ChallengeService;
 import com.example.learnpython.solution.SolutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

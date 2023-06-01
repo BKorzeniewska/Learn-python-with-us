@@ -49,14 +49,18 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "LEVEL")
-    private int level = 0;
+    @Builder.Default
+    private Integer level = 0;
 
     @Column(name = "EXP")
-    private long exp = 0L;
+    @Builder.Default
+    private Long exp = 0L;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "UUID")
+    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

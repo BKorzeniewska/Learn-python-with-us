@@ -58,14 +58,19 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
 
-        Runnable sendingEmail = () -> {
+        /*Runnable sendingEmail = () -> {
             emailSenderService.sendRegisterEmail(request);
         };
-        new Thread(sendingEmail).start();
+        new Thread(sendingEmail).start();*/
+
+        emailSenderService.sendRegisterEmail(request);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .role(savedUser.getRole())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 
@@ -88,6 +93,9 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .role(user.getRole())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
                 .build();
     }
 

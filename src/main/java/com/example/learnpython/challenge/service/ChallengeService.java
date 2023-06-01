@@ -1,4 +1,4 @@
-package com.example.learnpython.challenge;
+package com.example.learnpython.challenge.service;
 
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface ChallengeService {
-    ChallengeResponse createChallenge(CreateChallengeRequest request);
     List<ChallengeResponse> getChallengeByName(String name);
     ChallengeResponse getChallengeById(Long challengeId);
     List<ChallengeResponse> getChallenges();

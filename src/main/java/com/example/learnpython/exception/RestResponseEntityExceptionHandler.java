@@ -1,6 +1,5 @@
 package com.example.learnpython.exception;
 
-import com.example.learnpython.token.ExpiredTokenException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

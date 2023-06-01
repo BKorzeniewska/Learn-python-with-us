@@ -5,6 +5,7 @@ import com.example.learnpython.article.Article;
 import com.example.learnpython.challenge.model.ContentJson;
 import com.example.learnpython.challenge.model.Type;
 import com.example.learnpython.solution.Solution;
+import com.example.learnpython.user.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -39,6 +40,14 @@ public class Challenge {
 
     @Column(name = "NAME")
     private String name;
+    @Column(name = "VISIBLE")
+    private Boolean visible;
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+    @Column(name = "EXP")
+    private Long exp;
 
     @Convert(converter = JsonConverter.class)
     @Column(name = "CONTENT", columnDefinition = "jsonb")

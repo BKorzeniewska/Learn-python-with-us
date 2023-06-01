@@ -1,22 +1,19 @@
 package com.example.learnpython.challenge.model;
 
-import com.example.learnpython.article.Article;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
-public class ChallengeResponse {
+public class ModifyChallengeRequest {
     private Long id;
     private String question;
     private String name;
-    private Boolean visible;
-    private Long userId;
-    private Long exp;
     private Type type;
+    private Boolean visible;
+    private Long exp;
     private String content;
     private List<Long> articlesID;
 }

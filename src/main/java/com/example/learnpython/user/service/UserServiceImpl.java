@@ -60,31 +60,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserLevelAndExpById(final long id, final long gainedExp) {
+    public void updateUserLevelAndExpById(final long id, final int gainedExp) {
 
-        final User user = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
+        final User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
 
-        final long exp = user.getExp() + gainedExp;
-        final int level = calculateLevel(exp);
+        final long exp = calculateExp(user.getExp(), gainedExp);
+        final int level = calculateLevel(user.getLevel(), user.getExp(), gainedExp);
 
         log.info("Updating user level and exp: id={}, level={}, exp={}", id, level, exp);
         userRepository.updateLevelAndExpById(id, level, exp);
     }
 
+
+    /**
+     * Deletes user by email and ALL other related data
+     * @param email
+     */
     @Override
-    @Transactional
     public void deleteUserByEmail(final String email) {
 
         final User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
-
-        //TODO delete other stuff
         log.info("Deleting user by email: {}, user: {}", email, user);
         userRepository.deleteByEmail(email);
     }
 
-    private int calculateLevel(final long exp) {
-        return (int) exp / 1000;
+    private int calculateLevel(int currentLevel, long exp, int points) {
+        int totalPoints = points + (int) exp;
+
+        if (totalPoints >= 1000) {
+            currentLevel += totalPoints / 1000;
+        }
+        return currentLevel;
+    }
+
+    private long calculateExp(final long exp, final int points) {
+        long totalPoints = points + exp;
+
+        if (totalPoints >= 1000) {
+            totalPoints %= 1000;
+        }
+        return totalPoints;
     }
 }

@@ -1,5 +1,8 @@
 package com.example.learnpython.challenge;
 
+import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.challenge.service.ChallengeService;
+import com.example.learnpython.challenge.service.ChallengeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -18,13 +20,15 @@ class ChallengeServiceImplTest {
     private ChallengeRepository challengeRepository;
     @Mock
     private ChallengeMapper challengeMapper;
+    @Mock
+    private ArticleRepository articleRepository;
     @Autowired
     private JsonConverter jsonConverter;
 
     private ChallengeService challengeService;
     @BeforeEach
     void setUp() {
-        challengeService = new ChallengeServiceImpl(challengeRepository, challengeMapper, jsonConverter);
+        challengeService = new ChallengeServiceImpl(challengeRepository,articleRepository, challengeMapper, jsonConverter);
     }
 
     @Test

@@ -46,8 +46,10 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
             .build();
 
         log.info("resetPasswordUserRequest() - resetPasswordRequest = {}", resetPasswordRequest);
-        Runnable sendingEmail = () -> mailSender.sendResetPasswordEmail(resetPasswordRequest);
-        new Thread(sendingEmail).start();
+        //Runnable sendingEmail = () -> mailSender.sendResetPasswordEmail(resetPasswordRequest);
+        //new Thread(sendingEmail).start();
+
+        mailSender.sendResetPasswordEmail(resetPasswordRequest);
         log.info("resetPasswordUserRequest() - end");
     }
 
