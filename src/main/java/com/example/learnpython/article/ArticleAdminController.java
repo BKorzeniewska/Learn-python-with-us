@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleAdminController {
     private final ArticleAdminService articleAdminService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/create")
     @Operation(summary = "Create a new article")
     public ResponseEntity<ArticleResponse> createArticle(@RequestBody final CreateArticleRequest articleRequest,
@@ -26,6 +27,7 @@ public class ArticleAdminController {
         return new ResponseEntity<>(article, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<?> modifyArticle(@RequestBody final ModifyArticleRequest request) {
         log.info("modifyArticle() - start: {}", request);
@@ -34,6 +36,7 @@ public class ArticleAdminController {
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete/{articleId}")
     public ResponseEntity<?> deleteArticle(@PathVariable("articleId") final Long articleId) {
         log.info("deleteArticle() - start: {}", articleId);

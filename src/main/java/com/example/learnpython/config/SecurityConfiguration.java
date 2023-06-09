@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import java.util.Collections;
 @Log4j2
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -33,16 +35,13 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http.headers().frameOptions().disable();
         http
           .cors().and().csrf().disable()
           .authorizeHttpRequests( auth -> auth
                 .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAuthWitheList()).permitAll()
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getUserEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER", "USER")
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getPrivilegedUserEndpointsList()).hasAnyRole("MODERATOR", "ADMIN", "PRIVILEGED_USER")
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getModeratorEndpointsList()).hasAnyRole("MODERATOR", "ADMIN")
-                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getAdminEndpointsList()).hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .requestMatchers(applicationDynamicConfig.getSecurityConfig().getSecuredEndpoints()).authenticated()
           )
           .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

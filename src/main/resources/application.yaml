@@ -45,13 +45,11 @@ com:
                 - "v3/api-docs/**"
                 - "/swagger-ui/**"
                 - "swagger-ui/**"
-            moderatorEndpointsList:
-                - "siema1"
             adminEndpointsList:
-                - "siema2"
-            privilegedUserEndpointsList:
-                - "siema3"
-            userEndpointsList:
-                - "api/user/v1/challenge/**"
+                - "/api/admin/v1/**"
+            securedEndpoints:
+                - "/api/admin/v1/**"
+                - "/api/user/v1/**"
+                - "/api/moderator/**"
 
 
