@@ -5,6 +5,7 @@ import { ThemeContext } from '../themes/ThemeProvider';
 import { MainNavbar } from '../common/layout/MainNavbar';
 import { Sidebar } from '../common/layout/Sidebar';
 import "./error.css";
+import Footer from '../common/layout/Footer';
 
 export type AppProps = {
   children: ReactNode;
@@ -46,6 +47,7 @@ export const AppWrapper = (props: AppProps) => {
           </Col>
         </Row>
       </Container>
+      <Footer/>
     </>
   );
 };

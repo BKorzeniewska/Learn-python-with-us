@@ -1,4 +1,4 @@
-import { CheckToken, Get, Post, Put } from "../axiosFetch";
+import { CheckToken, Delete, Get, Post, Put } from "../axiosFetch";
 import { Result } from "../poliTypes";
 import { baseUrl } from "./common";
 
@@ -104,6 +104,18 @@ export const modifyArticle  = async (article: ModifyArticleRequest): Promise<Res
             return { isOk: true, value: data.value } as Result<Article, ArticleResponseError>;
         } else {          
             return { isOk: false, error: "ARTICLE_NOT_FOUND"  } as Result<Article, ArticleResponseError>;
+        }
+    });
+}
+
+export const deleteArticle  = async (articleId: number): Promise<Result<any, ArticleResponseError>> => {
+    const response = Delete<any>(`${baseUrl}/api/admin/v1/article/delete/${articleId}`);
+
+    return response.then((data) => {
+        if(data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, ArticleResponseError>;
+        } else {          
+            return { isOk: false, error: "ARTICLE_NOT_FOUND"  } as Result<any, ArticleResponseError>;
         }
     });
 }

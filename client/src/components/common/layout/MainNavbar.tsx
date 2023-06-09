@@ -1,4 +1,4 @@
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Dropdown, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import './nav-bar.css'
 import 'bootstrap/dist/css/bootstrap.css';
 import { MouseEventHandler, useContext, useState } from "react";
@@ -24,15 +24,6 @@ export const MainNavbar = (props: Props) => {
     setIsDropdownOpen(!isDropdownOpen);
   }
 
-  const personButtonCallback = () => {
-    if (!isLoggedIn()) {
-      navigate("/login");
-    }
-    else {
-      setIsDropdownOpen(!isDropdownOpen);
-    }
-  }
-
   return (
     <Navbar data-theme={theme} sticky="top" expand="lg">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
@@ -47,7 +38,8 @@ export const MainNavbar = (props: Props) => {
           </span>
         </Navbar.Brand>
         <Nav className="ml-auto text-center">
-          <NavDropdown title={<span className="material-symbols-outlined">person</span>} id="basic-nav-dropdown" onClick={() => personButtonCallback()} show={isDropdownOpen}>
+          {!isLoggedIn() ? <Nav.Link onClick={() => { navigate("/login") }}>Zaloguj</Nav.Link> :
+          <NavDropdown title={<span className="material-symbols-outlined">person</span>} id="dropdown-basic" drop="down-centered">
             <NavDropdown.Item onClick={() => { toggleTheme(); }}>
               {
                 theme === "light" ? <span className="material-symbols-outlined">dark_mode</span> : <span className="material-symbols-outlined">light_mode</span>
@@ -57,8 +49,14 @@ export const MainNavbar = (props: Props) => {
             <NavDropdown.Item onClick={() => navigate("/user/")}>Profil</NavDropdown.Item>
             <NavDropdown.Item onClick={(event) => logout(event)}>Wyloguj</NavDropdown.Item>
             {getRole() === "ADMIN" &&
-              <NavDropdown.Item onClick={() => navigate("/admin/")}>Panel administratora</NavDropdown.Item>}
+            <>
+            <Dropdown.Divider />
+              <NavDropdown.Item onClick={() => navigate("/admin/")}>Panel administratora</NavDropdown.Item>
+              </>
+              }
           </NavDropdown>
+
+}
         </Nav>
       </Container>
     </Navbar>

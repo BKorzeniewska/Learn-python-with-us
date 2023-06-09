@@ -2,7 +2,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Accordion, Container, Nav, NavDropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ArticleMenu, loadArticleMenu } from '../../common/apis/article';
+import { ArticleMenu, deleteArticle, loadArticleMenu } from '../../common/apis/article';
 import { useError } from '../../home/ErrorContext';
 import { ThemeContext } from '../../themes/ThemeProvider';
 import { AppWrapper } from '../../home/AppWrapper';
@@ -21,8 +21,21 @@ type ArticleProps = {
 
 const Chapter = ({ chapter }: { chapter: ChapterProps }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { errorMessages, setError } = useError();
 
   const navigate = useNavigate();
+  function removeArticle(id: number): void {
+    deleteArticle(id).then((data) => {
+      if (data.isOk) {
+        navigate('/admin/articles');
+      }
+      else {
+        console.log(data.error);
+        setError('Nie udało się usunąć artykułu');
+      }
+    });
+  }
+
   return (
     <div className={`border rounded p-3 mb-4`}>
       <button className={`btn btn-link p-0`} onClick={() => setIsOpen(!isOpen)}>
@@ -35,7 +48,7 @@ const Chapter = ({ chapter }: { chapter: ChapterProps }) => {
             <button className="btn btn-sm btn-primary mx-2" onClick={() => navigate(`/admin/edit/${article.id}`)}>
               Edytuj
             </button>
-            <button className="btn btn-sm btn-danger" onClick={() => navigate(`/admin/edit/${article.id}`)}>
+            <button className="btn btn-sm btn-danger" onClick={() => removeArticle(article.id)}>
               Usuń
             </button>
           </li>
@@ -92,30 +105,6 @@ export const AdminArticlesScreen = () => {
               <Chapter key={chapter.id} chapter={chapter} />
             ))}
           </Nav>
-          {/* <Accordion defaultActiveKey="0" flush>
-            {result?.map((chapter) => (
-              <Accordion.Item eventKey={chapter.name}>
-                <Accordion.Header>{chapter.name}</Accordion.Header>
-                <Accordion.Body>
-                  <Nav className="flex-column">
-                    {chapter.articles.map((article) => (
-                      <li key={article.id} className={`border rounded p-2 my-2 `}>
-                        {article.title}
-                        <button className="btn btn-sm btn-primary mx-2" onClick={() => navigate(`/admin/edit/${article.id}`)}>
-                          Edytuj
-                        </button>
-                        <button className="btn btn-sm btn-danger" onClick={() => navigate(`/admin/edit/${article.id}`)}>
-                          Usuń
-                        </button>
-                      </li>
-                    ))}
-                  </Nav>
-
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-
-          </Accordion> */}
         </div>
       </Container>
     </AppWrapper>
