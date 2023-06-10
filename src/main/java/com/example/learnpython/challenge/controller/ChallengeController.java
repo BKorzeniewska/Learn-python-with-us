@@ -19,6 +19,7 @@ import java.util.List;
 public class ChallengeController {
     private final ChallengeService challengeService;
     private final SolutionService solutionService;
+
     @GetMapping
     public ResponseEntity<List<ChallengeResponse>> getChallenges() {
         var challenges = challengeService.getChallenges();

@@ -84,8 +84,18 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         log.info("resetPassword() - end");
     }
 
+    @Override
+    @Transactional
+    public void updateExpiredTokens() {
+        try(Stream<PasswordResetToken> tokens = passwordTokenRepository.findAllNotExpired()) {
+            tokens.forEach(token -> passwordTokenRepository.updateExpiredByToken(token.getToken()));
+        } catch (Exception e) {
+            log.error("updateExpiredTokens() - error = {}", e.getMessage());
+        }
+    }
+
     private void validatePassword(final String newPass, final String oldPass) {
-        if (passwordEncoder.matches(oldPass, newPass)) {
+        if (passwordEncoder.matches(newPass, oldPass)) {
             log.error("resetPassword() - new password is the same as old password = {}", newPass);
             throw new ResetTokenNotFound("New password is the same as old password", "SAME_PASSWORD");
         }
@@ -113,16 +123,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, 60);
         return new Date(cal.getTime().getTime());
-    }
-
-    @Override
-    @Transactional
-    public void updateExpiredTokens() {
-        try(Stream<PasswordResetToken> tokens = passwordTokenRepository.findAllNotExpired()) {
-            tokens.forEach(token -> passwordTokenRepository.updateExpiredByToken(token.getToken()));
-        } catch (Exception e) {
-            log.error("updateExpiredTokens() - error = {}", e.getMessage());
-        }
     }
 
 }

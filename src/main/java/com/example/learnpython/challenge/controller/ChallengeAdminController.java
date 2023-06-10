@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.*;
 public class ChallengeAdminController {
     private final ChallengeAdminService challengeAdminService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
     public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse,@RequestHeader("Authorization") final String bearerToken) {
         return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse, bearerToken));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PutMapping("/update")
     public ResponseEntity<?> modifyChallenge(@RequestBody final ModifyChallengeRequest request) {
         log.info("modifyChallenge() - start: {}", request);
@@ -32,6 +35,7 @@ public class ChallengeAdminController {
         return new ResponseEntity<>(challenge, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @DeleteMapping("/delete/{challengeId}")
     public ResponseEntity<?> deleteChallenge(@PathVariable("challengeId") final Long challengeId) {
         log.info("deleteChallenge() - start: {}", challengeId);
