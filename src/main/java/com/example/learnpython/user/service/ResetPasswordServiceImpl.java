@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Log4j2
@@ -37,6 +38,14 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
         log.info("resetPasswordUserRequest() - user = {}", user.getEmail());
 
+        final boolean isPendingPasswordReset = passwordTokenRepository
+                .existsByUserIdAndUsedIsFalse(user.getId());
+
+        if (isPendingPasswordReset) {
+            log.error("resetPasswordUserRequest() - pending pass reset = {}", user.getEmail());
+            throw new ResetTokenNotFound("User already has a pending password reset", "PENDING_PASSWORD_RESET");
+        }
+
         final String token = UUID.randomUUID().toString();
         final PasswordResetToken passwordResetToken = createPasswordResetTokenForUser(user, token);
 
@@ -46,8 +55,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
             .build();
 
         log.info("resetPasswordUserRequest() - resetPasswordRequest = {}", resetPasswordRequest);
-        //Runnable sendingEmail = () -> mailSender.sendResetPasswordEmail(resetPasswordRequest);
-        //new Thread(sendingEmail).start();
 
         mailSender.sendResetPasswordEmail(resetPasswordRequest);
         log.info("resetPasswordUserRequest() - end");
@@ -64,11 +71,12 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         final User userRequest = userRepository.findByEmail(resetPasswordRequest.email())
                 .orElseThrow(() -> new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
 
-
         if (isTokenExpired(passToken) || passToken.getUsed()) {
+            log.error("resetPassword() - token expired or used = {}", passToken);
             throw new ResetTokenNotFound("Token is used or has expired", "INVALID_TOKEN");
         }
 
+        validatePassword(resetPasswordRequest.newPassword(), userRequest.getPassword());
         final String newPass = passwordEncoder.encode(resetPasswordRequest.newPassword());
 
         userRepository.updatePasswordByEmail(resetPasswordRequest.email(), newPass);
@@ -76,8 +84,15 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         log.info("resetPassword() - end");
     }
 
+    private void validatePassword(final String newPass, final String oldPass) {
+        if (passwordEncoder.matches(oldPass, newPass)) {
+            log.error("resetPassword() - new password is the same as old password = {}", newPass);
+            throw new ResetTokenNotFound("New password is the same as old password", "SAME_PASSWORD");
+        }
+    }
+
     private PasswordResetToken createPasswordResetTokenForUser(final User user, final String token) {
-        PasswordResetToken myToken = PasswordResetToken.builder()
+        final PasswordResetToken myToken = PasswordResetToken.builder()
                 .token(token)
                 .expiryDate(calculateExpiryDate())
                 .used(false)
@@ -86,23 +101,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         return myToken;
     }
 
-    private Boolean validatePasswordResetToken(final String token, final String email) {
-        final PasswordResetToken passToken = passwordTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResetTokenNotFound("Reset token not found", "TOKEN_NOT_FOUND"));
-
-        final User userRequest = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
-
-        log.info("validatePasswordResetToken() - passToken = {}", passToken);
-
-        if (userRequest.getId().equals(passToken.getUser().getId())) {
-            return false;
-        }
-
-        log.info("validatePasswordResetToken() - passToken = {}", passToken);
-
-        return !isTokenExpired(passToken);
-    }
 
 
     private boolean isTokenExpired(PasswordResetToken passToken) {
@@ -115,6 +113,16 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, 60);
         return new Date(cal.getTime().getTime());
+    }
+
+    @Override
+    @Transactional
+    public void updateExpiredTokens() {
+        try(Stream<PasswordResetToken> tokens = passwordTokenRepository.findAllNotExpired()) {
+            tokens.forEach(token -> passwordTokenRepository.updateExpiredByToken(token.getToken()));
+        } catch (Exception e) {
+            log.error("updateExpiredTokens() - error = {}", e.getMessage());
+        }
     }
 
 }

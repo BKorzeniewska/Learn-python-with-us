@@ -1,6 +1,7 @@
 package com.example.learnpython.article;
 
 
+import com.example.learnpython.article.model.Article;
 import com.example.learnpython.article.model.ArticleResponse;
 import com.example.learnpython.article.model.CreateArticleRequest;
 import org.mapstruct.Mapper;

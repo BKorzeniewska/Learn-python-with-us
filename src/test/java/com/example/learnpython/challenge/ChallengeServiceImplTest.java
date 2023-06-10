@@ -1,6 +1,7 @@
 package com.example.learnpython.challenge;
 
-import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.article.repository.ArticleRepository;
+import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.service.ChallengeService;
 import com.example.learnpython.challenge.service.ChallengeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

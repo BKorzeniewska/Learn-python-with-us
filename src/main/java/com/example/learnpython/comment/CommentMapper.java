@@ -1,9 +1,9 @@
 package com.example.learnpython.comment;
 
 
+import com.example.learnpython.comment.model.Comment;
 import com.example.learnpython.comment.model.CommentResponse;
 import com.example.learnpython.comment.model.CreateCommentRequest;
-import jakarta.transaction.Transactional;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

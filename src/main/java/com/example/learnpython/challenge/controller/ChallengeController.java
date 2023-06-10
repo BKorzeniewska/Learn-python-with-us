@@ -4,7 +4,7 @@ import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.ExecuteChallengeRequest;
 import com.example.learnpython.challenge.model.ExecutedChallengeResponse;
 import com.example.learnpython.challenge.service.ChallengeService;
-import com.example.learnpython.solution.SolutionService;
+import com.example.learnpython.solution.service.SolutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

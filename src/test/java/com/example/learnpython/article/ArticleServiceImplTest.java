@@ -1,9 +1,12 @@
 package com.example.learnpython.article;
 
+import com.example.learnpython.article.model.Article;
 import com.example.learnpython.article.model.ArticleDTO;
 import com.example.learnpython.article.model.ArticleResponse;
-import com.example.learnpython.chapter.Chapter;
-import com.example.learnpython.chapter.ChapterRepository;
+import com.example.learnpython.article.repository.ArticleRepository;
+import com.example.learnpython.article.service.ArticleServiceImpl;
+import com.example.learnpython.chapter.model.Chapter;
+import com.example.learnpython.chapter.repository.ChapterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

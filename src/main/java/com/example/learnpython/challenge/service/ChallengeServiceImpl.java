@@ -1,9 +1,9 @@
 package com.example.learnpython.challenge.service;
 
-import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.challenge.Challenge;
 import com.example.learnpython.challenge.ChallengeMapper;
-import com.example.learnpython.challenge.ChallengeRepository;
+import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.JsonConverter;
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.*;
