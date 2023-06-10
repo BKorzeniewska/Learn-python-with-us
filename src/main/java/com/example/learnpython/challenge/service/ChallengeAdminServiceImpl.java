@@ -119,7 +119,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
     @Override
     public void deleteChallenge(Long challengeId) {
-        if (challengeId != null) {
+        if (challengeId == null) {
             throw new ChallengeNotFoundException("Challenge ID cannot be null", "CHALLENGE_ID_NULL");
         }
         challengeRepository.deleteById(challengeId);

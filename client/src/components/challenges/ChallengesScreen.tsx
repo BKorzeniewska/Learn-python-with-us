@@ -7,6 +7,7 @@ import { ChallengeResponse, getChallengesByArticleId, getChallengesByName } from
 import { useError } from '../home/ErrorContext';
 import { AuthContext } from '../auth/AuthContext';
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa';
+import { ChallengeListItem } from './ChallengeListItem';
 
 
 
@@ -56,6 +57,7 @@ export const ChallengesScreen = () => {
     <AppWrapper hideSidebar>
       <Container className="my-5">
         <Form className="d-flex mb-5">
+
           <Form.Control
             type="search"
             placeholder="Search"
@@ -69,41 +71,16 @@ export const ChallengesScreen = () => {
         </Form>
         {challenges &&
           challenges.map((challenge) => (
-            <div
-              className="custom-list-item d-flex justify-content-between align-items-start "
-              onClick={() => navigate(`/challenge`, { state: { challenge } })}
-            >
-              <div className="ms-2 me-auto">
-                <div className="fw-bold">{challenge.name}</div>
-                {challenge.question.length > 150 ? (
-                  <span>{challenge.question.slice(0, 120).trim()}...</span>
-                ) : (
-                  <span>{challenge.question}</span>
-                )}
-
-              </div>
-              <div className='option-section'>
-              {isAuthorized("MODERATOR") && edition &&
-                <span className="modify-button">
-                  <FaPen onClick={(event) => { event.preventDefault(); event.stopPropagation(); navigate(`/admin/challenge/edit/${challenge.id}`) }} />
-
-                </span>}
-              {isAuthorized("MODERATOR") && edition &&
-                <span className="modify-button">
-                  <FaTrash onClick={(event) => { event.preventDefault(); event.stopPropagation(); navigate(`/admin/challenge/edit/${challenge.id}`) }} />
-
-                </span>}
-                </div>
-            </div>
+            <ChallengeListItem key={challenge.id} challenge={challenge} />
           ))}
         {isAuthorized("PRIVILEGED_USER") &&
-          <Button className="rounded-pill" variant="primary" onClick={() => { }}>
+          <Button className="rounded-pill" variant="primary" onClick={() => {navigate(`/admin/challenge/edit`) }}>
             Dodaj zadanie
           </Button>}
-        {isAuthorized("MODERATOR") &&
+        {/* {isAuthorized("MODERATOR") &&
           <Button className="rounded-pill" variant="primary" onClick={() => { setEdition(!edition) }}>
             {edition ? "Wyłącz tryb edycji" : "Włącz tryb edycji"}
-          </Button>}
+          </Button>} */}
       </Container>
     </AppWrapper>
   );
