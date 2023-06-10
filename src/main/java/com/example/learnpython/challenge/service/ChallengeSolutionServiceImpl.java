@@ -2,8 +2,8 @@ package com.example.learnpython.challenge.service;
 
 
 import com.example.learnpython.challenge.model.UserChallengeResponse;
-import com.example.learnpython.solution.Solution;
-import com.example.learnpython.solution.SolutionRepository;
+import com.example.learnpython.solution.model.Solution;
+import com.example.learnpython.solution.repository.SolutionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;

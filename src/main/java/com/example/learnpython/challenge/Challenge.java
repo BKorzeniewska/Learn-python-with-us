@@ -1,14 +1,13 @@
 package com.example.learnpython.challenge;
 
 
-import com.example.learnpython.article.Article;
+import com.example.learnpython.article.model.Article;
 import com.example.learnpython.challenge.model.ContentJson;
 import com.example.learnpython.challenge.model.Type;
-import com.example.learnpython.solution.Solution;
+import com.example.learnpython.solution.model.Solution;
 import com.example.learnpython.user.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,6 @@ import org.hibernate.Hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data

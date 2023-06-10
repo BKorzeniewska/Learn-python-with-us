@@ -1,5 +1,6 @@
 package com.example.learnpython.solution;
 
+import com.example.learnpython.solution.model.Solution;
 import com.example.learnpython.solution.model.SolutionRequest;
 import com.example.learnpython.solution.model.SolutionResponse;
 import org.mapstruct.Mapper;

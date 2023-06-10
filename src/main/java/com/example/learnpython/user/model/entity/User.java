@@ -1,8 +1,8 @@
 package com.example.learnpython.user.model.entity;
 
-import com.example.learnpython.article.Article;
-import com.example.learnpython.comment.Comment;
-import com.example.learnpython.solution.Solution;
+import com.example.learnpython.article.model.Article;
+import com.example.learnpython.comment.model.Comment;
+import com.example.learnpython.solution.model.Solution;
 import com.example.learnpython.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.example.learnpython.user.service;
 
-import com.example.learnpython.article.Article;
-import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.article.model.Article;
+import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.comment.exception.CommentIllegalStateException;
 import com.example.learnpython.user.exception.UserNotFoundException;
