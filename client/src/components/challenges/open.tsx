@@ -39,7 +39,7 @@ export const OpenChallenge = (props: ClosedChallengeProps) => {
                 props.onChallengeComplete(ans.value.result);
             }
             else{
-                console.log("cos sie zjebalo kurwa :/");
+                console.log("Cos nie działa");
             }
         });
     };

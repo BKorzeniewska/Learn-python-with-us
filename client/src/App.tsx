@@ -13,6 +13,9 @@ import { ChallengesScreen } from './components/challenges/ChallengesScreen';
 import { ChallengeScreen } from './components/challenges/ChallengeScreen';
 import { AdminUsersScreen } from './components/admin/users/AdminUsersScreen';
 import { AdminScreen } from './components/admin/AdminScreen';
+import { PasswordRecoveryScreen } from './components/home/PasswordRecoveryScreen';
+import { PasswordRecoveryNextScreen } from './components/home/PasswordRecoveryNextScreen';
+import { ChallengeEditionScreen } from './components/admin/challenges/ChallengeEditionScreen';
 
 
 function App() {
@@ -32,6 +35,9 @@ function App() {
             <Route path="/challenges/:articleId" element={<ChallengesScreen />}></Route>
             <Route path="/challenge" element={<ChallengeScreen />}></Route>
             <Route path="/admin" element={<AdminScreen />}></Route>
+            <Route path="/password-recovery" element={<PasswordRecoveryScreen />}></Route>
+            <Route path="/password-recovery-next" element={<PasswordRecoveryNextScreen />}></Route>
+            <Route path="/admin/challenge/edit/:challengeId?" element={<ChallengeEditionScreen />}></Route>
           </Routes>
         </BrowserRouter>
       </ErrorProvider>

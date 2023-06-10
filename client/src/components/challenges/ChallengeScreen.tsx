@@ -10,7 +10,7 @@ import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
 import { BsCheckCircle } from 'react-icons/bs';
 
-type OpenChallengeContent = {
+export type OpenChallengeContent = {
     correctAnswer: string;
 }
 export type PossibleAnswers = {
@@ -19,15 +19,15 @@ export type PossibleAnswers = {
     C: string;
     D: string;
 }
-type ClosedChallengeContent = {
+export type ClosedChallengeContent = {
     correctAnswer: string;
     possibleAnswers: PossibleAnswers;
 }
-type CodeChallengeContent = {
+export type CodeChallengeContent = {
     correctAnswer: string;
 }
 
-type ChallengeContent = OpenChallengeContent | ClosedChallengeContent | CodeChallengeContent;
+export type ChallengeContent = OpenChallengeContent | ClosedChallengeContent | CodeChallengeContent;
 
 
 export const ChallengeScreen = () => {
@@ -57,7 +57,7 @@ export const ChallengeScreen = () => {
     // Function to navigate to the next challenge
     const goToNextChallenge = () => {
         // Implement your logic to navigate to the next challenge
-        navigate('/next-challenge'); // Replace '/next-challenge' with the actual URL or route for the next challenge
+        navigate(-1); // Replace '/next-challenge' with the actual URL or route for the next challenge
     };
 
     return (

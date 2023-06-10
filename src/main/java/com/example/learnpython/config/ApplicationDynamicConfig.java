@@ -14,9 +14,8 @@ public class ApplicationDynamicConfig {
     @Data
     public static class SecurityConfig {
         private String[] authWitheList;
-        private String[] moderatorEndpointsList;
         private String[] adminEndpointsList;
-        private String[] privilegedUserEndpointsList;
+        private String[] securedEndpoints;
     }
 
 }

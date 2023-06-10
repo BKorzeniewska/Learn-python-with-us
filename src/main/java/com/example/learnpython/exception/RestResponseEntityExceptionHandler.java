@@ -1,9 +1,10 @@
 package com.example.learnpython.exception;
 
-import com.example.learnpython.token.ExpiredTokenException;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,5 +58,29 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 .httpStatus(HttpStatus.BAD_REQUEST.name())
                 .timestamp(LocalDateTime.now())
                 .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleSQLException(DataIntegrityViolationException exception) {
+        log.error("SQL error: {}", exception.getMessage());
+
+        return new ResponseEntity<>(new ErrorResponse().builder()
+                .errorMessage(exception.getMessage())
+                .errorCode("BAD_REQUEST")
+                .httpStatus(HttpStatus.BAD_REQUEST.name())
+                .timestamp(LocalDateTime.now())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exception) {
+        log.error("Access denied exception: {}", exception.getMessage());
+
+        return new ResponseEntity<>(new ErrorResponse().builder()
+                .errorMessage(exception.getMessage())
+                .errorCode("ACCESS_DENIED")
+                .httpStatus(HttpStatus.FORBIDDEN.name())
+                .timestamp(LocalDateTime.now())
+                .build(), HttpStatus.FORBIDDEN);
     }
 }

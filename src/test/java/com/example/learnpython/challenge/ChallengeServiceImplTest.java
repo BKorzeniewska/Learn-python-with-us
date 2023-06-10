@@ -1,7 +1,9 @@
 package com.example.learnpython.challenge;
 
-import com.example.learnpython.article.ArticleMapper;
-import com.example.learnpython.article.ArticleRepository;
+import com.example.learnpython.article.repository.ArticleRepository;
+import com.example.learnpython.challenge.repository.ChallengeRepository;
+import com.example.learnpython.challenge.service.ChallengeService;
+import com.example.learnpython.challenge.service.ChallengeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -10,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

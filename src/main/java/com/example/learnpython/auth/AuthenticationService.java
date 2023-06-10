@@ -58,10 +58,12 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         saveUserToken(savedUser, jwtToken);
 
-        Runnable sendingEmail = () -> {
+        /*Runnable sendingEmail = () -> {
             emailSenderService.sendRegisterEmail(request);
         };
-        new Thread(sendingEmail).start();
+        new Thread(sendingEmail).start();*/
+
+        emailSenderService.sendRegisterEmail(request);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)

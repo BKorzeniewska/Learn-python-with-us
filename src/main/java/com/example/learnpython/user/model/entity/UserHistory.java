@@ -1,6 +1,6 @@
 package com.example.learnpython.user.model.entity;
 
-import com.example.learnpython.article.Article;
+import com.example.learnpython.article.model.Article;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

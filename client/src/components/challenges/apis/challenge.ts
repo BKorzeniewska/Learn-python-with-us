@@ -1,6 +1,6 @@
 import { string } from "prop-types";
 import { baseUrl } from "../../common/apis/common";
-import { APIError, Get, Post } from "../../common/axiosFetch";
+import { APIError, Delete, Get, Post } from "../../common/axiosFetch";
 import { Result } from "../../common/poliTypes";
 
 export type ChallengeType = "OPEN" | "CLOSED" | "CODE";
@@ -36,19 +36,7 @@ export type ExecutedChallengeResponse = {
 
 }
 
-type ChallengeErrors = "INTERNAL_SERVER_ERROR" | any;
-
-export const createChallenge = async (challenge: ChallengeRequest): Promise<Result<ChallengeResponse, APIError<ChallengeErrors>>> => {
-  const response = Post<ChallengeResponse, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/create`, challenge);
-
-  return response.then((data) => {
-    if (data.isOk) {
-      return { isOk: true, value: data.value } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
-    } else {
-      return { isOk: false, error: data.error.response?.data } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
-    }
-  });
-};
+export type ChallengeErrors = "INTERNAL_SERVER_ERROR" | any;
 
 export const executeChallenge = async (challenge: ExecuteChallengeRequest): Promise<Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>> => {
   const response = Post<ExecutedChallengeResponse, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/execute`, challenge);
@@ -75,7 +63,7 @@ export const getChallengesByArticleId = async (articleId: number): Promise<Resul
 };
 
 export const getChallengesByName = async (nameFrangment: string): Promise<Result<ChallengeResponse[], APIError<ChallengeErrors>>> => {
-  const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/name/${nameFrangment}`);
+  const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/admin/v1/challenge/name/${nameFrangment}`);
 
   return response.then((data) => {
     if (data.isOk) {
@@ -85,4 +73,29 @@ export const getChallengesByName = async (nameFrangment: string): Promise<Result
     }
   });
 };
+
+export const loadChallengeById = async (challengeId: number): Promise<Result<ChallengeResponse, APIError<ChallengeErrors>>> => {
+  const response = Get<ChallengeResponse, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/${challengeId}`);
+
+  return response.then((data) => {
+    if (data.isOk) {
+      return { isOk: true, value: data.value } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
+    } else {
+      return { isOk: false, error: data.error.response?.data } as Result<ChallengeResponse, APIError<ChallengeErrors>>;
+    }
+  });
+};
+
+export const deleteChallenge = async (challengeId: number): Promise<Result<any, APIError<ChallengeErrors>>> => {
+  const response = Delete<any, APIError<ChallengeErrors>>(`${baseUrl}/api/admin/v1/challenge/delete/${challengeId}`);
+
+  return response.then((data) => {
+    if (data.isOk) {
+      return { isOk: true, value: data.value } as Result<any, APIError<ChallengeErrors>>;
+    } else {
+      return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ChallengeErrors>>;
+    }
+  });
+};
+
 

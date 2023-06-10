@@ -1,8 +1,8 @@
 package com.example.learnpython.user.model.entity;
 
-import com.example.learnpython.article.Article;
-import com.example.learnpython.comment.Comment;
-import com.example.learnpython.solution.Solution;
+import com.example.learnpython.article.model.Article;
+import com.example.learnpython.comment.model.Comment;
+import com.example.learnpython.solution.model.Solution;
 import com.example.learnpython.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -49,14 +49,18 @@ public class User implements UserDetails {
     private String password;
 
     @Column(name = "LEVEL")
-    private int level = 0;
+    @Builder.Default
+    private Integer level = 0;
 
     @Column(name = "EXP")
-    private long exp = 0L;
+    @Builder.Default
+    private Long exp = 0L;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "UUID")
+    @Builder.Default
     private UUID uuid = UUID.randomUUID();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

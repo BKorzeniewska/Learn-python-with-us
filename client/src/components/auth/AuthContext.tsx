@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { UserRole } from '../admin/users/apis/users';
+import { UserRole, roleRank } from '../admin/users/apis/users';
 
 
 const setTokenCallback = (token: string | null) => {
@@ -31,17 +31,30 @@ const isLoggedInCallback = (): boolean => {
   return sessionStorage.getItem('token') !== null;
 };
 
+const isAuthorizedCallback = (role: UserRole): boolean => {
+  const myRole = getRoleCallback();
+  if (myRole === null) {
+    return false;
+  }
+  const myRoleRank = roleRank[myRole];
+  const otherRoleRank = roleRank[role];
+  return myRoleRank >= otherRoleRank;
+
+}
+
 export const AuthContext = React.createContext<{
   isLoggedIn: () => boolean
   setToken: (token: string | null) => void
   setRole: (role: UserRole | null) => void
   getRole: () => UserRole | null
+  isAuthorized: (role: UserRole) => boolean
 
 }>({
   setToken: setTokenCallback,
   isLoggedIn: isLoggedInCallback,
   setRole: setRoleCallback,
   getRole: getRoleCallback,
+  isAuthorized: isAuthorizedCallback,
 });
 
 
@@ -58,7 +71,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken: setTokenCallback,
       isLoggedIn: isLoggedInCallback,
       setRole: setRoleCallback,
-      getRole: getRoleCallback
+      getRole: getRoleCallback,
+      isAuthorized: isAuthorizedCallback,
     }}>
       {children}
     </AuthContext.Provider>

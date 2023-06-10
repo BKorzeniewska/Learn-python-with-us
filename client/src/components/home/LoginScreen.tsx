@@ -84,9 +84,12 @@ export const LoginScreen = () => {
                                         Zaloguj
                                     </Button>
                                     Nie masz jeszcze konta?
-                                    <Button variant="secondary" type="button" className="w-100" onClick={() => navigate("/register")}>
+                                    <Button variant="secondary" type="button" className="w-100 mb-3" onClick={() => navigate("/register")}>
                                         Zarejestruj
                                     </Button>
+                                    <p className="forgot-password-text" onClick={() => navigate("/password-recovery")}>
+                                        Zapomniałeś hasła?
+                                    </p>
                                 </Form.Group>
 
                             </Form>
