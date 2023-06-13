@@ -9,5 +9,6 @@ import lombok.Data;
 public class SolutionRequest {
     private String answer;
     private Long userId;
+    private boolean correct;
     private Long challengeId;
 }
