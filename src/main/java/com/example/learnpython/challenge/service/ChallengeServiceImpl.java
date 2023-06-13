@@ -180,10 +180,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Transactional
     @Override
     public List<ChallengeResponse> getChallengesByArticleId(Long articleId) {
-        var challenges = challengeRepository
-                .findByArticleId(articleId)
-                .orElseThrow(() -> new ChallengeNotFoundException(
-                        "Challenges with provided article id not found", "CHALLENGES_NOT_FOUND"));
+        var challenges = challengeRepository.findByArticleId(articleId);
 
         return challenges.stream()
                 .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
