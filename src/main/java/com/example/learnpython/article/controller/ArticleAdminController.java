@@ -1,5 +1,6 @@
 package com.example.learnpython.article.controller;
 
+import com.example.learnpython.article.model.VisibleChangeRequest;
 import com.example.learnpython.article.service.ArticleAdminService;
 import com.example.learnpython.article.model.ArticleResponse;
 import com.example.learnpython.article.model.CreateArticleRequest;
@@ -36,6 +37,15 @@ public class ArticleAdminController {
         log.info("modifyArticle() - end");
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    @PutMapping("/changeVisible")
+    public ResponseEntity<?> changeVisibleArticle(@RequestBody final VisibleChangeRequest request) {
+        log.info("changeVisibleArticle() - start: {}", request);
+        var article = articleAdminService.changeVisibleArticle(request);
+        log.info("modifyArticle() - end");
+        return new ResponseEntity<>(article, HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @DeleteMapping("/delete/{articleId}")

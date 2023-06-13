@@ -1,6 +1,6 @@
 package com.example.learnpython.article.service;
 
-import com.example.learnpython.article.model.Article;
+import com.example.learnpython.article.model.*;
 import com.example.learnpython.article.ArticleMapper;
 import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.article.model.ArticleResponse;
@@ -88,7 +88,6 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
             article.setVisible(request.getVisible());
         }
 
-        //articleRepository.save(article);
         articleRepository.updateArticle(article.getTitle(), article.getContent(), article.getVisible(), article.getId());
 
         final Article updatedArticle = articleRepository.findById(request.getId())
@@ -96,6 +95,30 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
 
         return articleMapper.toCreateArticleResponse(updatedArticle);
     }
+
+    @Override
+    @Transactional
+    public ArticleResponse changeVisibleArticle(final VisibleChangeRequest request) {
+
+        if (request.getArticleId() == null) {
+            throw new ArticleNotFoundException("Article ID cannot be null", "ARTICLE_ID_NULL");
+        }
+
+        final Article article = articleRepository.findById(request.getArticleId())
+                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+
+        if (request.getVisible() != null) {
+            article.setVisible(request.getVisible());
+        }
+
+        articleRepository.updateArticle(article.getTitle(), article.getContent(), article.getVisible(), article.getId());
+
+        final Article updatedArticle = articleRepository.findById(request.getArticleId())
+                .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+
+        return articleMapper.toCreateArticleResponse(updatedArticle);
+    }
+
 
     @Override
     public void deleteArticle(final Long articleId) {
