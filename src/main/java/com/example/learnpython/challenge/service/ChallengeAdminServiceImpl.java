@@ -5,6 +5,7 @@ import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.challenge.Challenge;
 import com.example.learnpython.challenge.ChallengeMapper;
+import com.example.learnpython.challenge.model.VisibleChangeRequest;
 import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.JsonConverter;
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
@@ -121,6 +122,28 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         challengeRepository.save(challenge);
 
         Challenge updatedChallenge = challengeRepository.findById(request.getId())
+                .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter);
+    }
+
+    @Transactional
+    @Override
+    public ChallengeResponse changeVisibleChallenge(VisibleChangeRequest request) {
+        if (request.getChallengeId() == null) {
+            throw new ChallengeNotFoundException("Challenge  ID cannot be null", "CHALLENGE_ID_NULL");
+        }
+
+        final Challenge challenge = challengeRepository.findById(request.getChallengeId())
+                .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
+
+
+        if (request.getVisible() != null) {
+            challenge.setVisible(request.getVisible());
+        }
+
+        challengeRepository.save(challenge);
+
+        Challenge updatedChallenge = challengeRepository.findById(request.getChallengeId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
         return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter);
     }
