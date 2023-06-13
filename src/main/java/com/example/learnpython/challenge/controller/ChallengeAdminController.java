@@ -3,6 +3,7 @@ package com.example.learnpython.challenge.controller;
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import com.example.learnpython.challenge.model.ModifyChallengeRequest;
+import com.example.learnpython.challenge.model.VisibleChangeRequest;
 import com.example.learnpython.challenge.service.ChallengeAdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class ChallengeAdminController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
-    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse,@RequestHeader("Authorization") final String bearerToken) {
+    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse, @RequestHeader("Authorization") final String bearerToken) {
         return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse, bearerToken));
     }
 
@@ -32,6 +33,15 @@ public class ChallengeAdminController {
         log.info("modifyChallenge() - start: {}", request);
         var challenge = challengeAdminService.modifyChallenge(request);
         log.info("modifyChallenge() - end");
+        return new ResponseEntity<>(challenge, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    @PutMapping("/changeVisible")
+    public ResponseEntity<?> changeVisibleChallenge(@RequestBody final VisibleChangeRequest request) {
+        log.info("changeVisibleChallenge() - start: {}", request);
+        var challenge = challengeAdminService.changeVisibleChallenge(request);
+        log.info("changeVisibleChallenge() - end");
         return new ResponseEntity<>(challenge, HttpStatus.OK);
     }
 
