@@ -152,10 +152,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public List<ChallengeResponse> getChallengeByName(String name) {
-        var challenges = challengeRepository
-                .findByNameContaining(name)
-                .orElseThrow(() -> new ChallengeNotFoundException(
-                        "Challenges with provided name not found", "CHALLENGES_NOT_FOUND"));
+        var challenges = challengeRepository.findByNameContaining(name);
 
         return challenges.stream()
                 .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
