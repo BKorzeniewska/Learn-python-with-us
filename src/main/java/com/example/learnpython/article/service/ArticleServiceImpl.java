@@ -57,7 +57,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(() -> new ArticleNotFoundException(
                         "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"))
                  .stream().filter(article -> {
-                      return article.isVisible();}).toList();
+                      return article.getVisible();}).toList();
 
 
         return articles.stream()

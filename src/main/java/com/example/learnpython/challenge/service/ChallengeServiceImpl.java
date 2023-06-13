@@ -39,10 +39,12 @@ public class ChallengeServiceImpl implements ChallengeService {
         try (PythonInterpreter interpreter = new PythonInterpreter()) {
             StringWriter outputUser = new StringWriter();
             StringWriter outputServer = new StringWriter();
+
             Map<String, List<String>> answers = challenge.getContent().getCode();
             List<String> results = answers.get("results");
             List<String> inputs = answers.get("inputs");
             log.info("Executing user answer: {}", request.answer());
+
             for (int i = 0; i < results.size(); i++) {
                 interpreter.setOut(outputUser);
                 // Validate input
@@ -86,7 +88,6 @@ public class ChallengeServiceImpl implements ChallengeService {
                     .build();
         }
     }
-
 
     // TODO
     //  to adopt

@@ -35,11 +35,9 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     @Transactional
     @Override
     public ChallengeResponse createChallenge(final CreateChallengeRequest request, final String bearerToken) {
-        //validate user
         final String token = bearerToken.substring(7);
         final User user = userRepository.findByToken(token)
                 .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
-
 
         Challenge challenge = Challenge.builder()
                 .name(request.getName())
@@ -47,8 +45,10 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
                 .question(request.getQuestion())
                 .type(request.getType())
                 .user(user)
+                .visible(false)
                 .exp(request.getExp())
                 .build();
+
         List<Article> articles = new ArrayList<>();
         for (Long id : request.getArticlesID()) {
             final Article article = articleRepository
@@ -56,8 +56,8 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
                     .orElseThrow(() -> new ArticleNotFoundException(
                             "Article with provided ID not found", "ARTICLE_NOT_FOUND"));
             articles.add(article);
-
         }
+
         challenge.setArticles(articles);
         challengeRepository.save(challenge);
         for (Article article : articles) {
@@ -78,26 +78,34 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         if (request.getId() == null) {
             throw new ChallengeNotFoundException("Challenge  ID cannot be null", "CHALLENGE_ID_NULL");
         }
+
         final Challenge challenge = challengeRepository.findById(request.getId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
+
         if (request.getName() != null) {
             challenge.setName(request.getName());
         }
+
         if (request.getQuestion() != null) {
             challenge.setQuestion(request.getQuestion());
         }
+
         if (request.getType() != null) {
             challenge.setType(request.getType());
         }
+
         if (request.getVisible() != null) {
             challenge.setVisible(request.getVisible());
         }
+
         if (request.getExp() != null) {
             challenge.setExp(request.getExp());
         }
+
         if (request.getContent() != null) {
             challenge.setContent(jsonConverter.convertToEntityAttribute(request.getContent()));
         }
+
         if (request.getArticlesID() != null) {
             List<Article> articles = new ArrayList<>();
             for (Long id : request.getArticlesID()) {

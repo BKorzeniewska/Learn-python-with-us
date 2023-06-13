@@ -1,6 +1,5 @@
 package com.example.learnpython.article.exception;
 
-
 import com.example.learnpython.exception.BaseServiceException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
