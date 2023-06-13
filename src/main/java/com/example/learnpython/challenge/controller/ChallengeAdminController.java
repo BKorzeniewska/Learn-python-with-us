@@ -23,7 +23,7 @@ public class ChallengeAdminController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PostMapping("/create")
     @Operation(summary = "Create a new challenge")
-    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse,@RequestHeader("Authorization") final String bearerToken) {
+    public ResponseEntity<ChallengeResponse> createChallenge(@RequestBody CreateChallengeRequest challengeResponse, @RequestHeader("Authorization") final String bearerToken) {
         return ResponseEntity.ok(challengeAdminService.createChallenge(challengeResponse, bearerToken));
     }
 
@@ -35,6 +35,7 @@ public class ChallengeAdminController {
         log.info("modifyChallenge() - end");
         return new ResponseEntity<>(challenge, HttpStatus.OK);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PutMapping("/changeVisible")
     public ResponseEntity<?> changeVisibleChallenge(@RequestBody final VisibleChangeRequest request) {
