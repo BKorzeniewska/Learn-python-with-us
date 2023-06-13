@@ -52,13 +52,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleResponse> getArticlesByChapter(final Long chapterId) {
-         List<Article> articles = articleRepository
+        final List<Article> articles = articleRepository
                 .findAllByChapterId(chapterId)
                 .orElseThrow(() -> new ArticleNotFoundException(
-                        "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"))
-                 .stream().filter(article -> {
-                      return article.isVisible();}).toList();
-
+                        "Articles with provided ChapterID not found", "ARTICLES_NOT_FOUND"));
 
         return articles.stream()
                 .map(articleMapper::toCreateArticleResponse)
