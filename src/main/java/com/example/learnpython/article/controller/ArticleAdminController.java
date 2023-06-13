@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleAdminController {
     private final ArticleAdminService articleAdminService;
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+   @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PostMapping("/create")
     @Operation(summary = "Create a new article")
     public ResponseEntity<ArticleResponse> createArticle(@RequestBody final CreateArticleRequest articleRequest,
