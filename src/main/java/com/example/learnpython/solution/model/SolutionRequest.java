@@ -1,6 +1,5 @@
 package com.example.learnpython.solution.model;
 
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,6 +7,6 @@ import lombok.Data;
 @Builder
 public class SolutionRequest {
     private String answer;
-    private Long userId;
+    private boolean correct;
     private Long challengeId;
 }
