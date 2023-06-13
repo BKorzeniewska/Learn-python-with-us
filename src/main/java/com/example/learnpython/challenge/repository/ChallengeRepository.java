@@ -16,7 +16,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
     @Query("SELECT c FROM Challenge c WHERE c.name LIKE %:nameFragment%")
     List<Challenge> findByNameContaining(String nameFragment);
     @Query("SELECT c FROM Challenge c JOIN c.articles a WHERE a.id = :articleId")
-    Optional<List<Challenge>> findByArticleId( Long articleId);
+    List<Challenge> findByArticleId( Long articleId);
 
     @Transactional
     @Modifying
