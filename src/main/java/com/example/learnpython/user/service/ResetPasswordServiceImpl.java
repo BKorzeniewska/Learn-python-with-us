@@ -86,12 +86,15 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     @Transactional
-    public void updateExpiredTokens() {
-        try(Stream<PasswordResetToken> tokens = passwordTokenRepository.findAllNotExpired()) {
-            tokens.forEach(token -> passwordTokenRepository.updateExpiredByToken(token.getToken()));
+    public void deleteExpiredTokens() {
+        log.info("deleteExpiredTokens() - start");
+        int deletedTokens = 0;
+        try {
+            deletedTokens = passwordTokenRepository.deleteAllExpiredSince();
         } catch (Exception e) {
-            log.error("updateExpiredTokens() - error = {}", e.getMessage());
+            log.error("deleteExpiredTokens() - error = {}", e.getMessage());
         }
+        log.info("deleteExpiredTokens() - deleted rows {} - end", deletedTokens);
     }
 
     private void validatePassword(final String newPass, final String oldPass) {

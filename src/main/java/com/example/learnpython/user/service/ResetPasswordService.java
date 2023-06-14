@@ -8,6 +8,6 @@ public interface ResetPasswordService {
 
     void resetPassword(final ResetPasswordRequest resetPasswordRequest);
 
-    void updateExpiredTokens();
+    void deleteExpiredTokens();
 
 }

@@ -14,12 +14,12 @@ public class ResetTokenScheduler {
 
     private final ResetPasswordService resetPasswordService;
 
-    // execute method updateExpiredTokens every 2 minutes
-    @Scheduled(cron = "0 0/10 * * * *", zone = "Europe/Warsaw")
-    public void updateExpiredTokens() {
-        log.info("updateExpiredTokens() - start");
-        resetPasswordService.updateExpiredTokens();
-        log.info("updateExpiredTokens() - end");
+    // execute method updateExpiredTokens every hour
+    @Scheduled(cron = "0 0 * * * *", zone = "Europe/Warsaw")
+    public void deleteExpiredTokens() {
+        log.info("deleteExpiredTokens() - scheduler start");
+        resetPasswordService.deleteExpiredTokens();
+        log.info("deleteExpiredTokens() - scheduler end");
     }
 
 }
