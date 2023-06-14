@@ -32,4 +32,11 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
     @Transactional
     @Query("UPDATE PasswordResetToken t SET t.isExpired = true WHERE t.token = :token")
     void updateExpiredByToken(final String token);
+
+    //delete all tokens from the database where expiry date is less than the current date
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM PasswordResetToken t WHERE t.expiryDate <= CURRENT_TIMESTAMP")
+    int deleteAllExpiredSince();
+
 }
