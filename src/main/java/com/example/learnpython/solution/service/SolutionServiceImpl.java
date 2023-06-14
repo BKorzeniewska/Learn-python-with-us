@@ -26,15 +26,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class SolutionServiceImpl implements SolutionService {
+
     private final SolutionRepository solutionRepository;
+
     private final UserService userService;
+
     private final UserRepository userRepository;
+
     private final ChallengeRepository challengeRepository;
 
     private final SolutionMapper solutionMapper;
 
     @Override
     public long addUserSolution(SolutionRequest solutionRequest, final String bearerToken) {
+
         final String token = bearerToken.substring(7);
         final User user = userRepository.findByToken(token)
                 .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
@@ -59,10 +64,8 @@ public class SolutionServiceImpl implements SolutionService {
                     .build();
             solutionRepository.save(solution);
             return solution.getId();
-
         }
         else {
-
             final Solution solution = existingSolution.get();
             solution.setAnswer(solutionRequest.getAnswer());
             solution.setAttemptedAt(LocalDateTime.now());
@@ -75,22 +78,14 @@ public class SolutionServiceImpl implements SolutionService {
     public SolutionResponse getUserSolution(Long userId, Long challengeId) {
 
         if (userId == null || challengeId == null) {
-
             log.error("User id or challenge id is null");
             throw new AddSolutionException("UserId or challengeId cannot be null",
                     "USER_ID_OR_CHALLENGE_ID_IS_NULL");
         }
 
         final Solution solution = solutionRepository.findByUserIdAndChallengeId(userId, challengeId)
-                .orElseThrow(
-                        () -> new SolutionNotFoundException("Solution not found", "CHALLENGE_NOT_FOUND"));
-        ;
-        if (solution == null) {
+                .orElseThrow(() -> new SolutionNotFoundException("Solution not found", "CHALLENGE_NOT_FOUND"));
 
-            log.error("Solution not found with userId: {} and challengeId: {}", userId, challengeId);
-            throw new SolutionNotFoundException("Solution not found",
-                    "SOLUTION_NOT_FOUND");
-        }
         return solutionMapper.toSolutionResponse(solution);
     }
 }
