@@ -1,6 +1,7 @@
 package com.example.learnpython.user.controller;
 
 import com.example.learnpython.user.model.dto.GetUsersRequest;
+import com.example.learnpython.user.model.dto.ModifyUserRequest;
 import com.example.learnpython.user.model.dto.UserInfoResponse;
 import com.example.learnpython.user.model.dto.UsersDTO;
 import com.example.learnpython.user.service.ChangeRoleService;
@@ -39,5 +40,17 @@ public class UserController {
 
         log.info("Get user info - start");
         return userService.getUserInfo(token, userId);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<UserInfoResponse> modifyUser(
+            @RequestHeader(value = "Authorization") final String token,
+            @RequestBody final ModifyUserRequest modifyUserRequest) {
+
+        log.info("modifyUser() - start: {}", modifyUserRequest);
+        var user = userService.modifyUser(token, modifyUserRequest);
+        log.info("modifyUser() - end");
+        return user;
     }
 }

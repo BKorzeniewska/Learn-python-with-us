@@ -1,5 +1,7 @@
 package com.example.learnpython.user.service;
 
+import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.user.model.dto.ModifyUserRequest;
 import com.example.learnpython.user.model.entity.User;
 import com.example.learnpython.user.repository.UserRepository;
 import com.example.learnpython.user.exception.UserNotFoundException;
@@ -60,6 +62,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<UserInfoResponse> modifyUser(final String token, final ModifyUserRequest modifyUserRequest) {
+        final String bearerToken = token.substring(7);
+        final User user = userRepository.findByToken(bearerToken)
+                .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+        if (modifyUserRequest.getNickname() != null) {
+            user.setNickname(modifyUserRequest.getNickname());
+        }
+
+        if (modifyUserRequest.getFirstname() != null) {
+            user.setFirstname(modifyUserRequest.getFirstname());
+        }
+
+        if (modifyUserRequest.getLastname() != null) {
+            user.setLastname(modifyUserRequest.getLastname());
+        }
+
+        userRepository.save(user);
+        final User result = userRepository.findByToken(bearerToken)
+                .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+
+
+        final UserInfoResponse userInfoResponse = UserInfoResponse.builder()
+                .id(result.getId())
+                .email(result.getEmail())
+                .firstName(result.getFirstname())
+                .lastName(result.getLastname())
+                .nickname(result.getNickname())
+                .level(result.getLevel())
+                .exp(result.getExp())
+                .challengesSolvedCount(result.getSolutions().size())
+                .build();
+
+        log.info("User info response: {}", userInfoResponse);
+        return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
+    }
+
+    @Override
     public void updateUserLevelAndExpById(final long id, final int gainedExp) {
 
         final User user = userRepository.findById(id)
@@ -75,6 +114,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Deletes user by email and ALL other related data
+     *
      * @param email
      */
     @Override
