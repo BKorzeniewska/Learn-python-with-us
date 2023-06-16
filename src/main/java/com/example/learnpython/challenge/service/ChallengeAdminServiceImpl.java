@@ -31,6 +31,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final ChallengeMapper challengeMapper;
+    private final ChallengeService challengeService;
     private final JsonConverter jsonConverter;
 
     @Transactional
@@ -70,7 +71,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
         log.info("challenge: {}", challenge);
 
-        return challengeMapper.toCreateChallengeResponse(challenge, jsonConverter);
+        return challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, challengeService, bearerToken);
     }
 
     @Transactional
@@ -123,7 +124,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
         Challenge updatedChallenge = challengeRepository.findById(request.getId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
-        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter);
+        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService,"");
     }
 
     @Transactional
@@ -145,7 +146,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
         Challenge updatedChallenge = challengeRepository.findById(request.getChallengeId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
-        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter);
+        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService, "");
     }
 
     @Override

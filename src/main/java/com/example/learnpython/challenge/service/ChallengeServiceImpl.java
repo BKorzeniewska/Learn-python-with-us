@@ -1,5 +1,6 @@
 package com.example.learnpython.challenge.service;
 
+import com.example.learnpython.article.exception.ArticleNotFoundException;
 import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.challenge.Challenge;
 import com.example.learnpython.challenge.ChallengeMapper;
@@ -7,6 +8,10 @@ import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.JsonConverter;
 import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.*;
+import com.example.learnpython.solution.model.Solution;
+import com.example.learnpython.solution.repository.SolutionRepository;
+import com.example.learnpython.user.model.entity.User;
+import com.example.learnpython.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.python.util.PythonInterpreter;
@@ -23,6 +28,8 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class ChallengeServiceImpl implements ChallengeService {
     private final ChallengeRepository challengeRepository;
+    private final UserRepository userRepository;
+    private final SolutionRepository solutionRepository;
     private final ArticleRepository articleRepository;
     private final ChallengeMapper challengeMapper;
     private final JsonConverter jsonConverter;
@@ -151,39 +158,40 @@ public class ChallengeServiceImpl implements ChallengeService {
 
 
     @Override
-    public List<ChallengeResponse> getChallengeByName(String name) {
+    public List<ChallengeResponse> getChallengeByName(String name, String... bearerToken) {
         var challenges = challengeRepository.findByNameContaining(name);
 
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, this, bearerToken[0]))
                 .toList();
     }
 
     @Override
-    public ChallengeResponse getChallengeById(Long challengeId) {
+    public ChallengeResponse getChallengeById(Long challengeId, String... bearerToken) {
         var challenge = challengeRepository
                 .findById(challengeId)
                 .orElseThrow(() -> new ChallengeNotFoundException(
                         "Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
-
-        return challengeMapper.toCreateChallengeResponse(challenge, jsonConverter);
+        ChallengeResponse response = challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, this, bearerToken[0]);
+        response.setDone(itsDone(challenge, bearerToken[0]));
+        return response;
     }
 
     @Override
-    public List<ChallengeResponse> getChallenges() {
+    public List<ChallengeResponse> getChallenges( String... bearerToken) {
         var challenges = challengeRepository.findAll();
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, this, bearerToken[0]))
                 .toList();
     }
 
     @Transactional
     @Override
-    public List<ChallengeResponse> getChallengesByArticleId(Long articleId) {
+    public List<ChallengeResponse> getChallengesByArticleId(Long articleId, String... bearerToken) {
         var challenges = challengeRepository.findByArticleId(articleId);
 
         return challenges.stream()
-                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter))
+                .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, this, bearerToken[0]))
                 .toList();
     }
 
@@ -206,4 +214,19 @@ public class ChallengeServiceImpl implements ChallengeService {
                     .build();
         }
     }
+
+    public boolean itsDone(Challenge challenge, String bearerToken) {
+        if (bearerToken == null||bearerToken=="") {
+            return false;
+        } else {
+            final String token = bearerToken.substring(7);
+            final User user = userRepository.findByToken(token)
+                    .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+
+            final Optional<Solution> existingSolution = solutionRepository.findByUserIdAndChallengeId(user.getId(), challenge.getId());
+            if (existingSolution.isPresent()) return true;
+            else return false;
+        }
+    }
+
 }
