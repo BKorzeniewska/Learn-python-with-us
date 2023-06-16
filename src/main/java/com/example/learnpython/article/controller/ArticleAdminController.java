@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleAdminController {
     private final ArticleAdminService articleAdminService;
 
-   @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PostMapping("/create")
     @Operation(summary = "Create a new article")
     public ResponseEntity<ArticleResponse> createArticle(@RequestBody final CreateArticleRequest articleRequest,
@@ -37,6 +37,7 @@ public class ArticleAdminController {
         log.info("modifyArticle() - end");
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
+
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
     @PutMapping("/changeVisible")
     public ResponseEntity<?> changeVisibleArticle(@RequestBody final VisibleChangeRequest request) {

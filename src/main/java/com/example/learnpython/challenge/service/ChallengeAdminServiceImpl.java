@@ -124,7 +124,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
 
         Challenge updatedChallenge = challengeRepository.findById(request.getId())
                 .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
-        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService,"");
+        return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService, "");
     }
 
     @Transactional
@@ -145,7 +145,7 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         challengeRepository.save(challenge);
 
         Challenge updatedChallenge = challengeRepository.findById(request.getChallengeId())
-                .orElseThrow(() -> new ChallengeNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
+                .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
         return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService, "");
     }
 
@@ -154,6 +154,8 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         if (challengeId == null) {
             throw new ChallengeNotFoundException("Challenge ID cannot be null", "CHALLENGE_ID_NULL");
         }
+        challengeRepository.findById(challengeId).orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
+
         challengeRepository.deleteById(challengeId);
     }
 

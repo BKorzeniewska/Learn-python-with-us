@@ -178,7 +178,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public List<ChallengeResponse> getChallenges( String... bearerToken) {
+    public List<ChallengeResponse> getChallenges(String... bearerToken) {
         var challenges = challengeRepository.findAll();
         return challenges.stream()
                 .map(challenge -> challengeMapper.toCreateChallengeResponse(challenge, jsonConverter, this, bearerToken[0]))
@@ -216,7 +216,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     public boolean itsDone(Challenge challenge, String bearerToken) {
-        if (bearerToken == null||bearerToken=="") {
+        if (bearerToken == null || bearerToken == "") {
             return false;
         } else {
             final String token = bearerToken.substring(7);

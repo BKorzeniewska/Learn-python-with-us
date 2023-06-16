@@ -20,5 +20,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
     @Transactional
     @Modifying
+    @Query("DELETE FROM Challenge c WHERE c.id = :challengeId")
     void deleteById(Long challengeId);
 }
