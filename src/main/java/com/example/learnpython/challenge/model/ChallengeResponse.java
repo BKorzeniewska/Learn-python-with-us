@@ -12,6 +12,7 @@ public class ChallengeResponse {
     private String question;
     private String name;
     private Boolean visible;
+    private Boolean done;
     private Long userId;
     private Long exp;
     private Type type;

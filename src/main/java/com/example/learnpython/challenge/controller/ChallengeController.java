@@ -25,9 +25,10 @@ public class ChallengeController {
         var challenges = challengeService.getChallenges();
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<ChallengeResponse> getChallengeById(@PathVariable("id") Long challengeId) {
-        var challenge = challengeService.getChallengeById(challengeId);
+    public ResponseEntity<ChallengeResponse> getChallengeById(@PathVariable("id") Long challengeId, @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
+        var challenge = challengeService.getChallengeById(challengeId, bearerToken);
         return new ResponseEntity<>(challenge, HttpStatus.OK);
     }
 
@@ -38,7 +39,7 @@ public class ChallengeController {
     }
 
     @GetMapping("/name/{nameFragment}")
-    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment) {
+    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment, @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
         var challenges = challengeService.getChallengeByName(nameFragment);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
