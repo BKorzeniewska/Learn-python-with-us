@@ -1,12 +1,12 @@
 import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
-import { AppWrapper } from "./AppWrapper";
-import { authenticate } from "../auth/apis/login";
+import { AppWrapper } from "../common/AppWrapper";
+import { authenticate } from "./apis/login";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "./AuthContext";
 import { useContext, useState } from "react";
 import axios from "axios";
-import { useError } from "./ErrorContext";
+import { useError } from "../common/ErrorContext";
 
 
 type LoginFormData = {

@@ -3,11 +3,11 @@ import { useContext } from "react";
 import { Button, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
-import { AuthContext } from "../auth/AuthContext";
-import { register, registerRequest } from "../auth/apis/login";
-import { AppWrapper } from "./AppWrapper";
+import { AuthContext } from "./AuthContext";
+import { register, registerRequest } from "./apis/login";
+import { AppWrapper } from "../common/AppWrapper";
 import "./lr-forms.css";
-import { useError } from "./ErrorContext";
+import { useError } from "../common/ErrorContext";
 
 export const RegisterScreen = () => {
     const { setToken, setRole, setUser } = useContext(AuthContext);

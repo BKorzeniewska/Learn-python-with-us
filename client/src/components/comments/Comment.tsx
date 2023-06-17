@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CommentResponse, deleteComment } from "./apis/comment";
-import { useError } from "../home/ErrorContext";
+import { useError } from "../common/ErrorContext";
 import { Card } from "react-bootstrap";
 import { generateRandomPixels } from "../user/avatarGen";
 import "./comments.css";

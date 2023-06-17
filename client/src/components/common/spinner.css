@@ -1,0 +1,11 @@
+
+.spinner {
+    display: inline-block;
+}
+
+.spinner-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

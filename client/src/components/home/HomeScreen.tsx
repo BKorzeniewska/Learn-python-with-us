@@ -12,7 +12,7 @@ import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
 
 import { markdownTest } from "./markdownTest";
-import { AppWrapper } from "./AppWrapper";
+import { AppWrapper } from "../common/AppWrapper";
 import { AuthContext } from "../auth/AuthContext";
 import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";
 import { ChooseChallenge } from "../challenges/choose";

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { AppWrapper } from '../home/AppWrapper';
-import { useError } from '../home/ErrorContext';
+import { AppWrapper } from '../common/AppWrapper';
+import { useError } from '../common/ErrorContext';
 import { FaNewspaper, FaUserCog } from 'react-icons/fa';
 
 export const AdminScreen = () => {

@@ -2,9 +2,9 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Pagination, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AppWrapper } from '../../home/AppWrapper';
+import { AppWrapper } from '../../common/AppWrapper';
 import { ChangeRoleRequest, GetUsersRequest, GetUsersResponse, User, UserRole, changeRole, getUsers } from './apis/users';
-import { useError } from '../../home/ErrorContext';
+import { useError } from '../../common/ErrorContext';
 
 
 

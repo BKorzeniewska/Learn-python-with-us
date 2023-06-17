@@ -1,16 +1,16 @@
 import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
-import { AppWrapper } from "./AppWrapper";
-import { RecoveryRequest, authenticate, passowrdRecovery, passowrdRecoveryRequest } from "../auth/apis/login";
+import { AppWrapper } from "../common/AppWrapper";
+import { authenticate, passowrdRecoveryRequest } from "./apis/login";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "./AuthContext";
 import { useContext, useState } from "react";
 import axios from "axios";
-import { useError } from "./ErrorContext";
+import { useError } from "../common/ErrorContext";
 
 
 
-export const PasswordRecoveryNextScreen = () => {
+export const PasswordRecoveryScreen = () => {
     const navigate = useNavigate();
     const { setToken, setRole } = useContext(AuthContext);
     const { errorMessages, setError } = useError();
@@ -23,8 +23,6 @@ export const PasswordRecoveryNextScreen = () => {
                     <Row>
                         <div className="m-auto my-3 text-center">
                             <h1>Odzyskiwanie konta</h1>
-                            Użyj kodu przesłanego na twój adres mailowy<br/>
-                            i wpisz nowe hasło!
                         </div>
                     </Row>
                     <Row>
@@ -32,17 +30,11 @@ export const PasswordRecoveryNextScreen = () => {
                             <Form
                                 onSubmit={(e) => {
                                     e.preventDefault();
-                                    const req: RecoveryRequest ={
-                                        email: e.currentTarget.email.value.toString().trim(),
-                                        token: e.currentTarget.token.value.toString().trim(),
-                                        newPassword: e.currentTarget.password.value.toString()
-                                    }
 
-                                    const response = passowrdRecovery(req);
+                                    const response = passowrdRecoveryRequest(e.currentTarget.email.value.toString().trim());
                                     response.then((data) => {
                                         if(data.isOk) {
-                                            navigate("/login");
-                                            setError('Udało się odzyskać konto, zaloguj się ponownie.');
+                                            navigate("/password-recovery-next");
                                         } else {    
                                             setError('Nie udało się odzyskać hasła. Spróbuj ponownie.');
                                         }
@@ -56,20 +48,6 @@ export const PasswordRecoveryNextScreen = () => {
                                 >
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control type="email" placeholder="name@example.com" />
-                                </Form.Group>
-                                <Form.Group
-                                    className="mb-3"
-                                    controlId="token"
-                                >
-                                    <Form.Label>Kod</Form.Label>
-                                    <Form.Control type="text" placeholder="8412a319-ca66-42e1-9ef6-99374cadf98d" />
-                                </Form.Group>
-                                <Form.Group
-                                    className="mb-3"
-                                    controlId="password"
-                                >
-                                    <Form.Label>Nowe hasło</Form.Label>
-                                    <Form.Control type="password" />
                                 </Form.Group>
 
                                 <Form.Group>

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { Article, ArticleExtended, loadArticleById, loadArticleByIdExtended } from "../common/apis/article";
-import { AppWrapper } from "./AppWrapper";
+import { Article, ArticleExtended, loadArticleById, loadArticleByIdExtended } from "./apis/article";
+import { AppWrapper } from "../common/AppWrapper";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { LoadingSpinner } from "./Spinner";
+import { LoadingSpinner } from "../common/Spinner";
 import "../../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { MarkDownRenderer } from "../common/markdown/MarkDownRenderer";

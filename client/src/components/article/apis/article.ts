@@ -1,6 +1,6 @@
-import { CheckToken, Delete, Get, Post, Put } from "../axiosFetch";
-import { Result } from "../poliTypes";
-import { baseUrl } from "./common";
+import { CheckToken, Delete, Get, Post, Put } from "../../common/axiosFetch";
+import { Result } from "../../common/poliTypes";
+import { baseUrl } from "../../common/apis/common";
 
 
 export type Article = {

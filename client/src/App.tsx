@@ -1,11 +1,11 @@
 import './App.css';
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import HomeScreen from './components/home/HomeScreen';
-import { LoginScreen } from './components/home/LoginScreen';
-import { RegisterScreen } from './components/home/RegisterScreen';
+import { LoginScreen } from './components/auth/LoginScreen';
+import { RegisterScreen } from './components/auth/RegisterScreen';
 import { AuthProvider } from './components/auth/AuthContext';
-import { AcrticleScreen } from './components/home/ArticleScreen';
-import { ErrorProvider } from './components/home/ErrorContext';
+import { AcrticleScreen } from './components/article/ArticleScreen';
+import { ErrorProvider } from './components/common/ErrorContext';
 import { UserScreen } from './components/user/UserScreen';
 import { AdminArticlesScreen } from './components/admin/article/AdminArticlesScreen';
 import { ArticleEditionScreen } from './components/admin/article/ArticleEditionScreen';
@@ -13,8 +13,8 @@ import { ChallengesScreen } from './components/challenges/ChallengesScreen';
 import { ChallengeScreen } from './components/challenges/ChallengeScreen';
 import { AdminUsersScreen } from './components/admin/users/AdminUsersScreen';
 import { AdminScreen } from './components/admin/AdminScreen';
-import { PasswordRecoveryScreen } from './components/home/PasswordRecoveryScreen';
-import { PasswordRecoveryNextScreen } from './components/home/PasswordRecoveryNextScreen';
+import { PasswordRecoveryScreen } from './components/auth/PasswordRecoveryScreen';
+import { PasswordRecoveryNextScreen } from './components/auth/PasswordRecoveryNextScreen';
 import { ChallengeEditionScreen } from './components/admin/challenges/ChallengeEditionScreen';
 
 
