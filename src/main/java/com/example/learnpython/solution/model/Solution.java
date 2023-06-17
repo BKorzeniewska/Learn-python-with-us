@@ -3,6 +3,7 @@ package com.example.learnpython.solution.model;
 
 import com.example.learnpython.challenge.Challenge;
 import com.example.learnpython.user.model.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
