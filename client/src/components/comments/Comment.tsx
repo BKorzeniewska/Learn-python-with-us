@@ -23,6 +23,7 @@ export const Comment = (props: Props) => {
           props.onDelete(props.data.id);
       } else {
           setError("Nie udało się usunąć komentarza");
+          setError(res.error.errorMessage);
       }
   }
   )

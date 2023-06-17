@@ -19,3 +19,8 @@
     --bs-navbar-hover-color: #c0c0c0 !important;
     --bs-navbar-brand-hover-color: #fff !important;
 }
+
+.logged-in{
+    display: inline-flex;
+    width: fit-content;
+}

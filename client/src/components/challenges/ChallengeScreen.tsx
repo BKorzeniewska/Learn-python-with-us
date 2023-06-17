@@ -1,14 +1,15 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppWrapper } from '../home/AppWrapper';
-import { ChallengeResponse, ChallengeResult, SolutionRequest, addSolution, getChallengesByArticleId } from './apis/challenge';
+import { ChallengeResponse, ChallengeResult, ChangeVisibilityRequest, SolutionRequest, addSolution, changeVisibility, getChallengesByArticleId } from './apis/challenge';
 import { useError } from '../home/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
 import { BsCheckCircle } from 'react-icons/bs';
+import { AuthContext } from '../auth/AuthContext';
 
 export type OpenChallengeContent = {
     correctAnswer: string;
@@ -36,6 +37,7 @@ export const ChallengeScreen = () => {
     const location = useLocation();
     const challenge: ChallengeResponse | undefined = location.state?.challenge;
     const [challengeDone, setChallengeDone] = useState(false); // State to track if challenge was done correctly
+    const { isAuthorized } = useContext(AuthContext);
 
     let challengeContent: ChallengeContent = JSON.parse(challenge?.content || '{"correctAnswer": "42"}');
 
@@ -45,7 +47,7 @@ export const ChallengeScreen = () => {
     const handleChallengeCompletion = (status: ChallengeResult, answer: string) => {
         if (status === "SUCCESS") {
             setChallengeDone(true); // Set challengeDone to true when challenge is completed
-            const req: SolutionRequest ={
+            const req: SolutionRequest = {
                 challengeId: challenge?.id!,
                 correct: true,
                 answer: answer,
@@ -73,6 +75,21 @@ export const ChallengeScreen = () => {
         navigate(-1); // Replace '/next-challenge' with the actual URL or route for the next challenge
     };
 
+    function toggleVisible(): void {
+        const req: ChangeVisibilityRequest = {
+            challengeId: challenge?.id!,
+            visible: !challenge?.visible
+        }
+        changeVisibility(req).then((res) => {
+            if (res.isOk) {
+                console.log("Visibility changed");
+                navigate(-1);
+            } else {
+                setError("Nie udało się zmienić widoczności zadania");
+            }
+        })
+    }
+
     return (
         <AppWrapper hideSidebar>
             <Container className="my-5">
@@ -88,13 +105,24 @@ export const ChallengeScreen = () => {
                             </div>
                         ) : (
                             <div>
+                                {challenge.done &&
+                                    <Alert variant="success">
+                                        Już wykonałeś to zadanie
+                                    </Alert>
+
+                                }
+                                {!challenge.visible &&
+                                    <Alert variant="warning">
+                                        Zadanie nie jest widoczne, poproś administratora o odblokowanie tego zadania
+                                    </Alert>
+                                }
                                 {challenge.type === 'CLOSED' && (
                                     <ChooseChallenge
                                         id={challenge.id}
                                         title={challenge.name}
                                         question={challenge.question}
                                         possibleAnswers={(challengeContent as ClosedChallengeContent).possibleAnswers}
-                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the ChooseChallenge component
+                                        onChallengeComplete={handleChallengeCompletion}
                                     />
                                 )}
                                 {challenge.type === 'CODE' && (
@@ -103,7 +131,7 @@ export const ChallengeScreen = () => {
                                         title={challenge.name}
                                         question={challenge.question}
                                         codeTemplate={"def test():\n    pass # make this function return the answer to life, the universe and everything"}
-                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the CodeChallenge component
+                                        onChallengeComplete={handleChallengeCompletion}
                                     />
                                 )}
                                 {challenge.type === "OPEN" && (
@@ -111,9 +139,14 @@ export const ChallengeScreen = () => {
                                         id={challenge.id}
                                         title={challenge.name}
                                         question={challenge.question}
-                                        onChallengeComplete={handleChallengeCompletion} // Pass the handleChallengeCompletion function to the OpenChallenge component
+                                        onChallengeComplete={handleChallengeCompletion}
                                     />
                                 )}
+                                {isAuthorized("MODERATOR") &&
+                                    <Button onClick={toggleVisible} className='mt-2'>
+                                        {challenge.visible ? "Ukryj zadanie" : "Upublicznij zadanie"}
+                                    </Button>
+                                }
                             </div>
                         )}
                     </div>

@@ -1,6 +1,6 @@
 import { string } from "prop-types";
 import { baseUrl } from "../../common/apis/common";
-import { APIError, Delete, Get, Post } from "../../common/axiosFetch";
+import { APIError, Delete, Get, Post, Put } from "../../common/axiosFetch";
 import { Result } from "../../common/poliTypes";
 
 export type ChallengeType = "OPEN" | "CLOSED" | "CODE";
@@ -46,6 +46,11 @@ export type SolutionRequest = {
   challengeId: number;
 }
 
+export type ChangeVisibilityRequest = {
+  challengeId: number;
+  visible: boolean;
+}
+
 export type ChallengeErrors = "INTERNAL_SERVER_ERROR" | any;
 
 export const executeChallenge = async (challenge: ExecuteChallengeRequest): Promise<Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>> => {
@@ -72,6 +77,18 @@ export const addSolution = async (solution: SolutionRequest): Promise<Result<Exe
   });
 };
 
+export const changeVisibility = async (req: ChangeVisibilityRequest): Promise<Result<any, APIError<ChallengeErrors>>> => {
+  const response = Put<any, APIError<ChallengeErrors>>(`${baseUrl}/api/admin/v1/challenge/changeVisible`, req);
+
+  return response.then((data) => {
+    if (data.isOk) {
+      return { isOk: true, value: data.value } as Result<any, APIError<ChallengeErrors>>;
+    } else {
+      return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ChallengeErrors>>;
+    }
+  });
+};
+
 export const getChallengesByArticleId = async (articleId: number): Promise<Result<ChallengeResponse[], APIError<ChallengeErrors>>> => {
   const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/article/${articleId}`);
 
@@ -85,7 +102,7 @@ export const getChallengesByArticleId = async (articleId: number): Promise<Resul
 };
 
 export const getChallengesByName = async (nameFrangment: string): Promise<Result<ChallengeResponse[], APIError<ChallengeErrors>>> => {
-  const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/admin/v1/challenge/name/${nameFrangment}`);
+  const response = Get<ChallengeResponse[], APIError<ChallengeErrors>>(`${baseUrl}/api/v1/challenge/name/${nameFrangment}`);
 
   return response.then((data) => {
     if (data.isOk) {

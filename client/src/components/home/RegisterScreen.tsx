@@ -10,7 +10,7 @@ import "./lr-forms.css";
 import { useError } from "./ErrorContext";
 
 export const RegisterScreen = () => {
-    const { setToken, setRole } = useContext(AuthContext);
+    const { setToken, setRole, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const { errorMessages, setError } = useError();
 
@@ -20,6 +20,7 @@ export const RegisterScreen = () => {
             if (data.isOk) {
                 setToken(data.value.token);
                 setRole(data.value.role);
+                setUser(data.value);
                 navigate("/");
             } else {
                 setError("Nie udało się założyć konta!");
