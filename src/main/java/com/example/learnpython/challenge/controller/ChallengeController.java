@@ -21,25 +21,28 @@ public class ChallengeController {
     private final SolutionService solutionService;
 
     @GetMapping
-    public ResponseEntity<List<ChallengeResponse>> getChallenges( @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
+    public ResponseEntity<List<ChallengeResponse>> getChallenges(@RequestHeader(value = "Authorization", required = false) String bearerToken) {
         var challenges = challengeService.getChallenges(bearerToken);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChallengeResponse> getChallengeById(@PathVariable("id") Long challengeId, @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
+    public ResponseEntity<ChallengeResponse> getChallengeById(@PathVariable("id") Long challengeId,
+                                                              @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
         var challenge = challengeService.getChallengeById(challengeId, bearerToken);
         return new ResponseEntity<>(challenge, HttpStatus.OK);
     }
 
     @GetMapping("/article/{articleId}")
-    public ResponseEntity<List<ChallengeResponse>> getChallengeByArticleId(@PathVariable("articleId") Long articleId, @RequestHeader(value = "Authorization", required = false)  String bearerTokend) {
+    public ResponseEntity<List<ChallengeResponse>> getChallengeByArticleId(@PathVariable("articleId") Long articleId,
+                                                                           @RequestHeader(value = "Authorization", required = false)  String bearerTokend) {
         var challenges = challengeService.getChallengesByArticleId(articleId, bearerTokend);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
 
     @GetMapping("/name/{nameFragment}")
-    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment, @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
+    public ResponseEntity<List<ChallengeResponse>> getChallengeByNameContaining(@PathVariable("nameFragment") String nameFragment,
+                                                                                @RequestHeader(value = "Authorization", required = false)  String bearerToken) {
         var challenges = challengeService.getChallengeByName(nameFragment, bearerToken);
         return new ResponseEntity<>(challenges, HttpStatus.OK);
     }
