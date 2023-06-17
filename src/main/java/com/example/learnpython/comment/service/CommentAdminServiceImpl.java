@@ -44,7 +44,7 @@ public class CommentAdminServiceImpl implements CommentAdminService {
     private void checkIfCommentIsCreatedByUser(final Long commentId, final User user) {
         final Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment with provided ID not found", "COMMENT_NOT_FOUND"));
-        if (!comment.getUser().equals(user)) {
+        if (!comment.getUser().getId().equals(user.getId())) {
             throw new UserRequestException("User does not have permission to delete comment", "USER_NOT_AUTHORIZED");
         }
     }
