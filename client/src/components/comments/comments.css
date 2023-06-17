@@ -3,3 +3,19 @@
     margin-right: 1.0rem;
     image-rendering: pixelated;
 }
+
+.delete-button
+{
+    float:right;
+    /* color: rgba(255, 0, 0, 0.473); */
+    color: #919191;
+}
+
+.delete-button:hover
+{
+    text-decoration: underline;
+}
+.content-container{
+    
+    width: 100%;
+}

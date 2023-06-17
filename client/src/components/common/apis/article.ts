@@ -10,6 +10,7 @@ export type Article = {
     chapterId: number;
     userId: number;
     date: string;
+    visible: boolean;
     // nextArticle: number,
     // previousArticle: number,
 }

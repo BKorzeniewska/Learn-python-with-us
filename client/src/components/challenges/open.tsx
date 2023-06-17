@@ -13,7 +13,7 @@ type ClosedChallengeProps = {
     id: number,
     title: string,
     question: string,
-    onChallengeComplete: (status: ChallengeResult) => void,
+    onChallengeComplete: (status: ChallengeResult, answer: string) => void,
 }
 
 export const OpenChallenge = (props: ClosedChallengeProps) => {
@@ -36,7 +36,7 @@ export const OpenChallenge = (props: ClosedChallengeProps) => {
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
             if(ans.isOk){
-                props.onChallengeComplete(ans.value.result);
+                props.onChallengeComplete(ans.value.result, answer);
             }
             else{
                 console.log("Cos nie działa");

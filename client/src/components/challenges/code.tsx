@@ -14,7 +14,7 @@ type CodeChallengeProps = {
     title: string,
     question: string,
     codeTemplate: string,
-    onChallengeComplete: (status: ChallengeResult) => void,
+    onChallengeComplete: (status: ChallengeResult, answer: string) => void,
 }
 
 export const CodeChallenge = (props: CodeChallengeProps) => {
@@ -39,7 +39,7 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
             if(ans.isOk){
-                props.onChallengeComplete(ans.value.result);
+                props.onChallengeComplete(ans.value.result, answer);
             }
             else{
                 console.log("cos sie zjebalo kurwa :/");

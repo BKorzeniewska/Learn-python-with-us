@@ -31,7 +31,7 @@ export const PasswordRecoveryScreen = () => {
                                 onSubmit={(e) => {
                                     e.preventDefault();
 
-                                    const response = passowrdRecoveryRequest(e.currentTarget.email.value);
+                                    const response = passowrdRecoveryRequest(e.currentTarget.email.value.toString().trim());
                                     response.then((data) => {
                                         if(data.isOk) {
                                             navigate("/password-recovery-next");

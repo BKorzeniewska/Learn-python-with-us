@@ -1,17 +1,32 @@
-import { useEffect, useState } from "react";
-import { CommentResponse } from "./apis/comment";
-import { UserInfo, loadUserById } from "../user/apis/profile";
+import { useContext, useEffect, useState } from "react";
+import { CommentResponse, deleteComment } from "./apis/comment";
 import { useError } from "../home/ErrorContext";
 import { Card } from "react-bootstrap";
 import { generateRandomPixels } from "../user/avatarGen";
 import "./comments.css";
+import { AuthContext } from "../auth/AuthContext";
 
 type Props = {
   data: CommentResponse;
+  onDelete: (commentId: number) => void;
 };
 
 export const Comment = (props: Props) => {
   const formattedDate = new Date(props.data.createdAt).toLocaleString();
+  const {getUser, isAuthorized} = useContext(AuthContext); 
+  const { errorMessages, setError } = useError();
+
+  function removeComment(): void {
+    deleteComment(props.data.id).then((res) => {
+      if (res.isOk) {
+          console.log("ok");
+          props.onDelete(props.data.id);
+      } else {
+          setError("Nie udało się usunąć komentarza");
+      }
+  }
+  )
+  }
 
   return (
     <Card className="mb-3">
@@ -22,11 +37,16 @@ export const Comment = (props: Props) => {
             className="rounded-circle avatar"
             width={25}
           />
-          <div>
+          <div className="content-container">
             <Card.Title>{props.data.userDetails.nickname}</Card.Title>
             <Card.Text>{props.data.content}</Card.Text>
             <Card.Text>
               <small className="text-muted">{formattedDate}</small>
+              {(isAuthorized("ADMIN") || getUser()?.userId === props.data.userDetails.id) && 
+              
+              <span className="delete-button" onClick={removeComment}>usuń komentarz</span>
+              }
+              
             </Card.Text>
           </div>
         </div>

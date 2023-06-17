@@ -36,6 +36,7 @@ export const AcrticleScreen = () => {
                                     chapterId: 0,
                                     userId: 0,
                                     date: new Date().toISOString(),
+                                    visible: true,
                                 },
                                 previousArticleIndex: null,
                                 nextArticleIndex: null,

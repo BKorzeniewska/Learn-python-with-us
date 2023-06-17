@@ -26,12 +26,16 @@ export const CommentSection = (props: Props) => {
         });
     }, [props.articleId]);
 
+    const handleDeleteComment = (commentId: number) => {
+        setComments((prevComments) => prevComments?.filter((comment) => comment.id !== commentId));
+      };
+
     return (
         <div>
           {isLoggedIn() && <CommentForm setComments={setComments} articleId={props.articleId} />}
           {comments &&
             comments.slice().reverse().map((comment) => (
-              <Comment data={comment} key={comment.id} />
+              <Comment onDelete={handleDeleteComment} data={comment} key={comment.id} />
             ))}
         </div>
       );

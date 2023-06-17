@@ -4,7 +4,7 @@ import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import './challenges.css'
 import { PossibleAnswers } from './ChallengeScreen';
 import { LoadingSpinner } from '../home/Spinner';
-import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { ChallengeResult, ExecuteChallengeRequest, addSolution, executeChallenge } from './apis/challenge';
 import { type } from 'os';
 import { useError } from '../home/ErrorContext';
 
@@ -14,7 +14,7 @@ type ChooseChallengeProps = {
     title: string,
     question: string,
     possibleAnswers: PossibleAnswers,
-    onChallengeComplete: (status: ChallengeResult) => void,
+    onChallengeComplete: (status: ChallengeResult, answer: string) => void,
 }
 
 export const ChooseChallenge = (props: ChooseChallengeProps) => {
@@ -54,10 +54,10 @@ export const ChooseChallenge = (props: ChooseChallengeProps) => {
                         executeChallenge(result).then((ans) => {
                             setIsLoading(false);
                             if (ans.isOk) {
-                                props.onChallengeComplete(ans.value.result);
+                                props.onChallengeComplete(ans.value.result, selectedAnswer);
                             }
                             else {
-                                console.log("cos sie zjebalo kurwa :/");
+                                console.log("Coś się popsuło nie było mnie słychać");
                             }
                         });
                     }}

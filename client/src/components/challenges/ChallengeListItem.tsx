@@ -32,10 +32,10 @@ export const ChallengeListItem = (props: Props) => {
 
     const handleDeleteChallenge = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-         event.stopPropagation();
+        event.stopPropagation();
         deleteChallenge(challenge.id).then((res) => {
             if (res.isOk) {
-                navigate(`/admin/challenge`);
+                navigate(0);
             } else {
                 setError("Nie udało się usunąć zadania");
             }
@@ -87,6 +87,7 @@ export const ChallengeListItem = (props: Props) => {
                         <FaTrash onClick={(event) => { event.preventDefault(); event.stopPropagation(); setShowModal(true) }} />
 
                     </span>}
+                {props.challenge.done && <BsCheckCircle className="ms-2" />}
             </div>
         </div>
     );

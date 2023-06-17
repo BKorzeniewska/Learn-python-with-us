@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { UserRole, roleRank } from '../admin/users/apis/users';
+import { authenticateResponse } from './apis/login';
 
 
 const setTokenCallback = (token: string | null) => {
@@ -21,6 +22,22 @@ const setRoleCallback = (role: UserRole | null) => {
   } else {
     sessionStorage.removeItem('role');
   }
+}
+
+const setUserCallback = (user: authenticateResponse | null) => {
+  if (user !== null) {
+    sessionStorage.setItem('user', JSON.stringify(user));
+  } else {
+    sessionStorage.removeItem('user');
+  }
+}
+
+const getUserCallback = (): authenticateResponse | null => {
+  const user = sessionStorage.getItem('user');
+  if (user === null) {
+    return null;
+  }
+  return JSON.parse(user) as authenticateResponse;
 }
 
 const getRoleCallback = (): UserRole | null => {
@@ -48,6 +65,8 @@ export const AuthContext = React.createContext<{
   setRole: (role: UserRole | null) => void
   getRole: () => UserRole | null
   isAuthorized: (role: UserRole) => boolean
+  setUser: (user: authenticateResponse | null) => void
+  getUser: () => authenticateResponse | null
 
 }>({
   setToken: setTokenCallback,
@@ -55,6 +74,8 @@ export const AuthContext = React.createContext<{
   setRole: setRoleCallback,
   getRole: getRoleCallback,
   isAuthorized: isAuthorizedCallback,
+  setUser: setUserCallback,
+  getUser: getUserCallback,
 });
 
 
@@ -73,6 +94,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setRole: setRoleCallback,
       getRole: getRoleCallback,
       isAuthorized: isAuthorizedCallback,
+      setUser: setUserCallback,
+      getUser: getUserCallback,
     }}>
       {children}
     </AuthContext.Provider>

@@ -77,10 +77,6 @@ export const ChallengesScreen = () => {
           <Button className="rounded-pill" variant="primary" onClick={() => {navigate(`/admin/challenge/edit`) }}>
             Dodaj zadanie
           </Button>}
-        {/* {isAuthorized("MODERATOR") &&
-          <Button className="rounded-pill" variant="primary" onClick={() => { setEdition(!edition) }}>
-            {edition ? "Wyłącz tryb edycji" : "Włącz tryb edycji"}
-          </Button>} */}
       </Container>
     </AppWrapper>
   );

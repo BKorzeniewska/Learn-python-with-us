@@ -17,6 +17,10 @@ export type ChallengeResponse = {
   id: number;
   question: string;
   name: string;
+  visible: boolean;
+  done: boolean;
+  userId: number;
+  exp: number;
   type: ChallengeType;
   content: string;
   articlesID: number[];
@@ -36,6 +40,12 @@ export type ExecutedChallengeResponse = {
 
 }
 
+export type SolutionRequest = {
+  answer: string;
+  correct: boolean;
+  challengeId: number;
+}
+
 export type ChallengeErrors = "INTERNAL_SERVER_ERROR" | any;
 
 export const executeChallenge = async (challenge: ExecuteChallengeRequest): Promise<Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>> => {
@@ -46,6 +56,18 @@ export const executeChallenge = async (challenge: ExecuteChallengeRequest): Prom
       return { isOk: true, value: data.value } as Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>;
     } else {
       return { isOk: false, error: data.error.response?.data } as Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>;
+    }
+  });
+};
+
+export const addSolution = async (solution: SolutionRequest): Promise<Result<ExecutedChallengeResponse, APIError<ChallengeErrors>>> => {
+  const response = Post<any, APIError<ChallengeErrors>>(`${baseUrl}/api/v1/solution/add`, solution);
+
+  return response.then((data) => {
+    if (data.isOk) {
+      return { isOk: true, value: data.value } as Result<any, APIError<ChallengeErrors>>;
+    } else {
+      return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ChallengeErrors>>;
     }
   });
 };
