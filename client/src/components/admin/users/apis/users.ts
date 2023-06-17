@@ -1,6 +1,6 @@
 import { ByRoleMatcher } from "@testing-library/react";
 import { baseUrl } from "../../../common/apis/common";
-import { APIError, Get, Post, Put } from "../../../common/axiosFetch";
+import { APIError, Delete, Get, Post, Put } from "../../../common/axiosFetch";
 import { Result } from "../../../common/poliTypes";
 
 
@@ -56,6 +56,18 @@ export const getUsers = async (req: GetUsersRequest): Promise<Result<GetUsersRes
 
 export const changeRole = async (req: ChangeRoleRequest): Promise<Result<null, APIError<UsersErrors>>> => {
     const response = Put<null, APIError<UsersErrors>>(`${baseUrl}/api/admin/v1/user/change/role`,req);
+
+    return response.then((data) => {
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<null, APIError<UsersErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<null, APIError<UsersErrors>>;
+        }
+    });
+};
+
+export const deleteUser = async (email: string): Promise<Result<null, APIError<UsersErrors>>> => {
+    const response = Delete<null, APIError<UsersErrors>>(`${baseUrl}/api/admin/v1/user/delete/${email}`);
 
     return response.then((data) => {
         if (data.isOk) {

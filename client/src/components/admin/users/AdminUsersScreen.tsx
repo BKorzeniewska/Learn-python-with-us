@@ -1,10 +1,13 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Pagination, Row } from 'react-bootstrap';
+import { MouseEvent, ReactNode, useContext, useEffect, useState } from 'react';
+import { Badge, Button, Col, Container, Form, ListGroup, Modal, Nav, NavDropdown, Pagination, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppWrapper } from '../../common/AppWrapper';
-import { ChangeRoleRequest, GetUsersRequest, GetUsersResponse, User, UserRole, changeRole, getUsers } from './apis/users';
+import { ChangeRoleRequest, GetUsersRequest, GetUsersResponse, User, UserRole, changeRole, deleteUser, getUsers } from './apis/users';
 import { useError } from '../../common/ErrorContext';
+import { FaTrash } from 'react-icons/fa';
+import "./user-list.css";
+import { isNullOrUndefined } from 'util';
 
 
 
@@ -17,13 +20,14 @@ export const AdminUsersScreen = () => {
   const [sendRequest, setSendRequest] = useState<boolean>(false);
   const { errorMessages, setError } = useError();
   const location = useLocation();
+  const [userToDelete, setUserToDelete] = useState<User>();
+  const [showModal, setShowModal] = useState(false);
 
 
   const handleSearch = () => {
     console.log(searchInput);
     setSendRequest(!sendRequest);
   }
-
 
   useEffect(() => {
     const req: GetUsersRequest = {
@@ -38,7 +42,7 @@ export const AdminUsersScreen = () => {
       }
     });
 
-  }, [sendRequest, location, pageNumber,searchInput]);
+  }, [sendRequest, location, pageNumber, searchInput]);
 
 
   const handleRoleChange = (user: User, newRole: UserRole) => {
@@ -63,9 +67,27 @@ export const AdminUsersScreen = () => {
           return prevUsers;
         });
       } else {
-        setError("Failed to update user role.\n"+response.error.errorMessage +"\n"+response.error.errorCode );
+        setError("Failed to update user role.\n" + response.error.errorMessage + "\n" + response.error.errorCode);
       }
     });
+  }
+
+  function handleDeleteUser(): void {
+    deleteUser(userToDelete?.email!).then((response) => {
+      if (response.isOk) {
+        // Update the user's role in the state
+        setUsers((prevUsers) => {
+          if (prevUsers) {
+            const updatedResults = prevUsers.results.filter((u) => u.email !== userToDelete?.email);
+            return { ...prevUsers, results: updatedResults };
+          }
+          return prevUsers;
+        });
+      } else {
+        setError("Failed to delete user.\n" + response.error.errorMessage + "\n" + response.error.errorCode);
+      }
+    }
+    );
   }
 
   return (
@@ -94,16 +116,21 @@ export const AdminUsersScreen = () => {
                 <div className="fw-bold">{user.nickname}</div>
                 {user.email}, {user.firstname}, {user.lastname}
               </div>
-              <NavDropdown
-                title={user.role}
-                id={`dropdown-${user.nickname}`}
-                onSelect={(selectedRole) => handleRoleChange(user, selectedRole as UserRole)}
-              >
-                <NavDropdown.Item eventKey="USER">USER</NavDropdown.Item>
-                <NavDropdown.Item eventKey="ADMIN">ADMIN</NavDropdown.Item>
-                <NavDropdown.Item eventKey="MODERATOR">MODERATOR</NavDropdown.Item>
-                <NavDropdown.Item eventKey="PRIVILEGED_USER">PRIVILEGED USER</NavDropdown.Item>
-              </NavDropdown>
+              <div className='option-section'>
+                <NavDropdown
+                  title={user.role}
+                  id={`dropdown-${user.nickname}`}
+                  onSelect={(selectedRole) => handleRoleChange(user, selectedRole as UserRole)}
+                >
+                  <NavDropdown.Item eventKey="USER">USER</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="ADMIN">ADMIN</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="MODERATOR">MODERATOR</NavDropdown.Item>
+                  <NavDropdown.Item eventKey="PRIVILEGED_USER">PRIVILEGED USER</NavDropdown.Item>
+                </NavDropdown>
+                <span className="modify-button">
+                  <FaTrash onClick={(event) => { event.preventDefault(); event.stopPropagation(); setUserToDelete(user); setShowModal(true) }} />
+                </span>
+              </div>
             </div>
           ))}
         {users &&
@@ -146,6 +173,23 @@ export const AdminUsersScreen = () => {
             />
 
           </Pagination>}
+
+          <Modal show={showModal} onHide={() => {setShowModal(false)}}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Usunąć Użytkownika?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Czy jesteś pewny że chcesz usunąć użytkownika  {userToDelete?.nickname} od tego momentu nie będzie się mógł zalogować?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={(event) => { event.preventDefault();event.stopPropagation();setShowModal(false) }}>
+                        Nie
+                    </Button>
+                    <Button variant="danger" onClick={() => {handleDeleteUser(); setShowModal(false)}}>
+                        Tak
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
 
       </Container>
