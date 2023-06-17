@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 public class CommentAdminController {
     private final CommentAdminService commentAdminService;
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MODERATOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER', 'MODERATOR', 'PRIVILEGED_USER')")
     @DeleteMapping("/delete/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable("commentId") Long commentId) {
+    public ResponseEntity<?> deleteComment(@PathVariable("commentId") Long commentId,
+                                           @RequestHeader(value = "Authorization") final String token) {
         log.info("deleteComment() - start: {}", commentId);
-        commentAdminService.deleteComment(commentId);
+        commentAdminService.deleteComment(commentId, token);
         log.info("deleteComment() - end");
         return new ResponseEntity<>(commentId, HttpStatus.OK);
     }

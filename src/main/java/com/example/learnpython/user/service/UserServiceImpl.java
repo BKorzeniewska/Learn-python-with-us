@@ -33,19 +33,26 @@ public class UserServiceImpl implements UserService {
 
         if ((token != null && token.startsWith("Bearer ")) && userId == null) {
             final String jwt = token.substring(7);
-            user = userRepository.findByToken(jwt).orElseThrow(
-                    () -> new UserNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
+            user = userRepository.findByToken(jwt).orElseThrow(() ->
+                    new UserNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
         }
 
         if (userId != null) {
-            user = userRepository.findById(userId).orElseThrow(
-                    () -> new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
+            user = userRepository.findById(userId).orElseThrow(() ->
+                    new UserNotFoundException("User with provided id not found", "USER_NOT_FOUND"));
         }
 
         if (user == null) {
             throw new UserNotFoundException("User with provided token or id not found", "USER_NOT_FOUND");
         }
 
+        final UserInfoResponse userInfoResponse = getUserInfoResponse(user);
+
+        log.info("User info response: {}", userInfoResponse);
+        return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
+    }
+
+    private static UserInfoResponse getUserInfoResponse(User user) {
         final UserInfoResponse userInfoResponse = UserInfoResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -56,13 +63,16 @@ public class UserServiceImpl implements UserService {
                 .exp(user.getExp())
                 .challengesSolvedCount(user.getSolutions().size())
                 .build();
-
-        log.info("User info response: {}", userInfoResponse);
-        return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
+        return userInfoResponse;
     }
 
     @Override
     public ResponseEntity<UserInfoResponse> modifyUser(final String token, final ModifyUserRequest modifyUserRequest) {
+
+        if (token == null) {
+            throw new UserRequestException("Token must be provided", "TOKEN_NOT_FOUND");
+        }
+
         final String bearerToken = token.substring(7);
         final User user = userRepository.findByToken(bearerToken)
                 .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
@@ -83,16 +93,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
 
 
-        final UserInfoResponse userInfoResponse = UserInfoResponse.builder()
-                .id(result.getId())
-                .email(result.getEmail())
-                .firstName(result.getFirstname())
-                .lastName(result.getLastname())
-                .nickname(result.getNickname())
-                .level(result.getLevel())
-                .exp(result.getExp())
-                .challengesSolvedCount(result.getSolutions().size())
-                .build();
+        final UserInfoResponse userInfoResponse = getUserInfoResponse(result);
 
         log.info("User info response: {}", userInfoResponse);
         return new ResponseEntity<>(userInfoResponse, HttpStatus.OK);
