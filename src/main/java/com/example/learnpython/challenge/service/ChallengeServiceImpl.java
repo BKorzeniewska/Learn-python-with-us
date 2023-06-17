@@ -216,7 +216,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     public boolean itsDone(Challenge challenge, String bearerToken) {
-        if (bearerToken == null || bearerToken == "") {
+        if (bearerToken == null || bearerToken.isEmpty()) {
             return false;
         } else {
             final String token = bearerToken.substring(7);
@@ -224,8 +224,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                     .orElseThrow(() -> new ArticleNotFoundException("User with provided token not found", "USER_NOT_FOUND"));
 
             final Optional<Solution> existingSolution = solutionRepository.findByUserIdAndChallengeId(user.getId(), challenge.getId());
-            if (existingSolution.isPresent()) return true;
-            else return false;
+            return existingSolution.isPresent();
         }
     }
 
