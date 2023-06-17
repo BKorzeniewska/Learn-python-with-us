@@ -44,6 +44,10 @@ export const RegisterScreen = () => {
                                 <Form
                                     onSubmit={(e) => {
                                         e.preventDefault();
+                                        if (e.currentTarget.pass.value !== e.currentTarget.pass2.value) {
+                                            setError("Hasła nie są takie same!");
+                                            return; 
+                                        }
 
                                         const formData: registerRequest = {
                                             email: e.currentTarget.email.value,
@@ -61,21 +65,21 @@ export const RegisterScreen = () => {
                                         controlId="nick"
                                     >
                                         <Form.Label>Nickname</Form.Label>
-                                        <Form.Control type="text" placeholder="Pedro" />
+                                        <Form.Control type="text" placeholder="Twój nickname" />
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-4"
                                         controlId="firstname"
                                     >
                                         <Form.Label>Imię</Form.Label>
-                                        <Form.Control type="text" placeholder="Pedro" />
+                                        <Form.Control type="text" placeholder="Twoje imie" />
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-4"
                                         controlId="lastname"
                                     >
                                         <Form.Label>Nazwisko</Form.Label>
-                                        <Form.Control type="text" placeholder="Pedro" />
+                                        <Form.Control type="text" placeholder="Twoje nazwisko" />
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-4"
@@ -93,7 +97,7 @@ export const RegisterScreen = () => {
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-4"
-                                        controlId="pass"
+                                        controlId="pass2"
                                     >
                                         <Form.Label>Powtórz Hasło</Form.Label>
                                         <Form.Control type="password" />

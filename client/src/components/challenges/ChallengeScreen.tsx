@@ -3,7 +3,7 @@ import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row }
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppWrapper } from '../home/AppWrapper';
-import { ChallengeResponse, ChallengeResult, getChallengesByArticleId } from './apis/challenge';
+import { ChallengeResponse, ChallengeResult, SolutionRequest, addSolution, getChallengesByArticleId } from './apis/challenge';
 import { useError } from '../home/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
@@ -32,8 +32,6 @@ export type ChallengeContent = OpenChallengeContent | ClosedChallengeContent | C
 
 export const ChallengeScreen = () => {
     const navigate = useNavigate();
-    const { articleId } = useParams();
-    const [challenges, setChallenges] = useState<ChallengeResponse[]>();
     const { errorMessages, setError } = useError();
     const location = useLocation();
     const challenge: ChallengeResponse | undefined = location.state?.challenge;
@@ -44,9 +42,24 @@ export const ChallengeScreen = () => {
     console.log(challengeContent);
 
     // Function to handle challenge completion
-    const handleChallengeCompletion = (status: ChallengeResult) => {
+    const handleChallengeCompletion = (status: ChallengeResult, answer: string) => {
         if (status === "SUCCESS") {
             setChallengeDone(true); // Set challengeDone to true when challenge is completed
+            const req: SolutionRequest ={
+                challengeId: challenge?.id!,
+                correct: true,
+                answer: answer,
+
+            }
+            addSolution(req).then((res) => {
+                if (res.isOk) {
+                    console.log("Solution added");
+                } else {
+                    setError("Nie udało się zapisać rozwiązania");
+                }
+            }
+            )
+
         }
         else {
             setChallengeDone(false);

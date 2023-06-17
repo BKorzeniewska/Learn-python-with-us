@@ -33,9 +33,9 @@ export const PasswordRecoveryNextScreen = () => {
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     const req: RecoveryRequest ={
-                                        email: e.currentTarget.email.value,
-                                        token: e.currentTarget.token.value,
-                                        newPassword: e.currentTarget.password.value
+                                        email: e.currentTarget.email.value.toString().trim(),
+                                        token: e.currentTarget.token.value.toString().trim(),
+                                        newPassword: e.currentTarget.password.value.toString()
                                     }
 
                                     const response = passowrdRecovery(req);

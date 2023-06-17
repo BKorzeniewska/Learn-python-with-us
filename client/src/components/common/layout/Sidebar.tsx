@@ -81,9 +81,6 @@ export const Sidebar = (props: { width: number, children: React.ReactNode }) => 
           return (
             <div key={value.id}>
               <DropdownLink name={value.name} dropdown={value.articles.some((article) => article.id === currentArticle)} >
-                {/* {value.articles.map((article) => (
-                <Nav.Link onClick={() => navigate(`/article/${article.id}`)} className={`sidebar-item inner-sidebar ${article.id === currentArticle ? 'active' : ''}`}>{article.title}</Nav.Link>
-              ))} */}
                 {value.articles.map((article) => (
                   <Nav.Link
                     key={article.id}

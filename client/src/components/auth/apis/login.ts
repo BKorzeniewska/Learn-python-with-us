@@ -11,6 +11,9 @@ export type authenticateRequest = {
 export type authenticateResponse = {
     token: string;
     role: UserRole;
+    userId: number;
+    nickname: string;
+    email: string;
 }
 
 export type registerRequest = {

@@ -60,6 +60,7 @@ export const ArticleEditionScreen = () => {
                                     chapterId: 0,
                                     userId: 0,
                                     date: new Date().toISOString(),
+                                    visible: false,
 
                                 });
                         }
@@ -77,6 +78,7 @@ export const ArticleEditionScreen = () => {
                         chapterId: 0,
                         userId: 0,
                         date: new Date().toISOString(),
+                        visible: false,
 
                     });
                     setCurrentText(article?.content || "");
