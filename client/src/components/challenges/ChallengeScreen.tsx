@@ -8,7 +8,7 @@ import { useError } from '../common/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
-import { BsCheckCircle } from 'react-icons/bs';
+import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
 import { AuthContext } from '../auth/AuthContext';
 
 export type OpenChallengeContent = {
@@ -37,6 +37,7 @@ export const ChallengeScreen = () => {
     const location = useLocation();
     const challenge: ChallengeResponse | undefined = location.state?.challenge;
     const [challengeDone, setChallengeDone] = useState(false); // State to track if challenge was done correctly
+    const [challengeStatus, setChallengeStatus] = useState<ChallengeResult | undefined>(undefined); // State to track if challenge was done correctly
     const { isAuthorized } = useContext(AuthContext);
 
     let challengeContent: ChallengeContent = JSON.parse(challenge?.content || '{"correctAnswer": "42"}');
@@ -47,6 +48,7 @@ export const ChallengeScreen = () => {
     const handleChallengeCompletion = (status: ChallengeResult, answer: string) => {
         if (status === "SUCCESS") {
             setChallengeDone(true); // Set challengeDone to true when challenge is completed
+            
             const req: SolutionRequest = {
                 challengeId: challenge?.id!,
                 correct: true,
@@ -67,6 +69,7 @@ export const ChallengeScreen = () => {
             setChallengeDone(false);
             setError("Nie udało się wykonać zadania");
         }
+        setChallengeStatus(status);
     };
 
     // Function to navigate to the next challenge
@@ -95,15 +98,28 @@ export const ChallengeScreen = () => {
             <Container className="my-5">
                 {challenge && (
                     <div>
-                        {challengeDone ? ( // If challengeDone is true, display completion information and button to next challenge
-                            <div>
+                        {challengeStatus === 'SUCCESS' &&
+                        <div>
                                 <div className='challenge-complete-wrapper'>
                                     <BsCheckCircle size={80} color="green" className="mb-3" /> {/* Add tick sign symbol */}
                                     <p className="mb-3">Zadanie wykonane prawidłowo!</p>
                                     <Button onClick={goToNextChallenge}>Następne zadanie</Button>
                                 </div>
                             </div>
-                        ) : (
+ }    
+                        {challengeStatus === "FAIL" &&
+                            <div>
+                                <div className='challenge-complete-wrapper'>
+                                    <BsXCircle size={80} color="red" className="mb-3" /> {/* Add tick sign symbol */}
+                                    <p className="mb-3">Zadanie wykonane nieprawidłowo!</p>
+                                    <div className='buttons-next'>
+                                    <Button onClick={goToNextChallenge}>Następne zadanie</Button>
+                                    <Button onClick={() => {setChallengeStatus(undefined)}}>Spróbuj ponownie</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        }              
+ {challengeStatus === undefined &&
                             <div>
                                 {challenge.done &&
                                     <Alert variant="success">
@@ -148,7 +164,7 @@ export const ChallengeScreen = () => {
                                     </Button>
                                 }
                             </div>
-                        )}
+                        }
                     </div>
                 )}
             </Container>
