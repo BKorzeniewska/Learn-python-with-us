@@ -162,6 +162,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
     }
 
+
     @Override
     public List<ChallengeResponse> getChallengeByName(final String name, final String... bearerToken) {
         log.info("getChallengeByName() - start - name: {}", name);
@@ -225,7 +226,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     public boolean itsDone(Challenge challenge, String bearerToken) {
-        if (bearerToken == null || bearerToken.equals("")) {
+        if (bearerToken == null || bearerToken.isEmpty()) {
             return false;
         } else {
             final String token = bearerToken.substring(7);
