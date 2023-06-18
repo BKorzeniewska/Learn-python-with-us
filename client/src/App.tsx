@@ -16,6 +16,7 @@ import { AdminScreen } from './components/admin/AdminScreen';
 import { PasswordRecoveryScreen } from './components/auth/PasswordRecoveryScreen';
 import { PasswordRecoveryNextScreen } from './components/auth/PasswordRecoveryNextScreen';
 import { ChallengeEditionScreen } from './components/admin/challenges/ChallengeEditionScreen';
+import { UserEditScreen } from './components/user/UserEditScreen';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/register" element={<RegisterScreen />}></Route>
             <Route path="/article/:articleId" element={<AcrticleScreen />}></Route>
             <Route path="/user/:userId?" element={<UserScreen />}></Route>
+            <Route path="/user/edit" element={<UserEditScreen />}></Route>
             <Route path="/admin/articles" element={<AdminArticlesScreen />}></Route>
             <Route path="/admin/edit/:articleId?" element={<ArticleEditionScreen />}></Route>
             <Route path="/admin/users" element={<AdminUsersScreen />}></Route>

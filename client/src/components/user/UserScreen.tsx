@@ -83,7 +83,7 @@ export const UserScreen = () => {
                   <Button     
                     className="mt-3"  
                     variant="primary" 
-                    onClick={() => navigate("/user/edit")}>Edytuj profil</Button>}
+                    onClick={() => navigate(`/user/edit`, { state: { result } })}>Edytuj profil</Button>}
               </Col>
             </Row>) : ("cantLoadUser")}
       </LoadingSpinner>

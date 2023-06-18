@@ -1,5 +1,5 @@
 import { baseUrl } from "../../common/apis/common";
-import { Get } from "../../common/axiosFetch";
+import { APIError, Get, Put } from "../../common/axiosFetch";
 import { Result } from "../../common/poliTypes";
 
 export type UserInfo = {
@@ -13,7 +13,13 @@ export type UserInfo = {
     challengesSolvedCount: number;
 }
 
-export type UserResponseError = "USER_NOT_FOUND"
+export type ModifyUserRequest = {
+    firstname: string;
+    nickname: string;
+    lastname: string;
+}
+
+export type UserResponseError = string;
 
 export const loadUserById = async (id?: string): Promise<Result<UserInfo, UserResponseError>> => {
     let response: Promise<Result<UserInfo, unknown>>;
@@ -29,6 +35,18 @@ export const loadUserById = async (id?: string): Promise<Result<UserInfo, UserRe
             return { isOk: true, value: data.value } as Result<UserInfo, UserResponseError>;
         } else {          
             return { isOk: false, error: "USER_NOT_FOUND" } as Result<UserInfo, UserResponseError>;
+        }
+    });
+}
+
+export const modifyUser = async (req: ModifyUserRequest): Promise<Result<UserInfo, APIError<UserResponseError>>> => {
+    const response = Put<UserInfo, APIError<UserResponseError>>(`${baseUrl}/api/v1/user/update`, req);
+
+    return response.then((data) => {
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<UserInfo, APIError<UserResponseError>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<UserInfo, APIError<UserResponseError>>;
         }
     });
 }
