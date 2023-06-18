@@ -79,6 +79,11 @@ export const UserScreen = () => {
                     </div>
                   </Card.Body>
                 </Card>
+                {userId === undefined &&
+                  <Button     
+                    className="mt-3"  
+                    variant="primary" 
+                    onClick={() => navigate("/user/edit")}>Edytuj profil</Button>}
               </Col>
             </Row>) : ("cantLoadUser")}
       </LoadingSpinner>

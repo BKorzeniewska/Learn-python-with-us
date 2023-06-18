@@ -8,7 +8,7 @@ import { useError } from '../common/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
-import { BsCheckCircle, BsXCircle } from 'react-icons/bs';
+import { BsCheck2Circle, BsXCircle } from 'react-icons/bs';
 import { AuthContext } from '../auth/AuthContext';
 
 export type OpenChallengeContent = {
@@ -33,7 +33,7 @@ export type ChallengeContent = OpenChallengeContent | ClosedChallengeContent | C
 
 export const ChallengeScreen = () => {
     const navigate = useNavigate();
-    const { errorMessages, setError } = useError();
+    const { setError } = useError();
     const location = useLocation();
     const challenge: ChallengeResponse | undefined = location.state?.challenge;
     const [challengeDone, setChallengeDone] = useState(false); // State to track if challenge was done correctly
@@ -101,7 +101,7 @@ export const ChallengeScreen = () => {
                         {challengeStatus === 'SUCCESS' &&
                         <div>
                                 <div className='challenge-complete-wrapper'>
-                                    <BsCheckCircle size={80} color="green" className="mb-3" /> {/* Add tick sign symbol */}
+                                    <BsCheck2Circle size={80} color="green" className="mb-3" /> {/* Add tick sign symbol */}
                                     <p className="mb-3">Zadanie wykonane prawidłowo!</p>
                                     <Button onClick={goToNextChallenge}>Następne zadanie</Button>
                                 </div>

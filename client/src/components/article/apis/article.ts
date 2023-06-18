@@ -1,4 +1,4 @@
-import { CheckToken, Delete, Get, Post, Put } from "../../common/axiosFetch";
+import { APIError, CheckToken, Delete, Get, Post, Put } from "../../common/axiosFetch";
 import { Result } from "../../common/poliTypes";
 import { baseUrl } from "../../common/apis/common";
 
@@ -11,8 +11,6 @@ export type Article = {
     userId: number;
     date: string;
     visible: boolean;
-    // nextArticle: number,
-    // previousArticle: number,
 }
 
 export type ArticleShort = {
@@ -26,8 +24,8 @@ export type ArticleExtended = {
     nextArticleIndex: number | null;
     currentArticle: number;
     totalArticles: number;
-  };
-  
+};
+
 
 export type ArticleMenu = {
     id: number;
@@ -36,87 +34,106 @@ export type ArticleMenu = {
 }
 
 export type CreateArticleRequest = {
-    title : string;
+    title: string;
     content: string;
     chapterId: number;
+    visible: boolean;
 }
 
 export type ModifyArticleRequest = {
-    title : string;
+    title: string;
     content: string;
     id: number;
+    visible: boolean;
 }
 
-export type ArticleResponseError = "ARTICLE_NOT_FOUND"
+export type ChangeVisibilityRequest = {
+    articleId: number;
+    visible: boolean;
+}
 
-export const loadArticleById = async (id: string): Promise<Result<Article, ArticleResponseError>> => {
-    const response = Get<Article>(`${baseUrl}/api/v1/article/${id}`);
+export type ArticleErrors = string;
+
+export const loadArticleById = async (id: string): Promise<Result<Article, APIError<ArticleErrors>>> => {
+    const response = Get<Article, APIError<ArticleErrors>>(`${baseUrl}/api/v1/article/${id}`);
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<Article, ArticleResponseError>;
-        } else {          
-            return { isOk: false, error: "ARTICLE_NOT_FOUND" } as Result<Article, ArticleResponseError>;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
 
-export const loadArticleMenu = async (): Promise<Result<ArticleMenu[], ArticleResponseError>> => {
-    const response = CheckToken(Get<ArticleMenu[]>(`${baseUrl}/api/v1/chapters/menu`));
+export const loadArticleMenu = async (): Promise<Result<ArticleMenu[], APIError<ArticleErrors>>> => {
+    const response = CheckToken(Get<ArticleMenu[], APIError<ArticleErrors>>(`${baseUrl}/api/v1/chapters/menu`));
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<ArticleMenu[], ArticleResponseError>;
-        } else {          
-            return { isOk: false, error: "ARTICLE_NOT_FOUND" } as Result<ArticleMenu[], ArticleResponseError>;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
 
-export const loadArticleByIdExtended = async (id: string): Promise<Result<ArticleExtended, ArticleResponseError>> => {
-    const response = Get<ArticleExtended>(`${baseUrl}/api/v1/article/chapter/${id}`);
+export const loadArticleByIdExtended = async (id: string): Promise<Result<ArticleExtended, APIError<ArticleErrors>>> => {
+    const response = Get<ArticleExtended, APIError<ArticleErrors>>(`${baseUrl}/api/v1/article/chapter/${id}`);
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<ArticleExtended, ArticleResponseError>;
-        } else {          
-            return { isOk: false, error: "ARTICLE_NOT_FOUND" } as Result<ArticleExtended, ArticleResponseError>;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
 
-export const createArticle  = async (article: CreateArticleRequest): Promise<Result<Article, "UNAUTHORIZED">> => {
-    const response = Post<Article>(`${baseUrl}/api/admin/v1/article/create`, article);
+export const createArticle = async (article: CreateArticleRequest): Promise<Result<Article, APIError<ArticleErrors>>> => {
+    const response = Post<Article, APIError<ArticleErrors>>(`${baseUrl}/api/admin/v1/article/create`, article);
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<Article, "UNAUTHORIZED">;
-        } else {          
-            return { isOk: false, error: "UNAUTHORIZED" } as Result<Article, "UNAUTHORIZED">;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
 
-export const modifyArticle  = async (article: ModifyArticleRequest): Promise<Result<Article, ArticleResponseError>> => {
-    const response = Put<Article>(`${baseUrl}/api/admin/v1/article/update`, article);
+export const modifyArticle = async (article: ModifyArticleRequest): Promise<Result<Article, APIError<ArticleErrors>>> => {
+    const response = Put<Article, APIError<ArticleErrors>>(`${baseUrl}/api/admin/v1/article/update`, article);
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<Article, ArticleResponseError>;
-        } else {          
-            return { isOk: false, error: "ARTICLE_NOT_FOUND"  } as Result<Article, ArticleResponseError>;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
 
-export const deleteArticle  = async (articleId: number): Promise<Result<any, ArticleResponseError>> => {
-    const response = Delete<any>(`${baseUrl}/api/admin/v1/article/delete/${articleId}`);
+export const deleteArticle = async (articleId: number): Promise<Result<any, APIError<ArticleErrors>>> => {
+    const response = Delete<any, APIError<ArticleErrors>>(`${baseUrl}/api/admin/v1/article/delete/${articleId}`);
 
     return response.then((data) => {
-        if(data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, ArticleResponseError>;
-        } else {          
-            return { isOk: false, error: "ARTICLE_NOT_FOUND"  } as Result<any, ArticleResponseError>;
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
         }
     });
 }
+
+export const changeVisibility = async (req: ChangeVisibilityRequest): Promise<Result<any, APIError<ArticleErrors>>> => {
+    const response = Put<any, APIError<ArticleErrors>>(`${baseUrl}/api/admin/v1/article/changeVisible`, req);
+
+    return response.then((data) => {
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+        }
+    });
+};

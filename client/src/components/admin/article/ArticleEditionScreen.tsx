@@ -105,6 +105,7 @@ export const ArticleEditionScreen = () => {
                                     title: (event.target as any).elements.formTitle.value,
                                     content: (event.target as any).elements.formContent.value,
                                     chapterId: parseInt((event.target as any).elements.formChapterId.value),
+                                    visible: true,
                                 };
                                 console.log(request);
                                 createArticle(request).then(
@@ -122,6 +123,7 @@ export const ArticleEditionScreen = () => {
                                     title: (event.target as any).elements.formTitle.value,
                                     content: (event.target as any).elements.formContent.value,
                                     id: parseInt(articleId),
+                                    visible: true,
                                 };
                                 console.log(request);
                                 modifyArticle(request).then(

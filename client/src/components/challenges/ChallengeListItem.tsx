@@ -8,7 +8,7 @@ import { useError } from '../common/ErrorContext';
 import { ChooseChallenge } from './choose';
 import { CodeChallenge } from './code';
 import { OpenChallenge } from './open';
-import { BsCheckCircle } from 'react-icons/bs';
+import { BsCheck2Circle } from 'react-icons/bs';
 import { AuthContext } from '../auth/AuthContext';
 import { FaPen, FaTrash } from 'react-icons/fa';
 
@@ -87,7 +87,7 @@ export const ChallengeListItem = (props: Props) => {
                         <FaTrash onClick={(event) => { event.preventDefault(); event.stopPropagation(); setShowModal(true) }} />
 
                     </span>}
-                {props.challenge.done && <BsCheckCircle className="ms-2" />}
+                {props.challenge.done && <BsCheck2Circle className="ms-2" />}
             </div>
         </div>
     );
