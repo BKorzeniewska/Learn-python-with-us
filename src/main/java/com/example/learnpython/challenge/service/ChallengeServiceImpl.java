@@ -288,7 +288,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     private User checkTokenGetUserOrNull(final String[] bearerToken) {
         if (bearerToken.length == 0 || bearerToken[0] == null || !bearerToken[0].startsWith("Bearer ")) {
-            throw new UserRequestException("Token or userId must be provided", "USER_NOT_FOUND");
+            log.info("checkTokenGetUserOrNull() - end - token is null");
+            return null;
         }
         final String jwt = bearerToken[0].substring(7);
         return userRepository.findByToken(jwt).orElse(null);
