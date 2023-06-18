@@ -2,7 +2,9 @@ package com.example.learnpython.solution.repository;
 
 import com.example.learnpython.solution.model.Solution;
 import com.example.learnpython.solution.model.SolutionsCountPerChallengeProjection;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +21,12 @@ public interface SolutionRepository extends JpaRepository<Solution, Long> {
 
     @Query("SELECT s FROM Solution s WHERE s.user.id = ?1")
     List<Solution> findByUserId(final long userId);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Solution s WHERE s.id = :solutionId")
+    void deleteSolutionById(final Long solutionId);
+
+    @Query("SELECT s FROM Solution s WHERE s.challenge.id = ?1")
+    List<Solution> findByChallengeId(final long challengeId);
+
 }

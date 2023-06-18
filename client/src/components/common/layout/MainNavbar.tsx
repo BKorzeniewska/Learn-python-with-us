@@ -16,12 +16,15 @@ export const MainNavbar = (props: Props) => {
   const navigate = useNavigate();
   const token = sessionStorage.getItem('token');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { setToken, isLoggedIn, getRole } = useContext(AuthContext);
+  const { setToken, isLoggedIn, isAuthorized, setRole, setUser, getUser } = useContext(AuthContext);
 
   const logout = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setToken(null);
+    setRole(null);
+    setUser(null);
     event.stopPropagation();
     setIsDropdownOpen(!isDropdownOpen);
+    navigate("/");
   }
 
   return (
@@ -37,9 +40,10 @@ export const MainNavbar = (props: Props) => {
             Learn Python with us
           </span>
         </Navbar.Brand>
-        <Nav className="ml-auto text-center">
+        <Nav className="ml-auto text-center logged-in">
           {!isLoggedIn() ? <Nav.Link onClick={() => { navigate("/login") }}>Zaloguj</Nav.Link> :
-          <NavDropdown title={<span className="material-symbols-outlined">person</span>} id="dropdown-basic" drop="down-centered">
+
+          <NavDropdown title={<span className="">{getUser()?.nickname}</span>} id="dropdown-basic" drop="down-centered">
             <NavDropdown.Item onClick={() => { toggleTheme(); }}>
               {
                 theme === "light" ? <span className="material-symbols-outlined">dark_mode</span> : <span className="material-symbols-outlined">light_mode</span>
@@ -48,14 +52,13 @@ export const MainNavbar = (props: Props) => {
             </NavDropdown.Item>
             <NavDropdown.Item onClick={() => navigate("/user/")}>Profil</NavDropdown.Item>
             <NavDropdown.Item onClick={(event) => logout(event)}>Wyloguj</NavDropdown.Item>
-            {getRole() === "ADMIN" &&
+            {isAuthorized("ADMIN") &&
             <>
             <Dropdown.Divider />
               <NavDropdown.Item onClick={() => navigate("/admin/")}>Panel administratora</NavDropdown.Item>
               </>
               }
           </NavDropdown>
-
 }
         </Nav>
       </Container>

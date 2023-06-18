@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CommentResponse, loadCommentsByArticleId } from "./apis/comment"
 import { UserInfo, loadUserById } from "../user/apis/profile";
-import { useError } from "../home/ErrorContext";
+import { useError } from "../common/ErrorContext";
 import { Comment } from "./Comment";
 import { CommentForm } from "./CommentForm";
 import { AuthContext } from "../auth/AuthContext";

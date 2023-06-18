@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { CommentResponse, createComment } from "./apis/comment";
 import { UserInfo, loadUserById } from "../user/apis/profile";
-import { useError } from "../home/ErrorContext";
+import { useError } from "../common/ErrorContext";
 import { Button, Card, Form } from "react-bootstrap";
-import { LoadingSpinner } from "../home/Spinner";
+import { LoadingSpinner } from "../common/Spinner";
 
 type Props = {
   articleId: number;

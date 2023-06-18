@@ -2,12 +2,13 @@ import { ChangeEvent, ChangeEventHandler, ReactNode, useContext, useEffect, useS
 import { Badge, Button, Col, Container, Form, ListGroup, Nav, NavDropdown, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AppWrapper } from '../home/AppWrapper';
+import { AppWrapper } from '../common/AppWrapper';
 import { ChallengeResponse, getChallengesByArticleId, getChallengesByName } from './apis/challenge';
-import { useError } from '../home/ErrorContext';
+import { useError } from '../common/ErrorContext';
 import { AuthContext } from '../auth/AuthContext';
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa';
 import { ChallengeListItem } from './ChallengeListItem';
+import { LoadingSpinner } from '../common/Spinner';
 
 
 
@@ -18,9 +19,10 @@ export const ChallengesScreen = () => {
   const { errorMessages, setError } = useError();
   const [searchInput, setSearchInput] = useState<string>();
   const { isAuthorized } = useContext(AuthContext);
-  const [edition, setEdition] = useState<boolean>(false);
+  const [isLoading, setisLoading] = useState(true);
 
   useEffect(() => {
+    setisLoading(true);
     if (searchInput !== "" && searchInput !== undefined) {
       getChallengesByName(searchInput).then((cha) => {
         if (cha.isOk) {
@@ -39,6 +41,7 @@ export const ChallengesScreen = () => {
         }
       });
     }
+    setisLoading(false);
   }, [articleId, searchInput]);
 
 
@@ -69,12 +72,14 @@ export const ChallengesScreen = () => {
             Search
           </Button>
         </Form>
-        {challenges &&
-          challenges.map((challenge) => (
-            <ChallengeListItem key={challenge.id} challenge={challenge} />
-          ))}
+        <LoadingSpinner isLoading={isLoading}>
+          {challenges &&
+            challenges.map((challenge) => (
+              <ChallengeListItem key={challenge.id} challenge={challenge} />
+            ))}
+        </LoadingSpinner>
         {isAuthorized("PRIVILEGED_USER") &&
-          <Button className="rounded-pill" variant="primary" onClick={() => {navigate(`/admin/challenge/edit`) }}>
+          <Button className="rounded-pill" variant="primary" onClick={() => { navigate(`/admin/challenge/edit`) }}>
             Dodaj zadanie
           </Button>}
       </Container>

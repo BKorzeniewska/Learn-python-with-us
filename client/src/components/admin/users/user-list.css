@@ -1,0 +1,21 @@
+.modify-button {
+    color: #7c7c7c;
+    /* float:right; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+}
+
+.option-section {
+    display: flex;
+    align-items: center;
+}
+
+.modify-button:hover {
+
+    color: #4b4b4b;
+
+}

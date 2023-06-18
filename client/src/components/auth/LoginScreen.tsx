@@ -1,12 +1,12 @@
 import { Alert, Button, Container, Form, Row } from "react-bootstrap";
 import "../../App.css";
-import { AppWrapper } from "./AppWrapper";
-import { authenticate } from "../auth/apis/login";
+import { AppWrapper } from "../common/AppWrapper";
+import { authenticate } from "./apis/login";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../auth/AuthContext";
+import { AuthContext } from "./AuthContext";
 import { useContext, useState } from "react";
 import axios from "axios";
-import { useError } from "./ErrorContext";
+import { useError } from "../common/ErrorContext";
 
 
 type LoginFormData = {
@@ -16,7 +16,7 @@ type LoginFormData = {
 
 export const LoginScreen = () => {
     const navigate = useNavigate();
-    const { setToken, setRole } = useContext(AuthContext);
+    const { setToken, setRole, setUser } = useContext(AuthContext);
     const { errorMessages, setError } = useError();
 
 
@@ -28,6 +28,7 @@ export const LoginScreen = () => {
             if(data.isOk) {
                 setToken(data.value.token);
                 setRole(data.value.role);
+                setUser(data.value);
                 navigate("/");
             } else {    
                 setError('Nie udało się zalogować. Spróbuj ponownie.');

@@ -12,8 +12,11 @@ import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.ChallengeResponse;
 import com.example.learnpython.challenge.model.CreateChallengeRequest;
 import com.example.learnpython.challenge.model.ModifyChallengeRequest;
+import com.example.learnpython.solution.model.Solution;
+import com.example.learnpython.solution.repository.SolutionRepository;
 import com.example.learnpython.user.model.entity.User;
 import com.example.learnpython.user.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +32,7 @@ import java.util.List;
 public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     private final ChallengeRepository challengeRepository;
     private final ArticleRepository articleRepository;
+    private final SolutionRepository solutionRepository;
     private final UserRepository userRepository;
     private final ChallengeMapper challengeMapper;
     private final ChallengeService challengeService;
@@ -149,14 +153,20 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
         return challengeMapper.toCreateChallengeResponse(updatedChallenge, jsonConverter, challengeService, "");
     }
 
+    @Transactional
     @Override
     public void deleteChallenge(Long challengeId) {
         if (challengeId == null) {
             throw new ChallengeNotFoundException("Challenge ID cannot be null", "CHALLENGE_ID_NULL");
         }
-        challengeRepository.findById(challengeId).orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
 
-        challengeRepository.deleteById(challengeId);
+        challengeRepository.findById(challengeId)
+                .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
+        List<Solution> solutions = solutionRepository.findByChallengeId(challengeId);
+        for (Solution solution : solutions) {
+            solutionRepository.deleteSolutionById(solution.getId());
+        }
+        challengeRepository.deleteChallengeById(challengeId);
     }
 
 }

@@ -51,12 +51,10 @@ public class Challenge {
     @Column(name = "CONTENT", columnDefinition = "jsonb")
     private ContentJson content;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "challenge", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Solution> solutions;
 
-    @ManyToMany(mappedBy = "challenges", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @ManyToMany(mappedBy = "challenges", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Article> articles;
 
     public List<Article> getArticles() {

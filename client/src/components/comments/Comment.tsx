@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CommentResponse, deleteComment } from "./apis/comment";
-import { useError } from "../home/ErrorContext";
+import { useError } from "../common/ErrorContext";
 import { Card } from "react-bootstrap";
 import { generateRandomPixels } from "../user/avatarGen";
 import "./comments.css";
@@ -23,6 +23,7 @@ export const Comment = (props: Props) => {
           props.onDelete(props.data.id);
       } else {
           setError("Nie udało się usunąć komentarza");
+          setError(res.error.errorMessage);
       }
   }
   )

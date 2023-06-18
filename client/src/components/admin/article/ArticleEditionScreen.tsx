@@ -2,12 +2,12 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Nav, NavDropdown, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Article, ArticleMenu, CreateArticleRequest, ModifyArticleRequest, createArticle, loadArticleById, loadArticleMenu, modifyArticle } from '../../common/apis/article';
-import { useError } from '../../home/ErrorContext';
+import { Article, ArticleMenu, CreateArticleRequest, ModifyArticleRequest, createArticle, loadArticleById, loadArticleMenu, modifyArticle } from '../../article/apis/article';
+import { useError } from '../../common/ErrorContext';
 import { ThemeContext } from '../../themes/ThemeProvider';
-import { AppWrapper } from '../../home/AppWrapper';
+import { AppWrapper } from '../../common/AppWrapper';
 import { MarkDownRenderer } from '../../common/markdown/MarkDownRenderer';
-import { LoadingSpinner } from '../../home/Spinner';
+import { LoadingSpinner } from '../../common/Spinner';
 
 
 

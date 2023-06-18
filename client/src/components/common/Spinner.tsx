@@ -1,4 +1,5 @@
 import { Spinner } from "react-bootstrap";
+import "./spinner.css"
 
 
 export const LoadingSpinner = (props: {
@@ -6,13 +7,13 @@ export const LoadingSpinner = (props: {
     children: React.ReactNode;
 }) => {
     return (
-        <div style={{width: "100%" }}>
-            {props.isLoading ? <Spinner animation="border" role="status">
+        <div style={{width: "100%"}}>
+            {props.isLoading ? <div className="spinner-wrapper"><Spinner animation="border" role="status" className="spinner">
                 <span className="sr-only" style={{
                     position: "absolute",
                     fontSize: "0.8rem",
                 }}>Loading</span>
-            </Spinner> : props.children}
+            </Spinner></div> : props.children}
         </div>
     )
 }

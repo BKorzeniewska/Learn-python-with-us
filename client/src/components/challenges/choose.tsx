@@ -3,10 +3,10 @@ import { Button, Card, Form } from 'react-bootstrap';
 import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import './challenges.css'
 import { PossibleAnswers } from './ChallengeScreen';
-import { LoadingSpinner } from '../home/Spinner';
+import { LoadingSpinner } from '../common/Spinner';
 import { ChallengeResult, ExecuteChallengeRequest, addSolution, executeChallenge } from './apis/challenge';
 import { type } from 'os';
-import { useError } from '../home/ErrorContext';
+import { useError } from '../common/ErrorContext';
 
 // implementation of choose component, which is used to choose between 4 answers and has question
 type ChooseChallengeProps = {

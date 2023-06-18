@@ -13,6 +13,7 @@ public interface ChallengeMapper {
     @Transactional
     @Mapping(target="content", expression="java(jsonConverter.convertToDatabaseColumn(challenge.getContent())).build()")
     @Mapping(target="done", expression="java(challengeService.itsDone(challenge, bearerToken))")
+    @Mapping(target="userId", source="challenge.user.id")
     @Mapping(target = "articlesID", expression = "java(challenge.getArticlesID())")
      ChallengeResponse toCreateChallengeResponse(Challenge challenge, JsonConverter jsonConverter, ChallengeService challengeService, String bearerToken);
 }

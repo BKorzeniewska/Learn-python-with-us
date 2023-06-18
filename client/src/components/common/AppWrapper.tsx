@@ -2,10 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Container, Row, Col, Alert } from 'react-bootstrap';
 import { ReactNode } from 'react';
 import { ThemeContext } from '../themes/ThemeProvider';
-import { MainNavbar } from '../common/layout/MainNavbar';
-import { Sidebar } from '../common/layout/Sidebar';
+import { MainNavbar } from './layout/MainNavbar';
+import { Sidebar } from './layout/Sidebar';
 import "./error.css";
-import Footer from '../common/layout/Footer';
+import Footer from './layout/Footer';
 
 export type AppProps = {
   children: ReactNode;

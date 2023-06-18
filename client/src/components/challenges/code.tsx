@@ -4,7 +4,7 @@ import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { LoadingSpinner } from '../home/Spinner';
+import { LoadingSpinner } from '../common/Spinner';
 import "./challenges.css"; 
 import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
 

@@ -1,6 +1,7 @@
 package com.example.learnpython.challenge.service;
 
 import com.example.learnpython.challenge.model.*;
+import jakarta.transaction.Transactional;
 
 public interface ChallengeAdminService {
     ChallengeResponse createChallenge(final CreateChallengeRequest request, final String bearerToken);
@@ -9,6 +10,7 @@ public interface ChallengeAdminService {
 
     ChallengeResponse changeVisibleChallenge(VisibleChangeRequest request);
 
+    @Transactional
     void deleteChallenge(final Long challengeId);
 
 

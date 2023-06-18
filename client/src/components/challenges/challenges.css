@@ -1,7 +1,3 @@
-
-
-
-
 /* set animation time for button */
 .submit-button {
     transition: 0.5s;
@@ -16,7 +12,7 @@
 /* if button disabled, set width to heigh */
 .submit-button:disabled {
     /* width equal height */
-    width: 200px;    
+    width: 200px;
     height: 180px;
 }
 
@@ -63,7 +59,7 @@
     background-color: #e2e2e2;
 }
 
-[data-theme="dark"] .custom-list-item:hover{
+[data-theme="dark"] .custom-list-item:hover {
     background-color: #3d3d3d;
 }
 
@@ -71,7 +67,7 @@
     background-color: #c7c7c7;
 }
 
-.challenge-complete-wrapper{
+.challenge-complete-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,7 +80,7 @@
     max-width: fit-content;
     width: auto;
     margin: 0 auto;
-    
+
 }
 
 [data-theme="dark"] .challenge-complete-wrapper {
@@ -102,16 +98,26 @@
     align-items: center;
     justify-content: flex-end;
     flex-grow: 1;
-    padding-left:0.5rem;
-  }
-  
-  .option-section{
+    padding-left: 0.5rem;
+}
+
+.option-section {
     display: flex;
     align-items: center;
-  }
-  
-  .modify-button:hover {
-  
+}
+
+.modify-button:hover {
+
     color: #4b4b4b;
-  
-  }
+
+}
+
+.buttons-next{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 1rem;
+    /*space between buttons*/
+    gap: 1rem;
+}
