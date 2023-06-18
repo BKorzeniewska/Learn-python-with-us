@@ -1,6 +1,7 @@
 package com.example.learnpython.user.service;
 
 import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.user.model.dto.ModifyUserRequest;
 import com.example.learnpython.user.model.entity.User;
 import com.example.learnpython.user.repository.UserRepository;
@@ -21,6 +22,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final ChallengeRepository challengeRepository;
+
 
     @Override
     public ResponseEntity<UserInfoResponse> getUserInfo(final String token, final Long userId) {
@@ -120,11 +124,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteUserByEmail(final String email) {
-
-        final User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
-        log.info("Deleting user by email: {}, user: {}", email, user);
+        final User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
+        int challengesAffected = challengeRepository.updateUserToNull(user.getId());
+        log.info("Updating {} challenges to null", challengesAffected);
         userRepository.deleteByEmail(email);
+        log.info("Deleting user by email: {}, user: {}", email, user);
     }
 
     private int calculateLevel(int currentLevel, long exp, int points) {
