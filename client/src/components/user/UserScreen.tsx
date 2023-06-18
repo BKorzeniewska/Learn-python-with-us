@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Row, Col, Card } from "react-bootstrap";
+import { Alert, Button, Container, Row, Col, Card, ProgressBar } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useError } from "../common/ErrorContext";
@@ -39,6 +39,14 @@ export const UserScreen = () => {
     setisLoading(false);
   }, [userId]);
 
+  const calculateLevelProgress = () => {
+    if (result) {
+      const levelProgress = (result.exp % 1000) / 10; // Assuming 1 level = 1000 exp, dividing by 10 to get a percentage
+      return levelProgress;
+    }
+    return 0;
+  }; 
+
 
 
   return (
@@ -67,7 +75,9 @@ export const UserScreen = () => {
                       <p>
                         <strong>Level: </strong>
                         {result.level}
+                        <ProgressBar now={calculateLevelProgress()} label={`${calculateLevelProgress()}%`} />
                       </p>
+                      
                       <p>
                         <strong>Punkty doświadczenia: </strong>
                         {result.exp}
