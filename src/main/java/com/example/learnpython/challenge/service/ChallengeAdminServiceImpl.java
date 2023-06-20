@@ -17,6 +17,8 @@ import com.example.learnpython.solution.repository.SolutionRepository;
 import com.example.learnpython.user.model.entity.User;
 import com.example.learnpython.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -32,6 +34,8 @@ import java.util.List;
 public class ChallengeAdminServiceImpl implements ChallengeAdminService {
     private final ChallengeRepository challengeRepository;
     private final ArticleRepository articleRepository;
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
     private final SolutionRepository solutionRepository;
     private final UserRepository userRepository;
     private final ChallengeMapper challengeMapper;
@@ -160,13 +164,33 @@ public class ChallengeAdminServiceImpl implements ChallengeAdminService {
             throw new ChallengeNotFoundException("Challenge ID cannot be null", "CHALLENGE_ID_NULL");
         }
 
-        challengeRepository.findById(challengeId)
+        Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new ChallengeNotFoundException("Challenge with provided ID not found", "CHALLENGE_NOT_FOUND"));
-        List<Solution> solutions = solutionRepository.findByChallengeId(challengeId);
-        for (Solution solution : solutions) {
-            solutionRepository.deleteSolutionById(solution.getId());
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+
+            List<Article> articles = challenge.getArticles();
+            for (Article article : articles) {
+                article.getChallenges().remove(challenge);
+                entityManager.merge(article);
+            }
+
+            List<Solution> solutions = solutionRepository.findByChallengeId(challengeId);
+            for (Solution solution : solutions) {
+                solutionRepository.deleteSolutionById(solution.getId());
+            }
+
+            challengeRepository.delete(challenge);
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        } finally {
+            entityManager.close();
         }
-        challengeRepository.deleteChallengeById(challengeId);
     }
 
 }
