@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,6 +127,39 @@ class ArticleServiceImplTest {
                 .toList();
 
         List<ArticleResponse> result = articleServiceImplUnderTest.getArticlesByTitleContaining(titleFragment);
+        assertThat(result).isEqualTo(expectedResponses);
+    }
+
+    @Test
+    void getArticlesByDateTest() {
+        LocalDate date = LocalDate.now();
+
+        Article article1 = Article.builder()
+                .id(1L)
+                .title("Article 1")
+                .content("Content 1")
+                .creationDate(date)
+                .chapter(Chapter.builder().id(1L).build())
+                .build();
+
+        Article article2 = Article.builder()
+                .id(2L)
+                .title("Article 2")
+                .content("Content 2")
+                .creationDate(date.minusDays(1))
+                .chapter(Chapter.builder().id(2L).build())
+                .build();
+
+        List<Article> articles = List.of(article1, article2);
+
+        when(mockArticleRepository.findByCreationDate(date))
+                .thenReturn(Optional.of(articles));
+
+        List<ArticleResponse> expectedResponses = articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+
+        List<ArticleResponse> result = articleServiceImplUnderTest.getArticlesByDate(date);
         assertThat(result).isEqualTo(expectedResponses);
     }
 }
