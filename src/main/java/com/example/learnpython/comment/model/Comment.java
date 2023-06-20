@@ -27,7 +27,7 @@ public class Comment {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ARTICLE_ID")
     private Article article;
 

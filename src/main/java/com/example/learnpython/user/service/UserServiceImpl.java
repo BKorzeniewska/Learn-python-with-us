@@ -126,8 +126,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUserByEmail(final String email) {
         final User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
-        user.setArticles(null);
-        user.setSolutions(null);
+
+        /*user.getArticles().forEach(article -> article.setUser(null));
+        user.setArticles(null);*/
         int challengesAffected = challengeRepository.updateUserToNull(user.getId());
         log.info("Updating {} challenges to null", challengesAffected);
         userRepository.deleteByEmail(email);
