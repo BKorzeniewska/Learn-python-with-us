@@ -24,6 +24,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SECRET_KEY: 703273357638792F423F4528482B4D6251655368566D597133743677397A2443
     build:
       context: "./"
       dockerfile: "Dockerfile"
