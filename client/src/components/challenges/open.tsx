@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { CodeProps } from "react-markdown/lib/ast-to-react";
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { LoadingSpinner } from '../common/Spinner';
-import "./challenges.css"; 
+import "./challenges.css";
 import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { AuthContext } from '../auth/AuthContext';
 
 
 type ClosedChallengeProps = {
@@ -19,6 +20,7 @@ type ClosedChallengeProps = {
 export const OpenChallenge = (props: ClosedChallengeProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [answer, setAnswer] = useState("");
+    const { isAuthorized } = useContext(AuthContext);
 
     const handleAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setAnswer(event.target.value);
@@ -35,10 +37,10 @@ export const OpenChallenge = (props: ClosedChallengeProps) => {
         }
         executeChallenge(result).then((ans) => {
             setIsLoading(false);
-            if(ans.isOk){
+            if (ans.isOk) {
                 props.onChallengeComplete(ans.value.result, answer);
             }
-            else{
+            else {
                 console.log("Cos nie działa");
             }
         });
@@ -51,34 +53,35 @@ export const OpenChallenge = (props: ClosedChallengeProps) => {
                 <Card.Text>
                     <MarkDownRenderer content={props.question} />
                 </Card.Text>
-
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                        <Form.Label>Write answer below</Form.Label>
-                        <Form.Control 
-                            as="textarea"
-                            style={{ fontFamily: "monospace" }}
-                            rows={4}
-                            value={answer}
-                            onChange={handleAnswerChange}
-                        />
-                    </Form.Group>
-                    <Form.Group>
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            className="submit-button"
-                            disabled={isLoading}
-                        >
-                            <LoadingSpinner isLoading={isLoading}>
-                                Submit
-                            </LoadingSpinner>
-                        </Button>
-                    </Form.Group>
-                    <Form.Group>
-                        {/* output */}
-                    </Form.Group>
-                </Form>
+                {isAuthorized("USER") &&
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Write answer below</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                style={{ fontFamily: "monospace" }}
+                                rows={4}
+                                value={answer}
+                                onChange={handleAnswerChange}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Button
+                                variant="primary"
+                                type="submit"
+                                className="submit-button"
+                                disabled={isLoading}
+                            >
+                                <LoadingSpinner isLoading={isLoading}>
+                                    Submit
+                                </LoadingSpinner>
+                            </Button>
+                        </Form.Group>
+                        <Form.Group>
+                            {/* output */}
+                        </Form.Group>
+                    </Form>
+                }
             </Card.Body>
         </Card>
     );

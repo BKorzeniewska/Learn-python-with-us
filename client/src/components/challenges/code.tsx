@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { MarkDownRenderer } from '../common/markdown/MarkDownRenderer';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
@@ -7,6 +7,7 @@ import { oneDark, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/pris
 import { LoadingSpinner } from '../common/Spinner';
 import "./challenges.css"; 
 import { ChallengeResult, ExecuteChallengeRequest, executeChallenge } from './apis/challenge';
+import { AuthContext } from '../auth/AuthContext';
 
 // implementation of choose component, which is used to choose between 4 answers and has question
 type CodeChallengeProps = {
@@ -20,6 +21,7 @@ type CodeChallengeProps = {
 export const CodeChallenge = (props: CodeChallengeProps) => {
     const lineCount = props.codeTemplate.split("\n").length
     const [isLoading, setIsLoading] = React.useState(false)
+    const { isAuthorized } = useContext(AuthContext);
 
     const [answer, setAnswer] = useState("");
 
@@ -54,7 +56,7 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
                 <Card.Text>
                     <MarkDownRenderer content={props.question} />
                 </Card.Text>
-
+                {isAuthorized("USER") &&
                 <Form
                     onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                         event.preventDefault()
@@ -97,7 +99,7 @@ export const CodeChallenge = (props: CodeChallengeProps) => {
                         
                     </Form.Group>
                 </Form>
-
+}
             </Card.Body>
         </Card>
     )

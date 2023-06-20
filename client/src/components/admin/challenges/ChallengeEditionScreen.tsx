@@ -194,7 +194,7 @@ export const ChallengeEditionScreen = () => {
                             }}>
                             <option value={"OPEN"}>OPEN</option>
                             <option value={"CLOSED"}>CLOSED</option>
-                            <option value={"CODE"}>CODE</option>
+                            {/* <option value={"CODE"}>CODE</option> */}
                         </Form.Select>
                     </Form.Group>
 
