@@ -41,7 +41,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("DELETE FROM Article a WHERE a.id = :articleId")
     void deleteArticleById(final Long articleId);
 
-    @Query("SELECT a FROM Article a WHERE a.visible = true ORDER BY a.creationDate DESC")
+    @Query("SELECT a FROM Article a WHERE a.visible = true ORDER BY a.creationDate DESC LIMIT 6")
     List<Article> findTop5ByOrderByCreationDateDesc();
 
     @Transactional
