@@ -14,7 +14,6 @@ type Props = {
 export const MainNavbar = (props: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navigate = useNavigate();
-  const token = sessionStorage.getItem('token');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { setToken, isLoggedIn, isAuthorized, setRole, setUser, getUser } = useContext(AuthContext);
 

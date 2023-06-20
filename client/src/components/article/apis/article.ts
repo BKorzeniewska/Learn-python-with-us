@@ -59,9 +59,9 @@ export const loadArticleById = async (id: string): Promise<Result<Article, APIEr
 
     return response.then((data) => {
         if (data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: true, value: data.value } as Result<Article, APIError<ArticleErrors>>;
         } else {
-            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: false, error: data.error.response?.data } as Result<Article, APIError<ArticleErrors>>;
         }
     });
 }
@@ -71,9 +71,9 @@ export const loadArticleMenu = async (): Promise<Result<ArticleMenu[], APIError<
 
     return response.then((data) => {
         if (data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: true, value: data.value } as Result<ArticleMenu[], APIError<ArticleErrors>>;
         } else {
-            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: false, error: data.error.response?.data } as Result<ArticleMenu[], APIError<ArticleErrors>>;
         }
     });
 }
@@ -83,9 +83,21 @@ export const loadArticleByIdExtended = async (id: string): Promise<Result<Articl
 
     return response.then((data) => {
         if (data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: true, value: data.value } as Result<ArticleExtended, APIError<ArticleErrors>>;
         } else {
-            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: false, error: data.error.response?.data } as Result<ArticleExtended, APIError<ArticleErrors>>;
+        }
+    });
+}
+
+export const loadLatestArticles = async (): Promise<Result<ArticleShort[], APIError<ArticleErrors>>> => {
+    const response = Get<ArticleShort[], APIError<ArticleErrors>>(`${baseUrl}/api/v1/article/newest`);
+
+    return response.then((data) => {
+        if (data.isOk) {
+            return { isOk: true, value: data.value } as Result<ArticleShort[], APIError<ArticleErrors>>;
+        } else {
+            return { isOk: false, error: data.error.response?.data } as Result<ArticleShort[], APIError<ArticleErrors>>;
         }
     });
 }
@@ -95,9 +107,9 @@ export const createArticle = async (article: CreateArticleRequest): Promise<Resu
 
     return response.then((data) => {
         if (data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: true, value: data.value } as Result<Article, APIError<ArticleErrors>>;
         } else {
-            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: false, error: data.error.response?.data } as Result<Article, APIError<ArticleErrors>>;
         }
     });
 }
@@ -107,9 +119,9 @@ export const modifyArticle = async (article: ModifyArticleRequest): Promise<Resu
 
     return response.then((data) => {
         if (data.isOk) {
-            return { isOk: true, value: data.value } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: true, value: data.value } as Result<Article, APIError<ArticleErrors>>;
         } else {
-            return { isOk: false, error: data.error.response?.data } as Result<any, APIError<ArticleErrors>>;
+            return { isOk: false, error: data.error.response?.data } as Result<Article, APIError<ArticleErrors>>;
         }
     });
 }

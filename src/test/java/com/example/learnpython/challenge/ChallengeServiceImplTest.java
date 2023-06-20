@@ -1,13 +1,9 @@
 package com.example.learnpython.challenge;
 
-import com.example.learnpython.article.model.Article;
-import com.example.learnpython.article.repository.ArticleRepository;
-import com.example.learnpython.challenge.exception.ChallengeNotFoundException;
 import com.example.learnpython.challenge.model.*;
 import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.service.ChallengeService;
 import com.example.learnpython.challenge.service.ChallengeServiceImpl;
-import com.example.learnpython.chapter.model.Chapter;
 import com.example.learnpython.solution.repository.SolutionRepository;
 import com.example.learnpython.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,11 +13,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -31,18 +25,13 @@ class ChallengeServiceImplTest {
 
     @Mock
     private ChallengeRepository mockchallengeRepository;
-
     @Mock
     private ChallengeMapper challengeMapper;
-
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private ArticleRepository articleRepository;
-
     @Mock
     private SolutionRepository solutionRepository;
+
 
     @Autowired
     private JsonConverter jsonConverter;
@@ -50,7 +39,7 @@ class ChallengeServiceImplTest {
     private ChallengeService challengeServiceUnderTest;
     @BeforeEach
     void setUp() {
-        challengeServiceUnderTest = new ChallengeServiceImpl(mockchallengeRepository, userRepository, solutionRepository, challengeMapper, jsonConverter);
+        challengeServiceUnderTest = new ChallengeServiceImpl(mockchallengeRepository,userRepository,solutionRepository,challengeMapper,jsonConverter);
     }
 
     @Test

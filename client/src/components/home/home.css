@@ -1,0 +1,39 @@
+.banner {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.banner-img {
+    width: 100%;
+    height: 50vh;
+    min-height: 500px;
+    object-fit: cover;
+}
+
+.article-tile {
+    background-color: #9868cf;
+    border: 0px;
+    border-radius: 7px;
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 7.5rem;
+    color:azure;
+}
+.article-tile:hover {
+    background-color: #824ebd;
+
+}
+
+.article-tile h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.article-tile p {
+    font-size: 14px;
+    color: #666;
+}
+.site-description{
+    font-size: 18px;
+    font-style: italic;
+}

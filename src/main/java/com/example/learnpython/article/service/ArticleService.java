@@ -1,9 +1,6 @@
 package com.example.learnpython.article.service;
 
-import com.example.learnpython.article.model.ArticleDTO;
-import com.example.learnpython.article.model.ArticleResponse;
-import com.example.learnpython.article.model.CreateArticleRequest;
-import com.example.learnpython.article.model.ModifyArticleRequest;
+import com.example.learnpython.article.model.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,5 +18,7 @@ public interface ArticleService {
     List<ArticleResponse> getArticlesByDateBetween(LocalDate startDate, LocalDate endDate);
 
     List<ArticleResponse> getArticlesByDate(LocalDate date);
+
+    List<MenuArticleResponse> getNewestArticle();
 
 }
