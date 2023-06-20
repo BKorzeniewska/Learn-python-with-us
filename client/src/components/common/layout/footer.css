@@ -35,14 +35,6 @@
     text-decoration: none;
 }
 
-
-.footer-links li:before {
-    content: "\f105";
-    font-family: 'FontAwesome';
-    padding-right: 10px;
-    color: #ccc;
-}
-
 .footer-category li a {
     font-size: 13px;
     line-height: 30px;
@@ -82,10 +74,6 @@
     font-weight: normal;
 }
 
-.fa-phone:before {
-    content: "\f095";
-}
-
 .info a {
 
     color: #b3b3b3;
@@ -94,9 +82,6 @@
     font-weight: normal;
 }
 
-.fa-fax:before {
-    content: "\f1ac";
-}
 
 .copyright {
     border-top: 1px solid #111;
