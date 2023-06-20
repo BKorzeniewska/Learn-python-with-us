@@ -41,14 +41,14 @@ public class Article {
     @JoinColumn(name="CHAPTER_ID", nullable = false)
     private Chapter chapter;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany
     private List<UserHistory> userHistories;
 
     @ManyToMany
