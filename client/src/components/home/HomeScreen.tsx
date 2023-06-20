@@ -1,27 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { ThemeContext } from "../themes/ThemeProvider";
 import "../../App.css";
 import "./home.css"
 
 import { AppWrapper } from "../common/AppWrapper";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ArticleShort, loadLatestArticles } from "../article/apis/article";
+import { useError } from "../common/ErrorContext";
 
 type Props = {};
 
 const HomeScreen = (props: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [articles, setArticles] = useState<ArticleShort[]>([]);
+  const location = useLocation();
+  const [isLoading, setisLoading] = useState(true);
+  const { errorMessages, setError } = useError();
+  const navigate = useNavigate();
 
-  // Assuming you have an array of articles
-  const articles = [
-    { id: 1, title: "Article 1", content: "Content for Article 1" },
-    { id: 2, title: "Article 2", content: "Content for Article 2" },
-    { id: 3, title: "Article 3", content: "Content for Article 3" },
-    { id: 4, title: "Article 4", content: "Content for Article 4" },
-    { id: 5, title: "Article 5", content: "Content for Article 5" },
-    { id: 6, title: "Article 6", content: "Content for Article 6" },
-    { id: 7, title: "Article 7", content: "Content for Article 7" },
-    { id: 8, title: "Article 8", content: "Content for Article 8" },
-  ];
+  useEffect(() => {
+    loadLatestArticles().then((data) => {
+      if (data.isOk) {
+        setArticles(data.value);
+      } else {
+        setError("Nie udało się załadować najnowszych artykułów");
+      }
+    });
+
+    setisLoading(false);
+  }, [location]);
 
   return (
       <AppWrapper>
@@ -30,11 +38,11 @@ const HomeScreen = (props: Props) => {
           <div className="banner">
           <img className="banner-img" src={require("../../assets/background.png")} />
           </div>
-
-          {/* Latest Articles */}
+          <p className="site-description">Witaj! Ta strona do nauki języka Python jest doskonałym źródłem wiedzy dla wszystkich, którzy chcą zdobyć umiejętności programowania w tym języku. Na stronie znajdziesz szeroki wybór artykułów, które pokrywają różnorodne tematy związane z Pythonem.</p>
+          <h2>Najnowsze artykuły</h2>
           <Row className="mt-3">
             {articles.map((article) => (
-              <Col md={3} sm={6} key={article.id}>
+              <Col md={2} sm={4} key={article.id} onClick={() => navigate(`/article/${article.id}`)}>
                 <div className="article-tile">
                   <h3><strong>{article.title}</strong></h3>
                 </div>
