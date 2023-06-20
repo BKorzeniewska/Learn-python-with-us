@@ -47,5 +47,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE Article a SET a.user = null WHERE a.user.id = :userId")
-    int updateUserToNull(final Long id);
+    int updateUserToNull(final Long userId);
 }
