@@ -44,4 +44,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a FROM Article a WHERE a.visible = true ORDER BY a.creationDate DESC")
     List<Article> findTop5ByOrderByCreationDateDesc();
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Article a SET a.user = null WHERE a.user.id = :userId")
+    int updateUserToNull(final Long id);
 }

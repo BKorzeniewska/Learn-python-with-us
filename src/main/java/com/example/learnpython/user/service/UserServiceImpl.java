@@ -1,6 +1,7 @@
 package com.example.learnpython.user.service;
 
 import com.example.learnpython.article.exception.ArticleNotFoundException;
+import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.user.model.dto.ModifyUserRequest;
 import com.example.learnpython.user.model.entity.User;
@@ -24,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final ChallengeRepository challengeRepository;
+
+    private final ArticleRepository articleRepository;
 
 
     @Override
@@ -127,8 +130,8 @@ public class UserServiceImpl implements UserService {
         final User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new UserNotFoundException("User with provided email not found", "USER_NOT_FOUND"));
 
-        /*user.getArticles().forEach(article -> article.setUser(null));
-        user.setArticles(null);*/
+        int articlesAffected = articleRepository.updateUserToNull(user.getId());
+        log.info("Updating {} articles to null", articlesAffected);
         int challengesAffected = challengeRepository.updateUserToNull(user.getId());
         log.info("Updating {} challenges to null", challengesAffected);
         userRepository.deleteByEmail(email);

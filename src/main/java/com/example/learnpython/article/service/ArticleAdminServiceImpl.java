@@ -8,6 +8,7 @@ import com.example.learnpython.article.model.CreateArticleRequest;
 import com.example.learnpython.article.model.ModifyArticleRequest;
 import com.example.learnpython.article.repository.ArticleRepository;
 import com.example.learnpython.chapter.repository.ChapterRepository;
+import com.example.learnpython.comment.repository.CommentRepository;
 import com.example.learnpython.user.model.entity.User;
 import com.example.learnpython.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,7 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
     private final ChapterRepository chapterRepository;
     private final UserRepository userRepository;
     private final ArticleMapper articleMapper;
+    private final CommentRepository commentRepository;
 
     @Override
     public ArticleResponse createArticle(final CreateArticleRequest request, final String bearerToken) {
@@ -129,6 +131,9 @@ public class ArticleAdminServiceImpl implements ArticleAdminService {
         final Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with provided ID not found", "ARTICLE_NOT_FOUND"));
         article.setComments(null);
+
+        int rows = commentRepository.updateArticleToNull(articleId);
+        log.info("Updated {} rows", rows);
 
         articleRepository.deleteArticleById(articleId);
     }
