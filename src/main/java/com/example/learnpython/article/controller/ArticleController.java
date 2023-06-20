@@ -1,5 +1,6 @@
 package com.example.learnpython.article.controller;
 
+import com.example.learnpython.article.model.MenuArticleResponse;
 import com.example.learnpython.article.service.ArticleService;
 import com.example.learnpython.article.model.ArticleResponse;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,12 @@ public class ArticleController {
     @GetMapping("/title/{titleFragment}")
     public ResponseEntity<List<ArticleResponse>> getArticleByTitleContaining(@PathVariable("titleFragment") String titleFragment) {
         var articles = articleService.getArticlesByTitleContaining(titleFragment);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
+    }
+
+    @GetMapping("/newest")
+    public ResponseEntity<List<MenuArticleResponse>> getNewestArticle() {
+        var articles = articleService.getNewestArticle();
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
 
