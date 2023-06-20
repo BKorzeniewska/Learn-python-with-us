@@ -8,6 +8,8 @@ import com.example.learnpython.challenge.repository.ChallengeRepository;
 import com.example.learnpython.challenge.service.ChallengeService;
 import com.example.learnpython.challenge.service.ChallengeServiceImpl;
 import com.example.learnpython.chapter.model.Chapter;
+import com.example.learnpython.solution.repository.SolutionRepository;
+import com.example.learnpython.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,18 +31,26 @@ class ChallengeServiceImplTest {
 
     @Mock
     private ChallengeRepository mockchallengeRepository;
+
     @Mock
     private ChallengeMapper challengeMapper;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private ArticleRepository articleRepository;
+
+    @Mock
+    private SolutionRepository solutionRepository;
+
     @Autowired
     private JsonConverter jsonConverter;
 
     private ChallengeService challengeServiceUnderTest;
     @BeforeEach
     void setUp() {
-        challengeServiceUnderTest = new ChallengeServiceImpl(mockchallengeRepository,articleRepository, challengeMapper, jsonConverter);
+        challengeServiceUnderTest = new ChallengeServiceImpl(mockchallengeRepository, userRepository, solutionRepository, challengeMapper, jsonConverter);
     }
 
     @Test
