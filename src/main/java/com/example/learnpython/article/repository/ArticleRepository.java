@@ -34,11 +34,14 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE article SET title = :title, content = :content, visible = :visible WHERE article_id = :articleId", nativeQuery = true)
-    void updateArticle(final String title, final String content, final  boolean visible, final Long articleId);
+    void updateArticle(final String title, final String content, final boolean visible, final Long articleId);
 
     @Transactional
     @Modifying
     @Query("DELETE FROM Article a WHERE a.id = :articleId")
     void deleteArticleById(final Long articleId);
+
+    @Query("SELECT a FROM Article a WHERE a.visible = true ORDER BY a.creationDate DESC")
+    List<Article> findTop5ByOrderByCreationDateDesc();
 
 }

@@ -3,6 +3,7 @@ package com.example.learnpython.article;
 import com.example.learnpython.article.model.Article;
 import com.example.learnpython.article.model.ArticleResponse;
 import com.example.learnpython.article.model.CreateArticleRequest;
+import com.example.learnpython.article.model.MenuArticleResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,4 +17,5 @@ public interface ArticleMapper {
     @Mapping(target="userId", source="article.user.id")
     @Mapping(target="date", source="article.creationDate")
     ArticleResponse toCreateArticleResponse(Article article);
+    MenuArticleResponse toMenuArticleResponse(Article article);
 }
