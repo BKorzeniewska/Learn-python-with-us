@@ -66,4 +66,66 @@ class ArticleServiceImplTest {
         final ArticleDTO articleDTOResult = articleServiceImplUnderTest.getArticlePageByChapter(1L);
         assertThat(articleDTOResult).isEqualTo(articleDTO);
     }
+    @Test
+    void getArticlesByChapterTest() {
+        Long chapterId = 1L;
+        Article article1 = Article.builder()
+                .id(1L)
+                .title("Article 1")
+                .content("Content 1")
+                .visible(true)
+                .chapter(Chapter.builder().id(chapterId).build())
+                .build();
+
+        Article article2 = Article.builder()
+                .id(2L)
+                .title("Article 2")
+                .content("Content 2")
+                .visible(false)
+                .chapter(Chapter.builder().id(chapterId).build())
+                .build();
+
+        List<Article> articles = List.of(article1, article2);
+
+        when(mockArticleRepository.findAllByChapterId(chapterId))
+                .thenReturn(Optional.of(articles));
+
+
+        List<ArticleResponse> expectedResponses = articles.stream()
+                .filter(Article::getVisible)
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+
+        List<ArticleResponse> result = articleServiceImplUnderTest.getArticlesByChapter(chapterId);
+        assertThat(result).isEqualTo(expectedResponses);
+    }
+
+    @Test
+    void getArticlesByTitleContainingTest() {
+        String titleFragment = "example";
+        Article article1 = Article.builder()
+                .id(1L)
+                .title("Example Article")
+                .content("Content 1")
+                .chapter(Chapter.builder().id(1L).build())
+                .build();
+
+        Article article2 = Article.builder()
+                .id(2L)
+                .title("Another Article")
+                .content("Content 2")
+                .chapter(Chapter.builder().id(2L).build())
+                .build();
+
+        List<Article> articles = List.of(article1, article2);
+        when(mockArticleRepository.findByTitleContaining(titleFragment))
+                .thenReturn(Optional.of(articles));
+
+        List<ArticleResponse> expectedResponses = articles.stream()
+                .map(articleMapper::toCreateArticleResponse)
+                .toList();
+
+        List<ArticleResponse> result = articleServiceImplUnderTest.getArticlesByTitleContaining(titleFragment);
+        assertThat(result).isEqualTo(expectedResponses);
+    }
 }
