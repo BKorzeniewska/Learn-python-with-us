@@ -61,9 +61,9 @@ public class ChallengeServiceImpl implements ChallengeService {
             for (int i = 0; i < results.size(); i++) {
                 interpreter.setOut(outputUser);
                 // Validate input
-//                if (!isValidInput(request.answer())) {
-//                    throw new IllegalArgumentException("Invalid input");
-//                }
+                if (!isValidInput(request.answer())) {
+                    throw new IllegalArgumentException("Invalid input");
+                }
                 String[] input = inputs.get(i).split(" ");
                 for (int j = 0; j < input.length; j++) {
                     interpreter.exec(input[j]);
@@ -102,8 +102,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
     }
 
-    // TODO
-    //  to adopt
+
     // This function checks whether each command in user code starts with one of the allowed expressions (e.g. print, input, int, float, str, bool).
     // If the command does not start with a valid expression, the method returns false, which means the input is invalid.
     // Otherwise, it returns true, which means the input is safe to execute.
